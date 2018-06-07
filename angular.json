@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "hh-pdfjs-box": {
+    "hhdevelopment/angular-addons": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/hh-pdfjs-box",
+            "outputPath": "dist/hhdevelopment/angular-addons",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -51,18 +51,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "hh-pdfjs-box:build"
+            "browserTarget": "hhdevelopment/angular-addons:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "hh-pdfjs-box:build:production"
+              "browserTarget": "hhdevelopment/angular-addons:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "hh-pdfjs-box:build"
+            "browserTarget": "hhdevelopment/angular-addons:build"
           }
         },
         "test": {
@@ -96,7 +96,7 @@
         }
       }
     },
-    "hh-pdfjs-box-e2e": {
+    "hhdevelopment/angular-addons-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "architect": {
@@ -104,7 +104,7 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "hh-pdfjs-box:serve"
+            "devServerTarget": "hhdevelopment/angular-addons:serve"
           }
         },
         "lint": {
@@ -118,38 +118,38 @@
         }
       }
     },
-    "pdfjs-box": {
-      "root": "projects/pdfjs-box",
-      "sourceRoot": "projects/pdfjs-box/src",
+    "pdfjs-box2": {
+      "root": "projects/pdfjs-box2",
+      "sourceRoot": "projects/pdfjs-box2/src",
       "projectType": "library",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
-            "tsConfig": "projects/pdfjs-box/tsconfig.lib.json",
-            "project": "projects/pdfjs-box/ng-package.json"
+            "tsConfig": "projects/pdfjs-box2/tsconfig.lib.json",
+            "project": "projects/pdfjs-box2/ng-package.json"
           },
           "configurations": {
             "production": {
-              "project": "projects/pdfjs-box/ng-package.prod.json"
+              "project": "projects/pdfjs-box2/ng-package.prod.json"
             }
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/pdfjs-box/src/test.ts",
-            "tsConfig": "projects/pdfjs-box/tsconfig.spec.json",
-            "karmaConfig": "projects/pdfjs-box/karma.conf.js"
+            "main": "projects/pdfjs-box2/src/test.ts",
+            "tsConfig": "projects/pdfjs-box2/tsconfig.spec.json",
+            "karmaConfig": "projects/pdfjs-box2/karma.conf.js"
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "projects/pdfjs-box/tsconfig.lib.json",
-              "projects/pdfjs-box/tsconfig.spec.json"
+              "projects/pdfjs-box2/tsconfig.lib.json",
+              "projects/pdfjs-box2/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -159,5 +159,5 @@
       }
     }
   },
-  "defaultProject": "hh-pdfjs-box"
+  "defaultProject": "hhdevelopment/angular-addons"
 }

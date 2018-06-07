@@ -4,8 +4,6 @@ node_js:
 cache:
   directories:
     - "node_modules"
-env:
-  - REPO_NAME=pdfjs-box
 branches:
   only:
   - master
@@ -13,7 +11,7 @@ before_script:
   - npm install
 script:
   - git checkout master
-  - ng build pdfjs-box --prod
+  - ng build pdfjs-box2 --prod
 deploy:
   - provider: script
     script: git commit -m "[ci skip]" package-lock.json; npm version patch -m "[ci skip]"

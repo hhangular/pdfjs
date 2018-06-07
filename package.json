@@ -1,11 +1,11 @@
 {
-  "name": "pdfjs-box2",
+  "name": "hhdevelopment/angular-addons",
   "version": "1.0.0",
   "author": "Achache francois",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/hhangular/pdfjs-box.git"
+    "url": "https://github.com/hhdevelopment/angular-addons.git"
   },
   "scripts": {
     "ng": "ng",

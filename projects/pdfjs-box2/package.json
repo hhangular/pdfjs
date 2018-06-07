@@ -8,9 +8,5 @@
     "@angular/core": "^6.0.0-rc.0 || ^6.0.0",
     "@types/pdfjs-dist": "^0.1.2",
     "pdfjs-dist": "2.0.489"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/hhangular/pdfjs-box.git"
   }
 }

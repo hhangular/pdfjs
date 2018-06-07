@@ -2,7 +2,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 
 import {AppComponent} from './app.component';
-import {PdfjsBoxModule} from '../../projects/pdfjs-box/src/lib/pdfjs-box.module';
+import {PdfjsBoxModule} from '../../projects/pdfjs-box2/src/lib/pdfjs-box2.module';
 
 @NgModule({
   declarations: [

@@ -17,11 +17,11 @@
       "dom"
     ],
     "paths": {
-      "pdfjs-box": [
-        "dist/pdfjs-box"
+      "pdfjs-box2": [
+        "dist/pdfjs-box2"
       ],
-      "pdfjs-box/*": [
-        "dist/pdfjs-box/*"
+      "pdfjs-box2/*": [
+        "dist/pdfjs-box2/*"
       ]
     }
   }
