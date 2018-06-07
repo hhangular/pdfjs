@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "hhdevelopment/angular-addons": {
+    "angular-addons": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/hhdevelopment/angular-addons",
+            "outputPath": "dist/angular-addons",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -51,18 +51,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "hhdevelopment/angular-addons:build"
+            "browserTarget": "angular-addons:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "hhdevelopment/angular-addons:build:production"
+              "browserTarget": "angular-addons:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "hhdevelopment/angular-addons:build"
+            "browserTarget": "angular-addons:build"
           }
         },
         "test": {
@@ -96,7 +96,7 @@
         }
       }
     },
-    "hhdevelopment/angular-addons-e2e": {
+    "angular-addons-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "architect": {
@@ -104,7 +104,7 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "hhdevelopment/angular-addons:serve"
+            "devServerTarget": "angular-addons:serve"
           }
         },
         "lint": {
@@ -159,5 +159,5 @@
       }
     }
   },
-  "defaultProject": "hhdevelopment/angular-addons"
+  "defaultProject": "angular-addons"
 }
