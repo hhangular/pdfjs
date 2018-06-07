@@ -3,4 +3,4 @@
  */
 
 export * from './lib/components';
-export * from './lib/pdfjs-box2.module';
+export * from './lib/pdfjs-box.module';
