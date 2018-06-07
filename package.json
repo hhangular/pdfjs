@@ -3,10 +3,19 @@
   "version": "1.0.2",
   "author": "Achache francois",
   "license": "MIT",
+  "description": "addons for angular 2x by hhfrancois",
   "repository": {
     "type": "git",
-    "url": "https://github.com/angular-addons.git"
+    "url": "https://github.com/hhdevelopment/angular-addons.git"
   },
+  "keywords": [
+    "angular",
+    "angular 2",
+    "addons",
+    "mozilla",
+    "pdfjs",
+    "pdf"
+  ],
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
