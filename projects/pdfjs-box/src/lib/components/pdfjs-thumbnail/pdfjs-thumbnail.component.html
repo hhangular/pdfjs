@@ -1,0 +1,2 @@
+<pdfjs-remove-button *ngIf="removable" [item]="item" (removeItem)="removeItem.emit($event)">X</pdfjs-remove-button>
+<canvas #canvas width="100" height="100" draggable="true" (click)="onClick($event)"></canvas>

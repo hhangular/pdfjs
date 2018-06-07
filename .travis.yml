@@ -1,0 +1,41 @@
+language: node_js
+node_js:
+  - "8"
+cache:
+  directories:
+    - "node_modules"
+env:
+  - REPO_NAME=pdfjs-box
+branches:
+  only:
+  - master
+before_script:
+  - npm install
+script:
+  - git checkout master
+  - ng build pdfjs-box --prod
+deploy:
+  - provider: script
+    script: git commit -m "[ci skip]" package-lock.json; npm version patch -m "[ci skip]"
+    skip_cleanup: true
+    on:
+      branch: master
+  - provider: script
+    script: git push https://$GITHUB_TOKEN:x-oauth-basic@github.com/$TRAVIS_REPO_SLUG.git master
+    skip_cleanup: true
+    on:
+      branch: master
+  - provider: releases
+    user: "$GITHUB_USER"
+    api_key: "$GITHUB_TOKEN"
+    file_glob: true
+    file: dist/*
+    skip_cleanup: true
+    on:
+      branch: master
+  - provider: npm
+    email: "$NPM_MAIL"
+    api_key: "$NPM_TOKEN"
+    skip_cleanup: true
+    on:
+      branch: master

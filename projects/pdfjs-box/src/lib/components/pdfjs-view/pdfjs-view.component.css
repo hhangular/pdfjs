@@ -1,0 +1,282 @@
+:host {
+  display: block;
+  overflow:auto;
+  position: relative;
+}
+/* Copyright 2014 Mozilla Foundation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+.pdfViewer .textLayer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  /*	opacity: 0.2;*/
+  line-height: 1.0;
+}
+
+.pdfViewer .textLayer > div {
+  color: transparent;
+  position: absolute;
+  white-space: pre;
+  cursor: text;
+  -webkit-transform-origin: 0 0;
+  -moz-transform-origin: 0 0;
+  -o-transform-origin: 0 0;
+  -ms-transform-origin: 0 0;
+  transform-origin: 0 0;
+}
+
+.pdfViewer .textLayer .highlight {
+  margin: -1px;
+  padding: 1px;
+  background-color: rgb(180, 0, 170);
+  border-radius: 4px;
+}
+
+.pdfViewer .textLayer .highlight.begin {
+  border-radius: 4px 0 0 4px;
+}
+
+.pdfViewer .textLayer .highlight.end {
+  border-radius: 0 4px 4px 0;
+}
+
+.pdfViewer .textLayer .highlight.middle {
+  border-radius: 0;
+}
+
+.pdfViewer .textLayer .highlight.selected {
+  background-color: rgb(0, 100, 0);
+}
+.pdfViewer .textLayer ::-moz-selection,
+.pdfViewer .textLayer ::selection {
+  background: rgb(0,0,255);
+  color:white;
+}
+
+.pdfViewer .textLayer .endOfContent {
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 100%;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  cursor: default;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+}
+
+.pdfViewer .textLayer .endOfContent.active {
+  top: 0;
+}
+.pdfViewer .annotationLayer section {
+  position: absolute;
+}
+
+.pdfViewer .annotationLayer .linkAnnotation > a {
+  position: absolute;
+  font-size: 1em;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.pdfViewer .annotationLayer .linkAnnotation > a /* -ms-a */  {
+  background: url("data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7") 0 0 repeat;
+}
+
+.pdfViewer .annotationLayer .linkAnnotation > a:hover {
+  opacity: 0.2;
+  background: #ff0;
+  box-shadow: 0 2px 10px #ff0;
+}
+
+.pdfViewer .annotationLayer .textAnnotation img {
+  position: absolute;
+  cursor: pointer;
+}
+
+.pdfViewer .annotationLayer .textWidgetAnnotation input,
+.pdfViewer .annotationLayer .textWidgetAnnotation textarea,
+.pdfViewer .annotationLayer .choiceWidgetAnnotation select,
+.pdfViewer .annotationLayer .buttonWidgetAnnotation.checkBox input,
+.pdfViewer .annotationLayer .buttonWidgetAnnotation.radioButton input {
+  background-color: rgba(0, 54, 255, 0.13);
+  border: 1px solid transparent;
+  box-sizing: border-box;
+  font-size: 9px;
+  height: 100%;
+  padding: 0 3px;
+  vertical-align: top;
+  width: 100%;
+}
+
+.pdfViewer .annotationLayer .textWidgetAnnotation textarea {
+  font: message-box;
+  font-size: 9px;
+  resize: none;
+}
+
+.pdfViewer .annotationLayer .textWidgetAnnotation input[disabled],
+.pdfViewer .annotationLayer .textWidgetAnnotation textarea[disabled],
+.pdfViewer .annotationLayer .choiceWidgetAnnotation select[disabled],
+.pdfViewer .annotationLayer .buttonWidgetAnnotation.checkBox input[disabled],
+.pdfViewer .annotationLayer .buttonWidgetAnnotation.radioButton input[disabled] {
+  background: none;
+  border: 1px solid transparent;
+  cursor: not-allowed;
+}
+
+.pdfViewer .annotationLayer .textWidgetAnnotation input:hover,
+.pdfViewer .annotationLayer .textWidgetAnnotation textarea:hover,
+.pdfViewer .annotationLayer .choiceWidgetAnnotation select:hover,
+.pdfViewer .annotationLayer .buttonWidgetAnnotation.checkBox input:hover,
+.pdfViewer .annotationLayer .buttonWidgetAnnotation.radioButton input:hover {
+  border: 1px solid #000;
+}
+
+.pdfViewer .annotationLayer .textWidgetAnnotation input:focus,
+.pdfViewer .annotationLayer .textWidgetAnnotation textarea:focus,
+.pdfViewer .annotationLayer .choiceWidgetAnnotation select:focus {
+  background: none;
+  border: 1px solid transparent;
+}
+
+.pdfViewer .annotationLayer .textWidgetAnnotation input.comb {
+  font-family: monospace;
+  padding-left: 2px;
+  padding-right: 0;
+}
+
+.pdfViewer .annotationLayer .textWidgetAnnotation input.comb:focus {
+  /*
+     * Letter spacing is placed on the right side of each character. Hence, the
+     * letter spacing of the last character may be placed outside the visible
+     * area, causing horizontal scrolling. We avoid this by extending the width
+     * when the element has focus and revert this when it loses focus.
+     */
+  width: 115%;
+}
+
+.pdfViewer .annotationLayer .buttonWidgetAnnotation.checkBox input,
+.pdfViewer .annotationLayer .buttonWidgetAnnotation.radioButton input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  appearance: none;
+}
+
+.pdfViewer .annotationLayer .popupWrapper {
+  position: absolute;
+  width: 20em;
+}
+
+.pdfViewer .annotationLayer .popup {
+  position: absolute;
+  z-index: 200;
+  max-width: 20em;
+  background-color: #FFFF99;
+  box-shadow: 0 2px 5px #333;
+  border-radius: 2px;
+  padding: 0.6em;
+  margin-left: 5px;
+  cursor: pointer;
+  word-wrap: break-word;
+}
+
+.pdfViewer .annotationLayer .popup h1 {
+  font-size: 1em;
+  border-bottom: 1px solid #000000;
+  padding-bottom: 0.2em;
+}
+
+.pdfViewer .annotationLayer .popup p {
+  padding-top: 0.2em;
+}
+
+.pdfViewer .annotationLayer .highlightAnnotation,
+.pdfViewer .annotationLayer .underlineAnnotation,
+.pdfViewer .annotationLayer .squigglyAnnotation,
+.pdfViewer .annotationLayer .strikeoutAnnotation,
+.pdfViewer .annotationLayer .lineAnnotation svg line,
+.pdfViewer .annotationLayer .fileAttachmentAnnotation {
+  cursor: pointer;
+}
+
+.pdfViewer .canvasWrapper {
+  overflow: hidden;
+  /*	box-shadow: 0 0 3px #bbb;*/
+}
+.pdfViewer .page {
+  direction: ltr;
+/*  width: 816px;
+  height: 1056px; */
+  margin: 1px auto -8px auto;
+  position: relative;
+  overflow: visible;
+  border: 9px solid transparent;
+  background-clip: content-box;
+  border-image:  url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAQAAADYWf5HAAAA6UlEQVR4Xl2Pi2rEMAwE16fm1f7/r14v7w4rI0IzLAF7hLxNevBSEMEF5+OilNCsRd8ZMyn+a4NmsOT8WJw1lFbSYgGFzF2bLFoLjTClWjKKGRWpDYAGXUnZ4uhbBUzF3Oe/GG/ue2fn4GgsyXhNgysV2JnrhKEMg4fEZcALmiKbNhBBRFpSyDOj1G4QOVly6O1FV54ZZq8OVygrciDt6JazRgi1ljTPH0gbrPmHPXAbCiDd4GawIjip1TPh9tt2sz24qaCjr/jAb/GBFTbq9KZ7Ke/Cqt8nayUikZKsWZK7Fe6bg5dOUt8fZHWG2BHc+6EAAAAASUVORK5CYII=') 9 9 repeat;
+  /*	background-color: white;*/
+}
+
+.pdfViewer.removePageBorders .page {
+  margin: auto auto;
+  border: none;
+}
+
+.pdfViewer.singlePageView {
+  display: inline-block;
+}
+
+.pdfViewer.singlePageView .page {
+  margin: 0;
+  border: none;
+}
+
+.pdfViewer .page canvas {
+  margin: 0;
+  display: block;
+}
+
+.pdfViewer .page canvas[hidden] {
+  display: none;
+}
+
+.pdfPresentationMode:-webkit-full-screen .pdfViewer .page {
+  margin-bottom: 100%;
+  border: 0;
+}
+
+.pdfPresentationMode:-moz-full-screen .pdfViewer .page {
+  margin-bottom: 100%;
+  border: 0;
+}
+
+.pdfPresentationMode:-ms-fullscreen .pdfViewer .page {
+  margin-bottom: 100% !important;
+  border: 0;
+}
+
+.pdfPresentationMode:fullscreen .pdfViewer .page {
+  margin-bottom: 100%;
+  border: 0;
+}

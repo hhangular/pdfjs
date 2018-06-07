@@ -1,0 +1,9 @@
+:host {
+  font-family: cursive;
+  font-weight: bolder;
+  font-size: large;
+  color:#ac2925;
+  cursor: pointer;
+  display: block;
+}
+

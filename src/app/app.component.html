@@ -1,0 +1,54 @@
+<div>
+  <pdfjs-thumbnails [pdfjsControl]="pdfjsControl"
+                    [selected]="selectedPdfjsControl === pdfjsControl"
+                    [quality]="1"
+                    [fitSize]="150"
+                    [allowDrop]="false"
+                    [allowRemove]="false"
+                    [dragMode]="ThumbnailDragMode.DUPLICATE"
+                    [layout]="ThumbnailLayout.HORIZONTAL"
+                    (select)="selectionItem($event)"></pdfjs-thumbnails>
+  <pdfjs-thumbnails [pdfjsControl]="pdfjsControl1"
+                    [selected]="selectedPdfjsControl === pdfjsControl1"
+                    [quality]="1"
+                    [fitSize]="150"
+                    [allowDrop]="true"
+                    [allowRemove]="true"
+                    [dragMode]="ThumbnailDragMode.MOVE"
+                    [layout]="ThumbnailLayout.HORIZONTAL"
+                    (select)="selectionItem($event)"></pdfjs-thumbnails>
+  <div class="row">
+    <div class="col s2">
+      <pdfjs-thumbnails [pdfjsControl]="pdfjsControl2"
+                        [selected]="selectedPdfjsControl === pdfjsControl2"
+                        [quality]="1"
+                        [fitSize]="150"
+                        [layout]="ThumbnailLayout.VERTICAL"
+                        [allowRemove]="true"
+                        [allowDrop]="true"
+                        [dragMode]="ThumbnailDragMode.DUPLICATE"
+                        (select)="selectionItem($event)"
+                        style="height: calc(100vh - 320px)">
+      </pdfjs-thumbnails>
+    </div>
+    <div class="col s10">
+      <div>
+        <button [disabled]="!selectedPdfjsControl" (click)="selectedPdfjsControl.selectPrevious()">prev</button>
+        <button [disabled]="!selectedPdfjsControl" (click)="selectedPdfjsControl.selectNext()">next</button>
+        <button [disabled]="!selectedPdfjsControl" (click)="selectedPdfjsControl.rotate(-90)">rot--</button>
+        <button [disabled]="!selectedPdfjsControl" (click)="selectedPdfjsControl.rotateSelected(-90)">rot-</button>
+        <button [disabled]="!selectedPdfjsControl" (click)="selectedPdfjsControl.rotateSelected(90)">rot+</button>
+        <button [disabled]="!selectedPdfjsControl" (click)="selectedPdfjsControl.rotate(90)">rot++</button>
+        <button [disabled]="!selectedPdfjsControl" (click)="selectedPdfjsControl.zoom(0.9)">z-</button>
+        <button [disabled]="!selectedPdfjsControl" (click)="selectedPdfjsControl.zoom(1.1)">z+</button>
+        <button [disabled]="!selectedPdfjsControl" (click)="selectedPdfjsControl.reload()">refresh</button>
+      </div>
+      <pdfjs-view [pdfjsControl]="selectedPdfjsControl"
+                  [textLayer]="false"
+                  [fit]="ViewFit.VERTICAL"
+                  [quality]="2"
+                  style="height: calc(100vh - 343px)">
+      </pdfjs-view>
+    </div>
+  </div>
+</div>

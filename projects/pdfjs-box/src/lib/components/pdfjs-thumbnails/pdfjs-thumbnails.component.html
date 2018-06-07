@@ -1,0 +1,11 @@
+<pdfjs-thumbnail *ngFor="let item of pdfjsControl?.items$ | async"
+                 [item]="item"
+                 (selectItem)="selection($event)"
+                 [fitSize]="fitSize - 16"
+                 [quality]="quality"
+                 [layout]="layout"
+                 [draggable]="dragMode !== 'none'"
+                 [removable]="allowRemove"
+                 [class.active]="selected && pdfjsControl.isSelected(item)"
+                 (removeItem)="removeThumbnail($event)"
+></pdfjs-thumbnail>
