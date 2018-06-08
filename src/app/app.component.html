@@ -34,6 +34,7 @@
     <div class="col s10">
       <div>
         <button [disabled]="!selectedPdfjsControl || !selectedPdfjsControl.hasPrevious()" (click)="selectedPdfjsControl.selectPrevious()">prev</button>
+        <button [disabled]="true">{{selectedPdfjsControl?.getPageIndex()}}/{{selectedPdfjsControl?.getNumberOfPages()}}</button>
         <button [disabled]="!selectedPdfjsControl || !selectedPdfjsControl.hasNext()" (click)="selectedPdfjsControl.selectNext()">next</button>
         <button [disabled]="!selectedPdfjsControl" (click)="selectedPdfjsControl.rotate(-90)">rot--</button>
         <button [disabled]="!selectedPdfjsControl" (click)="selectedPdfjsControl.rotateSelected(-90)">rot-</button>

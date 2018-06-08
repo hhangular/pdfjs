@@ -34,6 +34,10 @@ export class PdfjsControl {
     return this.items.length;
   }
 
+  getNumberOfPages(): number {
+    return this.items.length;
+  }
+
   containsItem(item: PdfjsItem): boolean {
     return this.items.some((it: PdfjsItem) => {
       return this.pdfId === item.pdfId && it.pageIdx === item.pageIdx;
@@ -176,6 +180,20 @@ export class PdfjsControl {
 
   isSelected(item: PdfjsItem): boolean {
     return item && !isNaN(this.itemIndex) && this.items[this.itemIndex] && item.pdfId === this.pdfId && item.pageIdx === this.items[this.itemIndex].pageIdx;
+  }
+
+  /**
+   * index based 0
+   */
+  getItemIndex() {
+    return this.itemIndex;
+  }
+
+  /**
+   * index based 1
+   */
+  getPageIndex() {
+    return isNaN(this.itemIndex) ? this.itemIndex : this.itemIndex + 1;
   }
 
   /**
