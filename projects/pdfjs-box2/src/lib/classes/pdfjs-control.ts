@@ -162,6 +162,10 @@ export class PdfjsControl {
     this.scale$.next(this.scale * zoom);
   }
 
+  fit() {
+
+  }
+
   reload() {
     this.load(this.source);
   }

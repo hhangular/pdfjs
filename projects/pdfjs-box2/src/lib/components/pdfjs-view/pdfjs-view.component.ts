@@ -4,8 +4,6 @@ import {PDFPageProxy, PDFPageViewport, PDFPromise, PDFRenderTask} from 'pdfjs-di
 import {Pdfjs} from '../../services';
 import {PdfjsControl} from '../../classes/pdfjs-control';
 import {combineLatest, Subscription} from 'rxjs';
-import {tryCatch} from 'rxjs/internal-compatibility';
-import {RenderingCancelledException} from '../../classes/pdfapi';
 
 @Component({
   selector: 'pdfjs-view',
