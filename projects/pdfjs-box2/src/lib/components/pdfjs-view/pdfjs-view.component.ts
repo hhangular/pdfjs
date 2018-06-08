@@ -54,7 +54,7 @@ export class PdfjsViewComponent implements OnDestroy {
         }
         canvas = wrapper.appendChild(document.createElement('canvas'));
         this.pdfjs.renderItemInCanvasHeightFitted(item, this.quality, canvas, this.size * scale).then((obj: any) => {
-          this.defineSizes();
+          this.defineSizes(canvas, this.quality);
           this.pdfRenderTask = obj.pdfRenderTask as PDFRenderTask;
           if (this.textLayer) {
             this.pdfRenderTask.then(() => {
@@ -106,18 +106,16 @@ export class PdfjsViewComponent implements OnDestroy {
     }
   }
 
-  defineSizes() {
-    const view: HTMLElement = this.elementRef.nativeElement;
-    const clientRect: ClientRect = view.getBoundingClientRect();
-
-    this.pdfViewerRef.nativeElement.style.height = clientRect.height;
-    this.textLayerRef.nativeElement.style.height = clientRect.height;
-    this.canvasWrapperRef.nativeElement.style.height = clientRect.height;
-    this.pageRef.nativeElement.style.height = clientRect.height;
-    /*    this.pdfViewerRef.nativeElement.style.width = clientRect.width;
-        this.textLayerRef.nativeElement.style.width = clientRect.width;
-        this.canvasWrapperRef.nativeElement.style.width = clientRect.width;
-        this.pageRef.nativeElement.style.width = clientRect.width; */
+  defineSizes(canvas: HTMLCanvasElement, quality: number) {
+    console.log('CANVAS', canvas.height, canvas.width, quality);
+//    this.pdfViewerRef.nativeElement.style.height = (canvas.height / quality) + 'px';
+    this.textLayerRef.nativeElement.style.height = (canvas.height / quality) + 'px';
+    this.canvasWrapperRef.nativeElement.style.height = (canvas.height / quality) + 'px';
+    this.pageRef.nativeElement.style.height = (canvas.height / quality) + 'px';
+//    this.pdfViewerRef.nativeElement.style.width = (canvas.width / quality) + 'px';
+    this.textLayerRef.nativeElement.style.width = (canvas.width / quality) + 'px';
+    this.canvasWrapperRef.nativeElement.style.width = (canvas.width / quality) + 'px';
+    this.pageRef.nativeElement.style.width = (canvas.width / quality) + 'px';
   }
 
 //  @HostBinding('style.height')

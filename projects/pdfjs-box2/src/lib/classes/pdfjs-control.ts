@@ -81,13 +81,22 @@ export class PdfjsControl {
     const items: PdfjsItem[] = [];
     items.splice(0, items.length);
     const t0: number = new Date().getTime();
-    this.buildItems(source, items, angle).then((numPages: number) => {
+    return this.buildItems(source, items, angle).then((numPages: number) => {
       console.log(`Load ${numPages} pages in ${new Date().getTime() - t0}ms`);
+      return numPages;
     });
   }
 
+  private isValidList() {
+    return !!this.items;
+  }
+
+  private isValidIndex() {
+    return !isNaN(this.itemIndex);
+  }
+
   selectItemIndex(index: number) {
-    if (!!this.items && !!this.items.length && index >= 0 && index < this.items.length) {
+    if (this.isValidList() && index >= 0 && index < this.items.length) {
       this.itemIndex = index;
       const item: PdfjsItem = this.items[this.itemIndex];
       this.selectedItem$.next(item);
@@ -101,19 +110,35 @@ export class PdfjsControl {
   }
 
   selectFirst() {
-    this.selectItemIndex(0);
+    if (this.isValidList()) {
+      this.selectItemIndex(0);
+    }
   }
 
   selectLast() {
-    this.selectItemIndex(this.items.length);
+    if (this.isValidList()) {
+      this.selectItemIndex(this.items.length);
+    }
+  }
+
+  hasNext() {
+    return this.isValidList() && this.isValidIndex() && this.itemIndex + 1 < this.items.length;
+  }
+
+  hasPrevious() {
+    return this.isValidList() && this.isValidIndex() && this.itemIndex > 0;
   }
 
   selectNext() {
-    this.selectItemIndex(this.itemIndex + 1);
+    if (this.hasNext()) {
+      this.selectItemIndex(this.itemIndex + 1);
+    }
   }
 
   selectPrevious() {
-    this.selectItemIndex(isNaN(this.itemIndex) ? NaN : this.itemIndex - 1);
+    if (this.hasPrevious()) {
+      this.selectItemIndex(isNaN(this.itemIndex) ? NaN : this.itemIndex - 1);
+    }
   }
 
   rotate(angle: number) {
