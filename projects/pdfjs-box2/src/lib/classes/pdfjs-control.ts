@@ -11,7 +11,6 @@ export class PdfjsControl {
   private rotationAngle = 0;
   private autoSelect = false;
   private itemIndex = NaN; // item selected index
-  private scale = 1;
   private rotateSubscription: Subscription;
 
   readonly pdfId: string;
@@ -23,6 +22,7 @@ export class PdfjsControl {
 
   items$: Subject<PdfjsItem[]> = new Subject();
   selectedItem$: BehaviorSubject<PdfjsItem> = new BehaviorSubject<PdfjsItem>(null);
+  selectedIndex$: BehaviorSubject<number> = new BehaviorSubject<number>(NaN);
   scale$: BehaviorSubject<number> = new BehaviorSubject<number>(1);
   rotate$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
@@ -45,9 +45,9 @@ export class PdfjsControl {
   }
 
   indexOfItem(item: PdfjsItem): number {
-    return this.items.findIndex((it: PdfjsItem) => {
+    return !!item ? this.items.findIndex((it: PdfjsItem) => {
       return this.pdfId === item.pdfId && it.pageIdx === item.pageIdx;
-    });
+    }) : NaN;
   }
 
   addItem(item: PdfjsItem, idx?: number) {
@@ -65,9 +65,17 @@ export class PdfjsControl {
       this.items.splice(idx, 0, item.clone(this.pdfId));
     }
     this.items$.next(this.items);
+    // in case where item add was before current selected index
+    this.fixAfterAddItem();
+  }
+
+  private fixAfterAddItem() {
+    this.itemIndex = this.indexOfItem(this.selectedItem$.getValue());
+    this.selectedIndex$.next(this.itemIndex);
   }
 
   removeItem(item: PdfjsItem): PdfjsItem {
+    const isSelected = this.isSelected(item);
     const idx: number = this.indexOfItem(item);
     let removed: PdfjsItem = null;
     if (idx !== -1) {
@@ -75,7 +83,20 @@ export class PdfjsControl {
       removed.pdfId = null;
       this.items$.next(this.items);
     }
+    // in case where item removed was before current selected index or it was removed item
+    this.fixAfterRemoveItem(isSelected);
     return removed;
+  }
+
+  private fixAfterRemoveItem(wasSelected: boolean) {
+    if (wasSelected) {
+      this.itemIndex = NaN;
+      this.selectedIndex$.next(NaN);
+      this.selectedItem$.next(null);
+    } else {
+      this.itemIndex = this.indexOfItem(this.selectedItem$.getValue());
+      this.selectedIndex$.next(this.itemIndex);
+    }
   }
 
   load(source: PdfSource, autoSelect = false) {
@@ -99,11 +120,23 @@ export class PdfjsControl {
     return !isNaN(this.itemIndex);
   }
 
+  unselect() {
+    this.selectItemIndex(NaN);
+  }
+
   selectItemIndex(index: number) {
-    if (this.isValidList() && index >= 0 && index < this.items.length) {
+    if (isNaN(index)) {
+      this.selectedItem$.next(null);
+      this.selectedIndex$.next(NaN);
+      this.itemIndex = NaN;
+      if (this.rotateSubscription) {
+        this.rotateSubscription.unsubscribe();
+      }
+    } else if (this.isValidList() && index >= 0 && index < this.items.length) {
       this.itemIndex = index;
       const item: PdfjsItem = this.items[this.itemIndex];
       this.selectedItem$.next(item);
+      this.selectedIndex$.next(index);
       if (this.rotateSubscription) {
         this.rotateSubscription.unsubscribe();
       }
@@ -121,7 +154,7 @@ export class PdfjsControl {
 
   selectLast() {
     if (this.isValidList()) {
-      this.selectItemIndex(this.items.length);
+      this.selectItemIndex(this.items.length - 1);
     }
   }
 
@@ -159,14 +192,16 @@ export class PdfjsControl {
   }
 
   zoom(zoom: number) {
-    this.scale$.next(this.scale * zoom);
+    const scale = this.scale$.getValue() * zoom;
+    this.scale$.next(scale);
   }
 
   fit() {
-
+    this.scale$.next(1);
   }
 
   reload() {
+    this.selectItemIndex(NaN);
     this.load(this.source);
   }
 
@@ -176,9 +211,6 @@ export class PdfjsControl {
       if (this.autoSelect) {
         this.selectFirst();
       }
-    });
-    this.scale$.subscribe((scale: number) => {
-      this.scale = scale;
     });
   }
 

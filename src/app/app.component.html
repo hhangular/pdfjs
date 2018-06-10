@@ -28,7 +28,7 @@
                         [allowDrop]="true"
                         [dragMode]="ThumbnailDragMode.DUPLICATE"
                         (select)="selectionItem($event)"
-                        style="height: calc(100vh - 320px)">
+                        style="height: calc(100vh - 150px - 150px - 20px)">
       </pdfjs-thumbnails>
     </div>
     <div class="col s10">
@@ -85,7 +85,7 @@
                   [textLayer]="false"
                   [fit]="ViewFit.VERTICAL"
                   [quality]="2"
-                  style="height: calc(100vh - 343px)">
+                  style="height: calc(100vh - 150px - 150px - 40px - 20px)">
       </pdfjs-view>
     </div>
   </div>

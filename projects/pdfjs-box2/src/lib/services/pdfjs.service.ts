@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {PdfAPI, RenderingCancelledException} from '../classes/pdfapi';
 import * as api from 'pdfjs-dist/build/pdf';
 import {PDFPageProxy, PDFPageViewport, PDFPromise, PDFRenderTask, TextContent} from 'pdfjs-dist';
@@ -86,25 +86,28 @@ export class Pdfjs {
   private renderItemInCanvasFitted(item: PdfjsItem, quality: 1 | 2 | 3 | 4 | 5,
                                    canvas: HTMLCanvasElement, size: number, fitter: Fitter): PDFPromise<any> {
     const ctx: CanvasRenderingContext2D = this.cleanCanvas(canvas);
-    return item.getPage().then((pdfPageProxy: PDFPageProxy) => {
+    return !!item ? item.getPage().then((pdfPageProxy: PDFPageProxy) => {
       const r: DOMRect = this.getRectangle(pdfPageProxy, item.rotate);
       const scale = fitter(canvas, size, r, quality);
       const pdfPageViewport: PDFPageViewport = pdfPageProxy.getViewport(scale * quality, item.rotate);
-//      canvas.height = pdfPageViewport.height;
-//      canvas.width = pdfPageViewport.width;
-      const pdfRenderTask: PDFRenderTask =  pdfPageProxy.render({canvasContext: ctx, viewport: pdfPageViewport});
+      const pdfRenderTask: PDFRenderTask = pdfPageProxy.render({canvasContext: ctx, viewport: pdfPageViewport});
       pdfRenderTask.then(() => {
       }, (error: any) => {
         if (error.name !== 'RenderingCancelledException') {
           console.log('render error', error);
         }
-      })
-//      return pdfRenderTask;
+      });
       return {pdfRenderTask: pdfRenderTask, pdfPageProxy: pdfPageProxy, pdfPageViewport: pdfPageViewport, scale: scale};
-/*      return pdfRenderTask.then((ppp: PDFPageProxy) => { // bug ppp is undefined
-        return {pdfPageProxy: pdfPageProxy, pdfPageViewport: pdfPageViewport};
-      }); */
-    });
+    }) : this.getResolvedPromise();
+  }
+
+  private getResolvedPromise(): PDFPromise<any> {
+    const promise: any =  new Promise<any>(() => {});
+    promise.isResolved = () => true;
+    promise.isRejected = () => false;
+    promise.resolve = (value: any) => {};
+    promise.reject = (reason: string) => {};
+    return promise as PDFPromise<any>;
   }
 
   /**

@@ -1,5 +1,5 @@
 <div #pdfViewer class="pdfViewer removePageBorders">
-  <div #page class="page">
+  <div #page class="page" [class.hidden]="!hasPageSelected()">
     <div class="loadingIcon"></div>
     <div #canvasWrapper class="canvasWrapper">
       <canvas width="100" height="100"></canvas>

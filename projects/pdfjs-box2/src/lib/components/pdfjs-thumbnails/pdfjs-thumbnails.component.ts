@@ -2,6 +2,7 @@ import {AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Input,
 import {PdfjsItem, ThumbnailDragMode, ThumbnailLayout} from '../../classes/pdfjs-objects';
 import {ThumbnailDragService} from '../../services';
 import {PdfjsControl} from '../../classes/pdfjs-control';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'pdfjs-thumbnails',
@@ -9,6 +10,9 @@ import {PdfjsControl} from '../../classes/pdfjs-control';
   styleUrls: ['./pdfjs-thumbnails.component.css']
 })
 export class PdfjsThumbnailsComponent implements OnInit, OnDestroy, AfterViewInit {
+
+  private subscription: Subscription;
+  private _pdfjsControl: PdfjsControl;
 
   constructor(
     public elementRef: ElementRef,
@@ -41,7 +45,21 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy, AfterViewIni
   dragMode: ThumbnailDragMode = ThumbnailDragMode.DUPLICATE;
 
   @Input()
-  pdfjsControl: PdfjsControl;
+  set pdfjsControl(pdfjsControl: PdfjsControl) {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+    this._pdfjsControl = pdfjsControl;
+    if (pdfjsControl) {
+      this.subscription = pdfjsControl.selectedIndex$.subscribe((index: number) => {
+        this.ensurePdfjsItemIsVisible(index);
+      });
+    }
+  }
+
+  get pdfjsControl(): PdfjsControl {
+    return this._pdfjsControl;
+  }
 
   /**
    * Start process of drag thumbnail
@@ -78,12 +96,23 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   ngAfterViewInit() {
+    const thumbnails: HTMLElement = this.elementRef.nativeElement as HTMLElement;
     if (this.layout === ThumbnailLayout.HORIZONTAL) {
-      (this.elementRef.nativeElement as HTMLElement).classList.add('horizontal');
-      (this.elementRef.nativeElement as HTMLElement).style.height = this.fitSize + 'px';
+      thumbnails.classList.add('horizontal');
+      thumbnails.style.height = this.fitSize + 'px';
     } else {
-      (this.elementRef.nativeElement as HTMLElement).classList.add('vertical');
-      (this.elementRef.nativeElement as HTMLElement).style.width = this.fitSize + 'px';
+      thumbnails.classList.add('vertical');
+      thumbnails.style.width = this.fitSize + 'px';
+    }
+  }
+
+  private ensurePdfjsItemIsVisible(index: number) {
+    const thumbnails: HTMLElement = this.elementRef.nativeElement as HTMLElement;
+    if (!isNaN(index) && thumbnails.children.length > index) {
+      const elt: Element = thumbnails.children.item(index);
+      if (elt) {
+        elt.scrollIntoView();
+      }
     }
   }
 }

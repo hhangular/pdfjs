@@ -4,6 +4,14 @@ import {ThumbnailDragService} from '../services/thumbnail-drag.service';
 import {PdfjsThumbnailsComponent} from './index';
 import {Pdfjs} from '../services/pdfjs.service';
 import {PdfAPI} from '../classes/pdfapi';
+import {KeysService} from '../services';
+
+export enum KEY_CODE {
+  ARROW_LEFT = 37,
+  ARROW_UP = 38,
+  ARROW_RIGHT = 39,
+  ARROW_DOWN = 40
+}
 
 @Component({
   selector: 'pdfjs-common',
@@ -15,9 +23,33 @@ export class PdfjsCommonComponent {
   constructor(
     private pdfjs: Pdfjs,
     private elementRef: ElementRef,
-    private thumbnailDragService: ThumbnailDragService
+    private thumbnailDragService: ThumbnailDragService,
+    private keysService: KeysService
   ) {
     this.API = pdfjs.getApi();
+  }
+
+  @HostListener('document:click', ['$event'])
+  onClickInDocument(event: MouseEvent) {
+    this.keysService.clearPdfjsControl();
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  onKeyDown(event: KeyboardEvent) {
+    switch (event.keyCode) {
+      case KEY_CODE.ARROW_LEFT :
+        event.ctrlKey ? this.keysService.selectFirst() : this.keysService.selectPrevious();
+        break;
+      case KEY_CODE.ARROW_UP :
+        event.ctrlKey ? this.keysService.selectFirst() : this.keysService.selectPrevious();
+        break;
+      case KEY_CODE.ARROW_RIGHT :
+        event.ctrlKey ? this.keysService.selectLast() : this.keysService.selectNext();
+        break;
+      case KEY_CODE.ARROW_DOWN :
+        event.ctrlKey ? this.keysService.selectLast() : this.keysService.selectNext();
+        break;
+    }
   }
 
   @HostListener('document:dragover', ['$event'])
