@@ -4,7 +4,7 @@ import {PdfjsControl} from '../classes/pdfjs-control';
 @Injectable()
 export class KeysService {
 
-  private static pdfjsControl: PdfjsControl;
+  private static pdfjsControl: PdfjsControl = null;
 
   constructor() {
   }
