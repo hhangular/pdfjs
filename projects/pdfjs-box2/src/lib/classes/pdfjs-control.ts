@@ -20,7 +20,7 @@ export class PdfjsControl {
     this.subscribe();
   }
 
-  items$: BehaviorSubject<PdfjsItem[]> = new BehaviorSubject(null);
+  items$: BehaviorSubject<PdfjsItem[]> = new BehaviorSubject([]);
   selectedItem$: BehaviorSubject<PdfjsItem> = new BehaviorSubject<PdfjsItem>(null);
   selectedIndex$: BehaviorSubject<number> = new BehaviorSubject<number>(NaN);
   scale$: BehaviorSubject<number> = new BehaviorSubject<number>(1);
