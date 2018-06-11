@@ -2,13 +2,11 @@ import {Injectable} from '@angular/core';
 
 export class Configuration {
   constructor(public id: string, public version: number) {
-
   }
-
 }
 
 @Injectable({providedIn: 'root'})
-export class ConfigurationService {
+export class ConfigService {
   constructor() {
     window['currentUser'] = window['currentUser'] || 'G';
   }

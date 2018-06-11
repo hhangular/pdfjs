@@ -25,8 +25,8 @@ import {PdfjsConfig} from './classes/pdfjs-objects';
     PDFJSBOX_COMPONENTS
   ],
   providers: [
-    PDFJSBOX_SERVICES
-  ],
+  PDFJSBOX_SERVICES
+],
   entryComponents: [
     PdfjsCommonComponent // dynamic component
   ], schemas: [

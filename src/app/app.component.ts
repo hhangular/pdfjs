@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {PdfjsControl} from '../../projects/pdfjs-box2/src/lib/classes/pdfjs-control';
-import {LoggerService} from '../../projects/pdfjs-box2/src/lib/services';
 import {ViewFit, ThumbnailDragMode, ThumbnailLayout} from '../../projects/pdfjs-box2/src/lib/classes/pdfjs-objects';
+import {LoggerService} from '../../projects/common/src/lib/logger.service';
 
 @Component({
   selector: 'app-root',

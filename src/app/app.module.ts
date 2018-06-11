@@ -5,6 +5,7 @@ import {AppComponent} from './app.component';
 import {PdfjsBoxModule} from '../../projects/pdfjs-box2/src/lib/pdfjs-box.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatButtonModule} from '@angular/material';
+import {CommonModule} from '../../projects/common/src/lib/common.module';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import {MatButtonModule} from '@angular/material';
     BrowserModule,
     BrowserAnimationsModule,
     MatButtonModule,
-    PdfjsBoxModule.forRoot({workerSrc: 'assets/pdf.worker.js'})
+    PdfjsBoxModule.forRoot({workerSrc: 'assets/pdf.worker.js'}),
+    CommonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

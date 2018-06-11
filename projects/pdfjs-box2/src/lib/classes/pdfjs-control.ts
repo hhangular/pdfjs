@@ -20,7 +20,7 @@ export class PdfjsControl {
     this.subscribe();
   }
 
-  items$: Subject<PdfjsItem[]> = new Subject();
+  items$: BehaviorSubject<PdfjsItem[]> = new BehaviorSubject(null);
   selectedItem$: BehaviorSubject<PdfjsItem> = new BehaviorSubject<PdfjsItem>(null);
   selectedIndex$: BehaviorSubject<number> = new BehaviorSubject<number>(NaN);
   scale$: BehaviorSubject<number> = new BehaviorSubject<number>(1);
@@ -201,8 +201,12 @@ export class PdfjsControl {
   }
 
   reload() {
+    const idx = this.itemIndex;
     this.selectItemIndex(NaN);
-    this.load(this.source);
+    return this.load(this.source).then((num: number) => {
+      this.selectItemIndex(idx);
+      return num;
+    });
   }
 
   private subscribe() {
@@ -235,7 +239,7 @@ export class PdfjsControl {
   /**
    * build items
    */
-  buildItems(source: PdfSource, items: PdfjsItem[], angle: number): PDFPromise<number> {
+  private buildItems(source: PdfSource, items: PdfjsItem[], angle: number): PDFPromise<number> {
     const pdfId: string = this.pdfId;
     return PdfjsControl.API.getDocument(source).then((pdfDocumentProxy: PDFDocumentProxy) => {
       [].push.apply(items, Array.apply(null, {length: pdfDocumentProxy.numPages}).map(function (e, i) {
