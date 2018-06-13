@@ -128,7 +128,7 @@ export class PdfjsCommonComponent {
    * current item was already copy or move, manage if we have to change container
    */
   private adjustTargetContainer(pdfjsThumbnailsComponent: PdfjsThumbnailsComponent) {
-    if (pdfjsThumbnailsComponent.pdfjsControl.pdfId !== this.thumbnailDragService.getTargetPdfId()) { // not same of previous
+    if (pdfjsThumbnailsComponent.pdfjsControl.id !== this.thumbnailDragService.getTargetPdfId()) { // not same of previous
       const item: PdfjsItem = this.thumbnailDragService.getTargetItem();
       if (this.thumbnailDragService.getTargetPdfId() !== this.thumbnailDragService.getSourcePdfId() || this.thumbnailDragService.getModeDataTransfer() === ThumbnailDragMode.MOVE) {
         this.thumbnailDragService.removeItemFromTarget();

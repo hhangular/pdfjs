@@ -6,6 +6,7 @@
                  [layout]="layout"
                  [draggable]="dragMode !== 'none'"
                  [removable]="allowRemove"
+                 (rendered)="nextThumbnail($event)"
                  [class.active]="selected && pdfjsControl.isSelected(item)"
                  (removeItem)="removeThumbnail($event)"
 ></pdfjs-thumbnail>

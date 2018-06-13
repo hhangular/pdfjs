@@ -25,6 +25,9 @@ export class PdfjsThumbnailComponent implements AfterViewInit, OnDestroy {
   canvasRef: ElementRef;
 
   @Output()
+  rendered: EventEmitter<PdfjsItem> = new EventEmitter<PdfjsItem>();
+
+  @Output()
   removeItem: EventEmitter<PdfjsItem> = new EventEmitter<PdfjsItem>();
 
   @Output()
@@ -103,6 +106,7 @@ export class PdfjsThumbnailComponent implements AfterViewInit, OnDestroy {
       }
       promise.then((obj: any) => {
         thumbnail.classList.remove('not_rendered');
+        this.rendered.emit(pdfjsItem);
         this.pdfRenderTask = obj.pdfRenderTask as PDFRenderTask;
       });
     }

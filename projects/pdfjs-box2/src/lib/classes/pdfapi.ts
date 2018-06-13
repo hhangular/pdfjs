@@ -60,11 +60,13 @@ export declare class RenderParameters {
   enhanceTextSelection?: any;
   timeout?: any;
 }
-
 export declare class AnnotationLayer {
-  static render(parameters: any): any;
+  static render(parameters: {annotations: any[], div: HTMLDivElement,
+    page: any, viewport: any, linkService: any, downloadManager: any, imageResourcesPath: string,
+    renderInteractiveForms: boolean
+  }): void;
 
-  static update(parameters: any): any;
+  static update(parameters: {annotations: any[], div: HTMLDivElement, viewport: any}): void;
 }
 
 export interface GlobalWorkerOptions {
@@ -367,35 +369,20 @@ export declare class UnexpectedResponseException {
 
 export declare class Util {
   appendToArray(arr1: any, arr2: any);
-
   apply3dTransform(m: any, v: any);
-
   applyInverseTransform(p: any, m: any);
-
   applyTransform(p: any, m: any);
-
   extendObj(obj1: any, obj2: any);
-
   getAxialAlignedBoundingBox(r: any, m: any);
-
   inherit(sub: any, base: any, prototype: any);
-
   intersect(rect1: any, rect2: any);
-
   inverseTransform(m: any);
-
   loadScript(src: any, callback: any);
-
   makeCssRgb(r: any, g: any, b: any);
-
   normalizeRect(rect: any);
-
   prependToArray(arr1: any, arr2: any);
-
   singularValueDecompose2dScale(m: any);
-
   toRoman(number: any, lowerCase: any);
-
   transform(m1: any, m2: any);
 }
 

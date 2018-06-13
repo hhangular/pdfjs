@@ -5,7 +5,7 @@ import {KeysService} from './keys.service';
 export const PDFJSBOX_SERVICES  = [
   Pdfjs,
   ThumbnailDragService,
-  KeysService
+  KeysService,
 ];
 export {Pdfjs} from './pdfjs.service';
 export {ThumbnailDragService} from './thumbnail-drag.service';

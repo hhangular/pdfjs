@@ -30,7 +30,7 @@ export class ThumbnailDragService {
   }
 
   applyItemToTargetPdfControl(item: PdfjsItem, pdfjsControl: PdfjsControl) {
-    item = item.clone(pdfjsControl.pdfId);
+    item = item.clone();
     ThumbnailDragService.targetPdfjsControl = pdfjsControl;
     ThumbnailDragService.targetItem = item;
   }
@@ -49,14 +49,14 @@ export class ThumbnailDragService {
 
   getSourcePdfId(): string {
     if (ThumbnailDragService.sourcePdfjsControl) {
-      return ThumbnailDragService.sourcePdfjsControl.pdfId;
+      return ThumbnailDragService.sourceItem.pdfId;
     }
     return null;
   }
 
   getTargetPdfId(): string {
     if (ThumbnailDragService.targetPdfjsControl) {
-      return ThumbnailDragService.targetPdfjsControl.pdfId;
+      return ThumbnailDragService.targetItem.pdfId;
     }
     return null;
   }

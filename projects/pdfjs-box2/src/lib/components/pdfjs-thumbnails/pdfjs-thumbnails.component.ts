@@ -11,8 +11,11 @@ import {Subscription} from 'rxjs';
 })
 export class PdfjsThumbnailsComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  private subscription: Subscription;
+  private subSelectedItem: Subscription;
+  private subItems: Subscription;
   private _pdfjsControl: PdfjsControl;
+  private items: PdfjsItem[];
+  private itemsRendered: PdfjsItem[];
 
   constructor(
     public elementRef: ElementRef,
@@ -46,13 +49,22 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy, AfterViewIni
 
   @Input()
   set pdfjsControl(pdfjsControl: PdfjsControl) {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
+    this.itemsRendered = [];
+    this.items = [];
+    if (this.subSelectedItem) {
+      this.subSelectedItem.unsubscribe();
+    }
+    if (this.subItems) {
+      this.subItems.unsubscribe();
     }
     this._pdfjsControl = pdfjsControl;
     if (pdfjsControl) {
-      this.subscription = pdfjsControl.selectedIndex$.subscribe((index: number) => {
+      this.subSelectedItem = pdfjsControl.selectedIndex$.subscribe((index: number) => {
         this.ensurePdfjsItemIsVisible(index);
+      });
+      this.subItems = pdfjsControl.items$.subscribe((items: PdfjsItem[]) => {
+        this.items = items;
+        this.itemsRendered.push(items[0]);
       });
     }
   }
@@ -113,6 +125,12 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy, AfterViewIni
       if (elt) {
         elt.scrollIntoView();
       }
+    }
+  }
+
+  nextThumbnail($event: PdfjsItem) {
+    if (this.itemsRendered.length < this.items.length) {
+      this.itemsRendered.push(this.items[this.itemsRendered.length]);
     }
   }
 }

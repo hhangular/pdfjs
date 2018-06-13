@@ -1,6 +1,6 @@
 import {Component, ElementRef, HostListener, Input, OnDestroy, ViewChild} from '@angular/core';
 import {PdfjsItem, ViewFit} from '../../classes/pdfjs-objects';
-import {PDFPageProxy, PDFPageViewport, PDFPromise, PDFRenderTask} from 'pdfjs-dist';
+import {PDFPageProxy, PDFPageViewport, PDFRenderTask} from 'pdfjs-dist';
 import {Pdfjs} from '../../services';
 import {PdfjsControl} from '../../classes/pdfjs-control';
 import {combineLatest, Subscription} from 'rxjs';

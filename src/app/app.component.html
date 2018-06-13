@@ -80,6 +80,12 @@
         <button mat-icon-button [disabled]="!selectedPdfjsControl" (click)="selectedPdfjsControl.reload()">
           <i class="fas fa-2x fa-sync-alt"></i>
         </button>
+        <mat-menu #appMenu="matMenu">
+          <button mat-menu-item *ngFor="let pdf of pdfs" (click)="showPdf(pdf)">{{pdf.fn}}</button>
+        </mat-menu>
+        <button mat-icon-button [matMenuTriggerFor]="appMenu">
+          <i class="fas fa-2x fa-file-pdf"></i>
+        </button>
       </div>
       <pdfjs-view [pdfjsControl]="selectedPdfjsControl"
                   [textLayer]="false"
