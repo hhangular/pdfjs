@@ -103,7 +103,6 @@ export class PdfjsControl {
   }
 
   load(source: PdfSource, autoSelect = false) {
-    console.log(PdfjsControl.API);
     this.pdfId = this.getPdfId(source);
     this.source = source;
     this.autoSelect = autoSelect;
