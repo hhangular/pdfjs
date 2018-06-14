@@ -23,11 +23,11 @@
       "pdfjs-box2/*": [
         "dist/pdfjs-box2/*"
       ],
-      "common": [
-        "dist/common"
+      "hh-common": [
+        "dist/hh-common"
       ],
-      "common/*": [
-        "dist/common/*"
+      "hh-common/*": [
+        "dist/hh-common/*"
       ]
     }
   }

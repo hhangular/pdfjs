@@ -12,4 +12,4 @@ import {LoggerService} from './logger.service';
     LoggerService
   ],
 })
-export class CommonModule { }
+export class HHCommonModule { }

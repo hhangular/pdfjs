@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {PdfjsControl} from '../../projects/pdfjs-box2/src/lib/classes/pdfjs-control';
 import {ViewFit, ThumbnailDragMode, ThumbnailLayout} from '../../projects/pdfjs-box2/src/lib/classes/pdfjs-objects';
-import {LoggerService} from '../../projects/common/src/lib/logger.service';
-import {MatSelectionListChange} from '@angular/material';
+import {LoggerService} from '../../projects/hh-common/src/lib/logger.service';
 
 @Component({
   selector: 'app-root',
@@ -10,6 +9,8 @@ import {MatSelectionListChange} from '@angular/material';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+
+  editMode = false;
 
   pdfs: any[] = [
     {fn: 'condition.pdf', url: 'assets/pdfs/conditions.pdf'},
