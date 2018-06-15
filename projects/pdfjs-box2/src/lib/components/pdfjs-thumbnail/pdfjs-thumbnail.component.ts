@@ -62,7 +62,7 @@ export class PdfjsThumbnailComponent implements OnInit, OnDestroy {
   rotateSubscription: Subscription;
 
   item$: BehaviorSubject<PdfjsItem> = new BehaviorSubject<PdfjsItem>(null);
-  itemToRender$: BehaviorSubject<PdfjsItem> = new BehaviorSubject<PdfjsItem>(null);
+  itemToRender$: BehaviorSubject<{ item: PdfjsItem, rotation: number }> = new BehaviorSubject<{ item: PdfjsItem, rotation: number }>(null);
 
   _item: PdfjsItem;
 
@@ -104,23 +104,28 @@ export class PdfjsThumbnailComponent implements OnInit, OnDestroy {
         this.rotateSubscription.unsubscribe();
       }
       if (!!item) {
-        this.itemToRender$.next(item);
+        this.itemToRender$.next({item: item, rotation: item.rotate});
         this.rotateSubscription = item.rotate$.subscribe((rot: number) => {
-          this.itemToRender$.next(item);
+          this.itemToRender$.next({item: item, rotation: rot});
         });
+      } else {
+        this.itemToRender$.next({item: null, rotation: 0});
       }
     });
     this.itemToRender$.pipe(
       debounceTime(100),
-      distinctUntilChanged((x: PdfjsItem, y: PdfjsItem) => {
-        return !((!x && !!y) || (!!x && !y) || (!!x && !!y &&
-          x.pdfId !== y.pdfId ||
-          x.pageIdx !== y.pageIdx ||
-          x.rotate !== y.rotate));
-      })
-    ).subscribe((item: PdfjsItem) => {
-      this.renderPdfjsItem(item);
+      distinctUntilChanged((x: { item: PdfjsItem, rotation: number }, y: { item: PdfjsItem, rotation: number }) => !this.compareITem(x, y))
+    ).subscribe((next: { item: PdfjsItem, rotation: number }) => {
+      this.renderPdfjsItem(next.item);
     });
+  }
+
+  private compareITem(x: { item: PdfjsItem, rotation: number }, y: { item: PdfjsItem, rotation: number }) {
+    const isChanged = (!x && !!y) || (!!x && !y) || (!!x && !!y &&
+      x.item.pdfId !== y.item.pdfId ||
+      x.item.pageIdx !== y.item.pageIdx ||
+      x.rotation !== y.rotation);
+    return isChanged;
   }
 
   renderPdfjsItem(pdfjsItem: PdfjsItem) {
