@@ -1,8 +1,10 @@
-import {AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {PdfjsItem, ThumbnailDragMode, ThumbnailLayout} from '../../classes/pdfjs-objects';
 import {ThumbnailDragService} from '../../services';
 import {PdfjsControl} from '../../classes/pdfjs-control';
-import {Subscription} from 'rxjs';
+import {Subject, Subscription} from 'rxjs';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {PdfjsThumbnailComponent} from '..';
 
 @Component({
   selector: 'pdfjs-thumbnails',
@@ -11,20 +13,30 @@ import {Subscription} from 'rxjs';
 })
 export class PdfjsThumbnailsComponent implements OnInit, OnDestroy, AfterViewInit {
 
+  @ViewChild('previewThumbnail')
+  private previewThumbnailRef: ElementRef;
+
   private subSelectedItem: Subscription;
   private subItems: Subscription;
   private _pdfjsControl: PdfjsControl;
   private items: PdfjsItem[];
   private itemsRendered: PdfjsItem[];
+  private itemToPreview$: Subject<PdfjsItem & DOMRect> = new Subject();
+  itemToPreview: PdfjsItem & DOMRect;
 
   constructor(
     public elementRef: ElementRef,
     private thumbnailDragService: ThumbnailDragService
-  ) {
-  }
+  ) {}
 
   @Output()
   select: EventEmitter<PdfjsControl> = new EventEmitter<PdfjsControl>();
+
+  @Input()
+  previewDelay = 0;
+
+  @Input()
+  previewHeight = 300;
 
   @Input()
   selected = true;
@@ -96,6 +108,17 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy, AfterViewIni
 
   ngOnInit() {
     this.thumbnailDragService.registerDropThumbnails(this);
+    if (this.previewDelay) {
+      this.itemToPreview$.pipe(
+        debounceTime(this.previewDelay),
+        distinctUntilChanged()
+      ).subscribe((item: PdfjsItem & DOMRect) => {
+        this.itemToPreview = item;
+        this.previewThumbnailRef.nativeElement.style.left = (item as DOMRect).left + 'px';
+        this.previewThumbnailRef.nativeElement.style.top = (item as DOMRect).top + 'px';
+        this.previewThumbnailRef.nativeElement.style.height = this.previewHeight + 'px';
+      });
+    }
   }
 
   ngOnDestroy() {
@@ -132,5 +155,9 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy, AfterViewIni
     if (this.itemsRendered.length < this.items.length) {
       this.itemsRendered.push(this.items[this.itemsRendered.length]);
     }
+  }
+
+  showPreview(item: PdfjsItem & DOMRect) {
+    this.itemToPreview$.next(item);
   }
 }

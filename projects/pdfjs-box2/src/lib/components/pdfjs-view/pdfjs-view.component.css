@@ -242,16 +242,16 @@
   background-color: white;
 }
 
-.pdfViewer.removePageBorders .page {
+.removePageBorders .page {
   margin: auto auto;
   border: none;
 }
 
-.pdfViewer.singlePageView {
+.singlePageView {
   display: inline-block;
 }
 
-.pdfViewer.singlePageView .page {
+.singlePageView .page {
   margin: 0;
   border: none;
 }

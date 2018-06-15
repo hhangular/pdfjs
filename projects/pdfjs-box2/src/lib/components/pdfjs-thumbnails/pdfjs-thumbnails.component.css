@@ -15,3 +15,10 @@
   display: block;
   height: auto;
 }
+.preview-thumbnail {
+  position: absolute;
+  z-index: 10;
+}
+.preview-thumbnail.hidden {
+  display:none;
+}

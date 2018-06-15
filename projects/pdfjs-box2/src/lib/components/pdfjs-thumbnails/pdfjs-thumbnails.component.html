@@ -1,3 +1,7 @@
+<span class="preview-thumbnail" #previewThumbnail [class.hidden]="!itemToPreview">
+  <pdfjs-thumbnail [fitSize]="previewHeight"
+                   [item]="itemToPreview" [quality]="2"></pdfjs-thumbnail>
+</span>
 <pdfjs-thumbnail *ngFor="let item of pdfjsControl?.items$ | async"
                  [item]="item"
                  (selectItem)="selection($event)"
@@ -9,4 +13,6 @@
                  (rendered)="nextThumbnail($event)"
                  [class.active]="selected && pdfjsControl.isSelected(item)"
                  (removeItem)="removeThumbnail($event)"
+                 [preview]="!!previewDelay"
+                 (showPreview)="showPreview($event)"
 ></pdfjs-thumbnail>

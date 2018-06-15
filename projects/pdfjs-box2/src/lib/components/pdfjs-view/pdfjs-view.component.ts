@@ -19,9 +19,6 @@ export class PdfjsViewComponent implements OnDestroy {
   constructor(private elementRef: ElementRef, private pdfjs: Pdfjs, private keysService: KeysService) {
   }
 
-  @ViewChild('pdfViewer')
-  pdfViewerRef: ElementRef;
-
   @ViewChild('textLayer')
   textLayerRef: ElementRef;
 

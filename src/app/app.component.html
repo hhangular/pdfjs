@@ -12,6 +12,8 @@
                     [selected]="selectedPdfjsControl === pdfjsControl"
                     [quality]="1"
                     [fitSize]="150"
+                    [previewDelay]="0"
+                    [previewHeight]="300"
                     [allowDrop]="false"
                     [allowRemove]="false"
                     [dragMode]="ThumbnailDragMode.DUPLICATE"
@@ -92,7 +94,7 @@
         </button>
       </div>
       <pdfjs-view [pdfjsControl]="selectedPdfjsControl"
-                  [textLayer]="true"
+                  [textLayer]="false"
                   [fit]="ViewFit.VERTICAL"
                   [quality]="2"
                   [class.edit-mode]="editMode">
