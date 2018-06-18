@@ -76,8 +76,8 @@ export class Pdfjs {
   setCanvasSize(canvas: HTMLCanvasElement, width: number, height: number, quality: number) {
     canvas.setAttribute('width', `${width * quality}px`);
     canvas.setAttribute('height', `${height * quality}px`);
-    canvas.style.width = width + 'px';
-    canvas.style.height = height + 'px';
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
   }
 
   /**

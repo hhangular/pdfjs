@@ -61,11 +61,15 @@ export class PdfjsCommonComponent {
     event.dataTransfer.dropEffect = 'move';
     if (this.thumbnailDragService.dataTransferInitiated()) {
       const thumbnailsOver: HTMLElement = this.getThumbnailContainerOver(event.target);
-      const pdfjsThumbnailsComponent: PdfjsThumbnailsComponent = this.thumbnailDragService.getComponentAcceptDrop(thumbnailsOver);
-      if (!this.thumbnailDragService.getTargetPdfId()) { // not yet copy in the other thumbnails
-        this.notYetCopyInThumbnails(pdfjsThumbnailsComponent, thumbnailsOver, event);
-      } else { // already initiated
-        this.alreadyCopyInThumbnails(pdfjsThumbnailsComponent, thumbnailsOver, event);
+      if (!!thumbnailsOver) {
+        const pdfjsThumbnailsComponent: PdfjsThumbnailsComponent = this.thumbnailDragService.getComponentAcceptDrop(thumbnailsOver);
+        if (!this.thumbnailDragService.getTargetPdfId()) { // not yet copy in the other thumbnails
+          this.notYetCopyInThumbnails(pdfjsThumbnailsComponent, thumbnailsOver, event);
+        } else { // already initiated
+          this.alreadyCopyInThumbnails(pdfjsThumbnailsComponent, thumbnailsOver, event);
+        }
+      } else {
+        this.thumbnailDragService.removeItemFromTarget();
       }
     }
   }
@@ -161,13 +165,6 @@ export class PdfjsCommonComponent {
       const pdfjsThumbnailsComponent: PdfjsThumbnailsComponent = this.thumbnailDragService.getComponentAcceptDrop(thumbnails);
       this.alreadyCopyInThumbnails(pdfjsThumbnailsComponent, thumbnails, event);
       this.thumbnailDragService.stopMoving();
-    }
-  }
-
-  @HostListener('document:mouseout', ['$event'])
-  ouDocumentMouseOut(event: MouseEvent) {
-    if (this.thumbnailDragService.dataTransferInitiated()) { // dataTransfer exist
-      this.thumbnailDragService.removeItemFromTarget();
     }
   }
 }

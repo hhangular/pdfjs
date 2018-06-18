@@ -14,7 +14,8 @@ import {PDFPromise, PDFRenderTask} from 'pdfjs-dist';
 import {Pdfjs} from '../../services';
 import {PdfjsControl} from '../../classes/pdfjs-control';
 import {BehaviorSubject, Subscription} from 'rxjs';
-import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, skip} from 'rxjs/operators';
+import {logWarnings} from 'protractor/built/driverProviders';
 
 @Component({
   selector: 'pdfjs-thumbnail',
@@ -63,6 +64,7 @@ export class PdfjsThumbnailComponent implements OnInit, OnDestroy {
 
   item$: BehaviorSubject<PdfjsItem> = new BehaviorSubject<PdfjsItem>(null);
   itemToRender$: BehaviorSubject<{ item: PdfjsItem, rotation: number }> = new BehaviorSubject<{ item: PdfjsItem, rotation: number }>(null);
+  itemToPreview$: BehaviorSubject<PdfjsItem & DOMRect> = new BehaviorSubject<PdfjsItem & DOMRect>(null);
 
   _item: PdfjsItem;
 
@@ -83,18 +85,35 @@ export class PdfjsThumbnailComponent implements OnInit, OnDestroy {
     if (this.preview) {
       const rectList: DOMRectList = (this.elementRef.nativeElement as HTMLElement).getClientRects() as DOMRectList;
       const r: DOMRect = rectList[0];
+      let atLeft = false;
+      let atTop = false;
+      const left = Math.max($event.clientX - $event.offsetX, 0);
+      const top = Math.max($event.clientY - $event.offsetY, 0);
+      if ((left * 2) + r.width > window.innerWidth) {
+        atLeft = true;
+      }
+      if ((top * 2) + r.height > window.innerHeight) {
+        atTop = true;
+      }
       const rect = {
-        bottom: r.bottom, height: r.height, left: $event.clientX, right: $event.clientY,
-        top: r.top, width: r.width, x: $event.clientX, y: $event.clientY
+        bottom: r.bottom, height: r.height, left: r.left, right: r.right,
+        top: r.top, width: r.width, x: left, y: top,
+        atLeft: atLeft, atTop: atTop
       };
-      this.showPreview.emit(Object.assign(this.item, rect));
+      this.itemToPreview$.next(Object.assign(this.item, rect));
     }
+  }
+
+  @HostListener('mouseout', ['$event'])
+  mouseOut($event: MouseEvent) {
+    this.itemToPreview$.next(null);
   }
 
   constructor(private elementRef: ElementRef, private pdfjs: Pdfjs) {
   }
 
   onClick(event: MouseEvent) {
+    this.itemToPreview$.next(null);
     this.selectItem.emit(this.item);
   }
 
@@ -114,29 +133,42 @@ export class PdfjsThumbnailComponent implements OnInit, OnDestroy {
     });
     this.itemToRender$.pipe(
       debounceTime(100),
-      distinctUntilChanged((x: { item: PdfjsItem, rotation: number }, y: { item: PdfjsItem, rotation: number }) => !this.compareITem(x, y))
+      distinctUntilChanged((x: { item: PdfjsItem, rotation: number },
+                            y: { item: PdfjsItem, rotation: number }) => !this.isItemToRenderChanged(x, y))
     ).subscribe((next: { item: PdfjsItem, rotation: number }) => {
       this.renderPdfjsItem(next.item);
     });
+    this.itemToPreview$.pipe(
+    ).subscribe((item: PdfjsItem & DOMRect) => {
+      this.showPreview.emit(item);
+    });
   }
 
-  private compareITem(x: { item: PdfjsItem, rotation: number }, y: { item: PdfjsItem, rotation: number }) {
-    const isChanged = (!x && !!y) || (!!x && !y) || (!!x && !!y &&
-      x.item.pdfId !== y.item.pdfId ||
-      x.item.pageIdx !== y.item.pageIdx ||
-      x.rotation !== y.rotation);
+  private isItemToRenderChanged(x: { item: PdfjsItem, rotation: number }, y: { item: PdfjsItem, rotation: number }) {
+    const isChanged = !(!x && !y) && (
+      (!x && !!y) || (!!x && !y) ||
+      this.isItemChanged(x.item, y.item) ||
+      x.rotation !== y.rotation
+    );
+    return isChanged;
+  }
+
+  private isItemChanged(x: PdfjsItem, y: PdfjsItem) {
+    const isChanged = !(!x && !y) && (
+      (!x && !!y) || (!!x && !y) || x.pdfId !== y.pdfId || x.pageIdx !== y.pageIdx
+    );
     return isChanged;
   }
 
   renderPdfjsItem(pdfjsItem: PdfjsItem) {
     this.cancelRenderTask();
     const thumbnail: HTMLElement = this.elementRef.nativeElement;
-    thumbnail.classList.add('not_rendered');
+    const canvas: HTMLCanvasElement = this.canvasRef.nativeElement;
     if (!!pdfjsItem) {
+      thumbnail.classList.add('not_rendered');
       // fixed size used for fit
       const canvasSize = this.fitSize - 10;
 
-      const canvas: HTMLCanvasElement = this.canvasRef.nativeElement;
       let promise: PDFPromise<PDFPromise<any>>;
       if (this.layout === ThumbnailLayout.VERTICAL) {
         (this.elementRef.nativeElement as HTMLElement).style.width = `${this.fitSize}px`;
@@ -150,10 +182,16 @@ export class PdfjsThumbnailComponent implements OnInit, OnDestroy {
         this.rendered.emit(pdfjsItem);
         this.pdfRenderTask = obj.pdfRenderTask as PDFRenderTask;
       });
+    } else {
+      this.pdfjs.cleanCanvas(canvas);
     }
   }
 
   ngOnDestroy() {
+    const thumbnail: HTMLElement = this.elementRef.nativeElement;
+    if (!!thumbnail) {
+      thumbnail.classList.remove('not_rendered');
+    }
     this.cancelRenderTask();
     this.pdfjs.destroyCanvas(this.canvasRef.nativeElement);
   }

@@ -1,18 +1,9 @@
 <div>
-  <pdfjs-thumbnails [pdfjsControl]="pdfjsControl1" *ngIf="editMode"
-                    [selected]="selectedPdfjsControl === pdfjsControl1"
-                    [quality]="1"
-                    [fitSize]="150"
-                    [allowDrop]="true"
-                    [allowRemove]="true"
-                    [dragMode]="ThumbnailDragMode.MOVE"
-                    [layout]="ThumbnailLayout.HORIZONTAL"
-                    (select)="selectionItem($event)"></pdfjs-thumbnails>
   <pdfjs-thumbnails [pdfjsControl]="pdfjsControl"
                     [selected]="selectedPdfjsControl === pdfjsControl"
                     [quality]="1"
                     [fitSize]="150"
-                    [previewDelay]="0"
+                    [previewDelay]="300"
                     [previewHeight]="300"
                     [allowDrop]="false"
                     [allowRemove]="false"
@@ -23,6 +14,8 @@
     <div class="col s2">
       <pdfjs-thumbnails [pdfjsControl]="pdfjsControl2"
                         [selected]="selectedPdfjsControl === pdfjsControl2"
+                        [previewDelay]="300"
+                        [previewHeight]="300"
                         [quality]="1"
                         [fitSize]="150"
                         [layout]="ThumbnailLayout.VERTICAL"
@@ -34,7 +27,7 @@
                         [class.edit-mode]="editMode">
       </pdfjs-thumbnails>
     </div>
-    <div class="col s10">
+    <div class="col s8">
       <div class="button-row" style="text-align: center">
         <button mat-icon-button [disabled]="!selectedPdfjsControl || !selectedPdfjsControl.hasPrevious()"
                 (click)="selectedPdfjsControl.selectPrevious()">
@@ -100,5 +93,32 @@
                   [class.edit-mode]="editMode">
       </pdfjs-view>
     </div>
+    <div class="col s2">
+      <pdfjs-thumbnails [pdfjsControl]="pdfjsControl2"
+                        [selected]="selectedPdfjsControl === pdfjsControl2"
+                        [previewDelay]="300"
+                        [previewHeight]="300"
+                        [quality]="1"
+                        [fitSize]="150"
+                        [layout]="ThumbnailLayout.VERTICAL"
+                        [allowRemove]="true"
+                        [allowDrop]="true"
+                        [dragMode]="ThumbnailDragMode.DUPLICATE"
+                        (select)="selectionItem($event)"
+                        class="thumbnails-vertical"
+                        [class.edit-mode]="editMode">
+      </pdfjs-thumbnails>
+    </div>
   </div>
+  <pdfjs-thumbnails [pdfjsControl]="pdfjsControl1" *ngIf="editMode"
+                    [selected]="selectedPdfjsControl === pdfjsControl1"
+                    [previewDelay]="300"
+                    [previewHeight]="300"
+                    [quality]="1"
+                    [fitSize]="150"
+                    [allowDrop]="true"
+                    [allowRemove]="true"
+                    [dragMode]="ThumbnailDragMode.MOVE"
+                    [layout]="ThumbnailLayout.HORIZONTAL"
+                    (select)="selectionItem($event)"></pdfjs-thumbnails>
 </div>

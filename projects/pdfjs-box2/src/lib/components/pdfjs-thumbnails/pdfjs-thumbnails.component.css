@@ -17,8 +17,59 @@
 }
 .preview-thumbnail {
   position: absolute;
-  z-index: 10;
+  z-index: 1000;
+}
+.preview-thumbnail pdfjs-thumbnail {
+  background-color: #ccc;
 }
 .preview-thumbnail.hidden {
   display:none;
+}
+.preview-thumbnail.right-bottom {
+  background: url(left.svg) no-repeat;
+  background-position-x: left;
+  background-position-y: top;
+  background-size: 15px;
+}
+.preview-thumbnail.left-bottom {
+  background: url(right.svg) no-repeat;
+  background-position-x: right;
+  background-position-y: top;
+  background-size: 15px;
+}
+.preview-thumbnail.right-top {
+  background: url(left.svg) no-repeat;
+  background-position-x: left;
+  background-position-y: bottom;
+  background-size: 15px;
+}
+.preview-thumbnail.left-top {
+  background: url(right.svg) no-repeat;
+  background-position-x: right;
+  background-position-y: bottom;
+  background-size: 15px;
+}
+.preview-thumbnail.bottom-right {
+  background: url(up.svg) no-repeat;
+  background-position-x: left;
+  background-position-y: top;
+  background-size: 28px;
+}
+.preview-thumbnail.bottom-left {
+  background: url(up.svg) no-repeat;
+  background-position-x: right;
+  background-position-y: top;
+  background-size: 28px;
+}
+.preview-thumbnail.top-right {
+  background: url(down.svg) no-repeat;
+  background-position-x: left;
+  background-position-y: bottom;
+  background-size: 28px;
+}
+.preview-thumbnail.top-left {
+  background: url(down.svg) no-repeat;
+  background-position-x: right;
+  background-position-y: bottom;
+  background-size: 28px;
 }

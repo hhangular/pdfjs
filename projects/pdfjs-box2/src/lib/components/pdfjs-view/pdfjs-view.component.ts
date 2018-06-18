@@ -15,6 +15,10 @@ export class PdfjsViewComponent implements OnDestroy {
 
   private subscription: Subscription;
   private _pdfjsControl: PdfjsControl;
+  private canvasWidth;
+  private canvasHeight;
+  private width;
+  private height;
 
   constructor(private elementRef: ElementRef, private pdfjs: Pdfjs, private keysService: KeysService) {
   }
@@ -57,7 +61,8 @@ export class PdfjsViewComponent implements OnDestroy {
           this.pdfRenderTask = obj.pdfRenderTask as PDFRenderTask;
           if (this.textLayer) {
             this.pdfRenderTask.then(() => {
-              const pdfPageViewport: PDFPageViewport = this.getViewport(obj.pdfPageProxy, obj.scale * scale / this.quality, item.rotate);
+              const pdfPageViewport: PDFPageViewport = this.getViewport(obj.pdfPageProxy, obj.scale * scale, item.rotate);
+              console.log(pdfPageViewport, this.textLayerRef.nativeElement);
               this.pdfjs.renderTextInTextLayer(obj.pdfPageProxy, this.textLayerRef.nativeElement, pdfPageViewport);
             });
           }
@@ -98,25 +103,28 @@ export class PdfjsViewComponent implements OnDestroy {
   defineSize() {
     const view: HTMLElement = this.elementRef.nativeElement;
     const clientRect: ClientRect = view.getBoundingClientRect();
+    this.height = clientRect.height;
+    this.width = clientRect.width;
     if (this.fit === ViewFit.HORIZONTAL) {
-      this.size = clientRect.width - 6;
+      this.size = this.width - 6;
     } else {
-      this.size = clientRect.height - 6;
+      this.size = this.height - 6;
     }
   }
 
   defineSizes(canvas: HTMLCanvasElement, quality: number) {
-    this.textLayerRef.nativeElement.style.height = (canvas.height / quality) + 'px';
-    this.canvasWrapperRef.nativeElement.style.height = (canvas.height / quality) + 'px';
-    this.pageRef.nativeElement.style.height = (canvas.height / quality) + 'px';
+    this.canvasWidth = canvas.width / quality;
+    this.canvasHeight = canvas.height / quality;
+    const height = `${this.canvasHeight}px`;
+    const width = `${this.canvasWidth}px`;
+    this.textLayerRef.nativeElement.style.height = height;
+    this.canvasWrapperRef.nativeElement.style.height = height;
+    this.pageRef.nativeElement.style.height = height;
 
-    this.textLayerRef.nativeElement.style.width = (canvas.width / quality) + 'px';
-    this.canvasWrapperRef.nativeElement.style.width = (canvas.width / quality) + 'px';
-    this.pageRef.nativeElement.style.width = (canvas.width / quality) + 'px';
+    this.textLayerRef.nativeElement.style.width = width;
+    this.canvasWrapperRef.nativeElement.style.width = width;
+    this.pageRef.nativeElement.style.width = width;
   }
-
-//  @HostBinding('style.height')
-//  styleHeight: string;
 
   /**
    * mousewheel
@@ -124,10 +132,19 @@ export class PdfjsViewComponent implements OnDestroy {
   @HostListener('mousewheel', ['$event'])
   onMouseWheel(event: WheelEvent) {
     if (this._pdfjsControl) {
-      if (event.deltaY > 0) { // next page
-        this._pdfjsControl.selectNext();
-      } else {
-        this._pdfjsControl.selectPrevious();
+      if (this.canvasHeight <= this.height) {
+        if (event.deltaY > 0) { // next page
+          this._pdfjsControl.selectNext();
+        } else if (event.deltaY < 0) {
+          this._pdfjsControl.selectPrevious();
+        }
+      }
+      if (this.canvasWidth <= this.width) {
+        if (event.deltaX > 0) { // next page
+          this._pdfjsControl.selectNext();
+        } else if (event.deltaX < 0) {
+          this._pdfjsControl.selectPrevious();
+        }
       }
     }
   }
@@ -143,7 +160,7 @@ export class PdfjsViewComponent implements OnDestroy {
     }
   }
 
-  @HostListener('resize', ['$event'])
+  //@HostListener('window:resize', ['$event'])
   onResize(evt) {
     console.log(evt);
   }
