@@ -119,9 +119,9 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy, AfterViewIni
           const previewThumbnail: HTMLElement = this.previewThumbnailRef.nativeElement;
           this.resetPreviewThumbnail(previewThumbnail);
           if (this.layout === ThumbnailLayout.HORIZONTAL) {
-            this.addHorizontalCaret(previewThumbnail, item, caretSize);
-          } else {
             this.addVerticalCaret(previewThumbnail, item, caretSize);
+          } else {
+            this.addHorizontalCaret(previewThumbnail, item, caretSize);
           }
         }
       });
@@ -182,10 +182,10 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy, AfterViewIni
     }
     if (item.atTop) {
       cls += '-top';
-      previewThumbnail.style.bottom = '0px';
+      previewThumbnail.style.top = `${rect.y + rect.height - this.previewHeight}px`;
     } else {
       cls += '-bottom';
-      previewThumbnail.style.top = '0px';
+      previewThumbnail.style.top = `${rect.y}px`;
     }
     previewThumbnail.style.height = `${this.previewHeight}px`;
     previewThumbnail.classList.add(cls);
@@ -230,4 +230,13 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy, AfterViewIni
   showPreview(item: PdfjsItem & DOMRect) {
     this.itemToPreview$.next(item);
   }
+
+  /**
+   * scrolling
+   */
+  @HostListener('scroll', ['$event'])
+  onScroll(event: Event) {
+    this.itemToPreview$.next(null);
+  }
+
 }
