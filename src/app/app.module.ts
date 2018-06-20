@@ -7,6 +7,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatButtonModule} from '@angular/material';
 import {MatListModule} from '@angular/material/list';
 import {MatMenuModule} from '@angular/material/menu';
+import {MatToolbarModule} from '@angular/material/toolbar';
 import {HHCommonModule} from '../../projects/hh-common/src/lib/hh-common.module';
 
 @NgModule({
@@ -19,6 +20,7 @@ import {HHCommonModule} from '../../projects/hh-common/src/lib/hh-common.module'
     MatButtonModule,
     MatListModule,
     MatMenuModule,
+    MatToolbarModule,
     PdfjsBoxModule.forRoot({workerSrc: 'assets/pdf.worker.js'}),
     HHCommonModule
   ],
