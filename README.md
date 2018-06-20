@@ -1,4 +1,4 @@
-# angular-addons
+# pdfjs
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.0.
 
@@ -20,7 +20,7 @@ pdfjs-box2 is implementation of pdfjs-box for angular 2x. It contains some compo
 ```
 npm install pdfjs-dist --save
 npm install @types/pdfjs-dist --save
-npm install angular-addons --save
+npm install pdfjs --save
 ```
 
 ####use
