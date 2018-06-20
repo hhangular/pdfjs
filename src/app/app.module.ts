@@ -8,7 +8,6 @@ import {MatButtonModule} from '@angular/material';
 import {MatListModule} from '@angular/material/list';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatToolbarModule} from '@angular/material/toolbar';
-import {HHCommonModule} from '../../projects/hh-common/src/lib/hh-common.module';
 
 @NgModule({
   declarations: [
@@ -21,8 +20,7 @@ import {HHCommonModule} from '../../projects/hh-common/src/lib/hh-common.module'
     MatListModule,
     MatMenuModule,
     MatToolbarModule,
-    PdfjsBoxModule.forRoot({workerSrc: 'assets/pdf.worker.js'}),
-    HHCommonModule
+    PdfjsBoxModule.forRoot({workerSrc: 'assets/pdf.worker.js'})
   ],
   providers: [],
   bootstrap: [AppComponent]

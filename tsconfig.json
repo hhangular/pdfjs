@@ -22,12 +22,6 @@
       ],
       "pdfjs-box2/*": [
         "dist/pdfjs-box2/*"
-      ],
-      "hh-common": [
-        "dist/hh-common"
-      ],
-      "hh-common/*": [
-        "dist/hh-common/*"
       ]
     }
   }

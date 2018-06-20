@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {PdfjsControl} from '../../projects/pdfjs-box2/src/lib/classes/pdfjs-control';
 import {ViewFit, ThumbnailDragMode, ThumbnailLayout} from '../../projects/pdfjs-box2/src/lib/classes/pdfjs-objects';
-import {LoggerService} from '../../projects/hh-common/src/lib/logger.service';
 
 @Component({
   selector: 'app-root',
@@ -28,7 +27,6 @@ export class AppComponent implements OnInit {
   ViewFit = ViewFit;
 
   constructor(
-    private logger: LoggerService
   ) {
   }
 

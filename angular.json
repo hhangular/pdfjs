@@ -166,46 +166,6 @@
           }
         }
       }
-    },
-    "hh-common": {
-      "root": "projects/hh-common",
-      "sourceRoot": "projects/hh-common/src",
-      "projectType": "library",
-      "prefix": "lib",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-ng-packagr:build",
-          "options": {
-            "tsConfig": "projects/hh-common/tsconfig.lib.json",
-            "project": "projects/hh-common/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "project": "projects/hh-common/ng-package.prod.json"
-            }
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "projects/hh-common/src/test.ts",
-            "tsConfig": "projects/hh-common/tsconfig.spec.json",
-            "karmaConfig": "projects/hh-common/karma.conf.js"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "projects/hh-common/tsconfig.lib.json",
-              "projects/hh-common/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        }
-      }
     }
   },
   "defaultProject": "pdfjs"
