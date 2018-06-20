@@ -8,6 +8,9 @@
     "type": "git",
     "url": "https://github.com/hhangular/pdfjs.git"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "keywords": [
     "angular",
     "angular 2",
