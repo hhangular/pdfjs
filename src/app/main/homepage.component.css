@@ -1,0 +1,14 @@
+:host {
+  overflow-y: scroll;
+  height: 100%;
+}
+.flex-spacer {
+  flex-grow: 1;
+}
+h1 {
+  font: 400 24px/32px Roboto,"Helvetica Neue",sans-serif;
+  font-size: 56px;
+  font-weight: 300;
+  line-height: 56px;
+  margin: 15px 5px;
+}

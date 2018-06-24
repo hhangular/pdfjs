@@ -34,7 +34,10 @@
               "node_modules/@fortawesome/fontawesome/index.js",
               "node_modules/@fortawesome/fontawesome-free-brands/index.js",
               "node_modules/@fortawesome/fontawesome-free-regular/index.js",
-              "node_modules/@fortawesome/fontawesome-free-solid/index.js"
+              "node_modules/@fortawesome/fontawesome-free-solid/index.js",
+              "node_modules/prismjs/prism.js",
+              "node_modules/prismjs/components/prism-typescript.js",
+              "node_modules/prismjs/components/prism-markup.js"
             ]
           },
           "configurations": {

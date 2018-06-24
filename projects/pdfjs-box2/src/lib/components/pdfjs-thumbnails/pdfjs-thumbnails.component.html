@@ -8,8 +8,8 @@
                  [removable]="allowRemove"
                  (rendered)="nextThumbnail($event)"
                  [class.active]="selected && pdfjsControl.isSelected(item)"
-                 (removeItem)="removeThumbnail($event)"
-                 [preview]="!!previewDelay"
+                 (removeButtonClick)="removeThumbnail($event)"
+                 [previewEnabled]="!!previewDelay"
                  (showPreview)="showPreview($event)"
 ></pdfjs-thumbnail>
 <span class="preview-thumbnail" #previewThumbnail [class.hidden]="!itemToPreview">

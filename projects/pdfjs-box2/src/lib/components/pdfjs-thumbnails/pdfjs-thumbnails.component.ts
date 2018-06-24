@@ -29,36 +29,70 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy, AfterViewIni
   ) {
   }
 
+  /**
+   * This thumbnail container is selected.
+   * Emit his PdfjsControl
+   */
   @Output()
   select: EventEmitter<PdfjsControl> = new EventEmitter<PdfjsControl>();
 
+  /**
+   * Delay for show preview. 0 => disable preview
+   */
   @Input()
   previewDelay = 0;
 
+  /**
+   * Height of preview
+   */
   @Input()
   previewHeight = 300;
 
+  /**
+   * This thumbnails container is it the selected container
+   */
   @Input()
   selected = true;
 
+  /**
+   * The quality of pdf render
+   */
   @Input()
   quality: 1 | 2 | 3 | 4 | 5 = 1;
 
+  /**
+   * The remove button on thumbnail is it visible
+   */
   @Input()
   allowRemove = false;
 
+  /**
+   * This container accept drop thumbnail
+   */
   @Input()
   allowDrop = false;
 
+  /**
+   * size to fit. Depends of direction layout
+   */
   @Input()
   fitSize = 100;
 
+  /**
+   * Layout direction
+   */
   @Input()
   layout: ThumbnailLayout = ThumbnailLayout.HORIZONTAL;
 
+  /**
+   * Drag mode
+   */
   @Input()
   dragMode: ThumbnailDragMode = ThumbnailDragMode.DUPLICATE;
 
+  /**
+   * Define the pdfjsControl for this thumbnails container
+   */
   @Input()
   set pdfjsControl(pdfjsControl: PdfjsControl) {
     this.itemsRendered = [];

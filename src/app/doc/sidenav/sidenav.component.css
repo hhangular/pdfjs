@@ -1,0 +1,14 @@
+:host {
+  height: calc(100vh - 64px - 64px);
+  overflow-y: auto;
+}
+a {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: none;
+  background: rgba(0,0,0,.04);
+}
+a:active {
+  text-decoration: none;
+}

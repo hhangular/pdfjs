@@ -24,7 +24,6 @@ export declare class PdfAPI {
 
   addLinkAttributes();
 
-
   createBlob(data: any, contentType: any): any;
 
   createObjectURL(data: any, contentType: any);
@@ -60,6 +59,7 @@ export declare class RenderParameters {
   enhanceTextSelection?: any;
   timeout?: any;
 }
+
 export declare class AnnotationLayer {
   static render(parameters: {annotations: any[], div: HTMLDivElement,
     page: any, viewport: any, linkService: any, downloadManager: any, imageResourcesPath: string,
@@ -240,6 +240,7 @@ export declare class PDFWorker {
   _setupFakeWorker();
 
 }
+
 
 export interface PasswordResponses {
   NEED_PASSWORD: 1;

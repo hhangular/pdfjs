@@ -1,0 +1,59 @@
+<mat-accordion multi="true" displayMode="flat">
+  <mat-expansion-panel [expanded]="true">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Get start
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-list>
+      <a mat-list-item routerLink="install" routerLinkActive="active">
+        <i class="fas fa-download"></i>&nbsp;Installation
+      </a>
+      <a mat-list-item routerLink="configuration" routerLinkActive="active">
+        <i class="fas fa-cogs"></i>&nbsp;Configuration
+      </a>
+    </mat-list>
+  </mat-expansion-panel>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Components
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-list>
+      <a mat-list-item routerLink="pdfjsthumbnails" routerLinkActive="active">
+        <i class="far fa-file-pdf"></i>
+        <i class="fas fa-file-pdf"></i>
+        <i class="far fa-file-pdf"></i>&nbsp;
+        PdfjsThumbnailsComponent
+      </a>
+      <a mat-list-item routerLink="pdfjsview" routerLinkActive="active">
+        <i class="fas fa-lg fa-file-pdf"></i>&nbsp;PdfjsViewComponent
+      </a>
+    </mat-list>
+  </mat-expansion-panel>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Classes
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-list>
+      <a mat-list-item routerLink="pdfjscontrol" routerLinkActive="active">PdfjsControl</a>
+      <a mat-list-item routerLink="pdfjsconfig" routerLinkActive="active">PdfjsConfig</a>
+      <a mat-list-item routerLink="pdfjsitem" routerLinkActive="active">PdfjsItem</a>
+    </mat-list>
+  </mat-expansion-panel>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Enum
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-list>
+      <a mat-list-item routerLink="thumbnaillayout" routerLinkActive="active">ThumbnailLayout</a>
+      <a mat-list-item routerLink="thumbnaildragmode" routerLinkActive="active">ThumbnailDragMode</a>
+      <a mat-list-item routerLink="viewfit" routerLinkActive="active">ViewFit</a>
+    </mat-list>
+  </mat-expansion-panel>
+</mat-accordion>

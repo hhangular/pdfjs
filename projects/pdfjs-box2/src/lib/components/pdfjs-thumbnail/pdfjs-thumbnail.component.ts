@@ -1,21 +1,9 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  EventEmitter, HostListener,
-  Input,
-  OnInit,
-  OnDestroy,
-  Output,
-  ViewChild
-} from '@angular/core';
+import {Component, ElementRef, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {PdfjsItem, ThumbnailLayout} from '../../classes/pdfjs-objects';
 import {PDFPromise, PDFRenderTask} from 'pdfjs-dist';
 import {Pdfjs} from '../../services';
-import {PdfjsControl} from '../../classes/pdfjs-control';
 import {BehaviorSubject, Subscription} from 'rxjs';
-import {debounceTime, distinctUntilChanged, skip} from 'rxjs/operators';
-import {logWarnings} from 'protractor/built/driverProviders';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
 @Component({
   selector: 'pdfjs-thumbnail',
@@ -27,23 +15,35 @@ export class PdfjsThumbnailComponent implements OnInit, OnDestroy {
   @ViewChild('canvas')
   private canvasRef: ElementRef;
 
+  /**
+   * The Thumbnail is rendered
+   */
   @Output()
   rendered: EventEmitter<PdfjsItem> = new EventEmitter<PdfjsItem>();
 
+  /**
+   * The Thumbnail has been over
+   */
   @Output()
   showPreview: EventEmitter<PdfjsItem & DOMRect> = new EventEmitter<PdfjsItem & DOMRect>();
 
+  /**
+   * The button remove has been clicked
+   */
   @Output()
-  removeItem: EventEmitter<PdfjsItem> = new EventEmitter<PdfjsItem>();
+  removeButtonClick: EventEmitter<PdfjsItem> = new EventEmitter<PdfjsItem>();
 
+  /**
+   * Select Item
+   */
   @Output()
   selectItem: EventEmitter<PdfjsItem> = new EventEmitter<PdfjsItem>();
 
+  /**
+   *
+   */
   @Input()
-  pdfjsControl: PdfjsControl;
-
-  @Input()
-  preview = false;
+  previewEnabled = false;
 
   @Input()
   draggable = false;
@@ -60,15 +60,15 @@ export class PdfjsThumbnailComponent implements OnInit, OnDestroy {
   @Input()
   quality: 1 | 2 | 3 | 4 | 5 = 2;
 
-  rotateSubscription: Subscription;
+  private rotateSubscription: Subscription;
 
-  item$: BehaviorSubject<PdfjsItem> = new BehaviorSubject<PdfjsItem>(null);
-  itemToRender$: BehaviorSubject<{ item: PdfjsItem, rotation: number }> = new BehaviorSubject<{ item: PdfjsItem, rotation: number }>(null);
-  itemToPreview$: BehaviorSubject<PdfjsItem & DOMRect> = new BehaviorSubject<PdfjsItem & DOMRect>(null);
+  private item$: BehaviorSubject<PdfjsItem> = new BehaviorSubject<PdfjsItem>(null);
+  private itemToRender$: BehaviorSubject<{ item: PdfjsItem, rotation: number }> = new BehaviorSubject<{ item: PdfjsItem, rotation: number }>(null);
+  private itemToPreview$: BehaviorSubject<PdfjsItem & DOMRect> = new BehaviorSubject<PdfjsItem & DOMRect>(null);
 
-  _item: PdfjsItem;
+  private _item: PdfjsItem;
 
-  pdfRenderTask: PDFRenderTask;
+  private pdfRenderTask: PDFRenderTask;
 
   @Input()
   set item(item: PdfjsItem) {
@@ -82,7 +82,7 @@ export class PdfjsThumbnailComponent implements OnInit, OnDestroy {
 
   @HostListener('mouseover', ['$event'])
   mouseOver($event: MouseEvent) {
-    if (this.preview) {
+    if (this.previewEnabled) {
       const rectList: DOMRectList = (this.elementRef.nativeElement as HTMLElement).getClientRects() as DOMRectList;
       const r: DOMRect = rectList[0];
       let atLeft = false;
@@ -160,7 +160,7 @@ export class PdfjsThumbnailComponent implements OnInit, OnDestroy {
     return isChanged;
   }
 
-  renderPdfjsItem(pdfjsItem: PdfjsItem) {
+  private renderPdfjsItem(pdfjsItem: PdfjsItem) {
     this.cancelRenderTask();
     const thumbnail: HTMLElement = this.elementRef.nativeElement;
     const canvas: HTMLCanvasElement = this.canvasRef.nativeElement;

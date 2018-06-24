@@ -12,6 +12,7 @@ before_script:
 script:
   - git checkout master
   - ng build pdfjs-box2 --prod
+  - ng build --prod
 deploy:
   - provider: script
     script: git commit -m "[ci skip]" package-lock.json; npm version patch -m "[ci skip]"
@@ -29,6 +30,12 @@ deploy:
     file_glob: true
     file: dist/*
     skip_cleanup: true
+    on:
+      branch: master
+  - provider: pages
+    skip-cleanup: true
+    github-token: "$GITHUB_TOKEN"
+    local-dir: "dist/pdfjs"
     on:
       branch: master
   - provider: npm

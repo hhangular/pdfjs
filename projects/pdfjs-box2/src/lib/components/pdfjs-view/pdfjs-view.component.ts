@@ -20,7 +20,10 @@ export class PdfjsViewComponent implements OnDestroy {
   private width;
   private height;
 
-  constructor(private elementRef: ElementRef, private pdfjs: Pdfjs, private keysService: KeysService) {
+  constructor(
+    private elementRef: ElementRef,
+    private pdfjs: Pdfjs,
+    private keysService: KeysService) {
   }
 
   @ViewChild('textLayer')

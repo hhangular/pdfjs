@@ -2,28 +2,34 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 
 import {AppComponent} from './app.component';
-import {PdfjsBoxModule} from '../../projects/pdfjs-box2/src/lib/pdfjs-box.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatButtonModule} from '@angular/material';
-import {MatListModule} from '@angular/material/list';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatToolbarModule} from '@angular/material/toolbar';
+import {CommonModule} from '@angular/common';
+import {GithubService} from './github.service';
+import {HttpClientModule} from '@angular/common/http';
+import {NavbarComponent} from './navbar/navbar.component';
+import {HomepageComponent} from './main/homepage.component';
+import {AppRoutingModule} from './app-routing.module';
+import {SharedModule} from './shared/shared.module';
+import {NgxMdModule} from 'ngx-md';
+
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomepageComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
+    CommonModule,
+    SharedModule,
+    HttpClientModule,
     BrowserAnimationsModule,
-    MatButtonModule,
-    MatListModule,
-    MatMenuModule,
-    MatToolbarModule,
-    PdfjsBoxModule.forRoot({workerSrc: 'assets/pdf.worker.js'})
+    AppRoutingModule
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [GithubService],
+  bootstrap: [AppComponent],
+  entryComponents: []
 })
 export class AppModule {
 }
