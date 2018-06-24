@@ -12,9 +12,9 @@ export class DemoComponent implements OnInit {
   editMode = false;
 
   pdfs: any[] = [
-    {fn: 'condition.pdf', url: 'assets/pdfs/conditions.pdf'},
-    {fn: 'guide.pdf', url: 'assets/pdfs/guide.pdf'},
-    {fn: 'UnicodeStandard.pdf', url: 'assets/pdfs/UnicodeStandard.pdf'}
+    {fn: 'condition.pdf', url: '/assets/pdfs/conditions.pdf'},
+    {fn: 'guide.pdf', url: '/assets/pdfs/guide.pdf'},
+    {fn: 'UnicodeStandard.pdf', url: '/assets/pdfs/UnicodeStandard.pdf'}
   ];
   pdfjsControl: PdfjsControl = new PdfjsControl();
   pdfjsControl1: PdfjsControl = new PdfjsControl();
