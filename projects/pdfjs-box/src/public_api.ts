@@ -1,5 +1,5 @@
 /*
- * Public API Surface of pdfjs-box2
+ * Public API Surface of pdfjs-box
  */
 
 export * from './lib/components';

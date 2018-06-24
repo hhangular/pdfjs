@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {MatTabsModule, MatButtonModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatListModule, MatMenuModule, MatSidenavModule, MatToolbarModule, MatTreeModule} from '@angular/material';
 import {ScrollDispatchModule} from '@angular/cdk/scrolling';
 import {NgxMdModule} from 'ngx-md';
-import {PdfjsBoxModule} from '../../../projects/pdfjs-box2/src/lib/pdfjs-box.module';
+import {PdfjsBoxModule} from '../../../projects/pdfjs-box/src/lib/pdfjs-box.module';
 
 const MODULES: any[] = [
   MatTabsModule,

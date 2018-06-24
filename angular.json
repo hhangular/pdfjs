@@ -130,38 +130,38 @@
         }
       }
     },
-    "pdfjs-box2": {
-      "root": "projects/pdfjs-box2",
-      "sourceRoot": "projects/pdfjs-box2/src",
+    "pdfjs-box": {
+      "root": "projects/pdfjs-box",
+      "sourceRoot": "projects/pdfjs-box/src",
       "projectType": "library",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
-            "tsConfig": "projects/pdfjs-box2/tsconfig.lib.json",
-            "project": "projects/pdfjs-box2/ng-package.json"
+            "tsConfig": "projects/pdfjs-box/tsconfig.lib.json",
+            "project": "projects/pdfjs-box/ng-package.json"
           },
           "configurations": {
             "production": {
-              "project": "projects/pdfjs-box2/ng-package.prod.json"
+              "project": "projects/pdfjs-box/ng-package.prod.json"
             }
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/pdfjs-box2/src/test.ts",
-            "tsConfig": "projects/pdfjs-box2/tsconfig.spec.json",
-            "karmaConfig": "projects/pdfjs-box2/karma.conf.js"
+            "main": "projects/pdfjs-box/src/test.ts",
+            "tsConfig": "projects/pdfjs-box/tsconfig.spec.json",
+            "karmaConfig": "projects/pdfjs-box/karma.conf.js"
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "projects/pdfjs-box2/tsconfig.lib.json",
-              "projects/pdfjs-box2/tsconfig.spec.json"
+              "projects/pdfjs-box/tsconfig.lib.json",
+              "projects/pdfjs-box/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"

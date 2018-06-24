@@ -4,7 +4,7 @@ import {FormsModule} from '@angular/forms';
 import {DemoRoutingModule} from './demo-routing.module';
 import {DemoComponent} from './demo.component';
 import {SharedModule} from '../shared/shared.module';
-import {PdfjsBoxModule} from '../../../projects/pdfjs-box2/src/lib/pdfjs-box.module';
+import {PdfjsBoxModule} from '../../../projects/pdfjs-box/src/lib/pdfjs-box.module';
 
 @NgModule({
   imports: [

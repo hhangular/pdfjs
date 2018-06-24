@@ -25,8 +25,7 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e",
-    "compodoc": "./node_modules/.bin/compodoc -p projects/pdfjs-box2/tsconfig.lib.json -w -s --theme readthedocs --disableInternal --disableProtected --disablePrivate --disableGraph --disableTemplateTab --disableDomTree --disableSourceCode --hideGenerator"
+    "e2e": "ng e2e"
   },
   "private": false,
   "dependencies": {

@@ -5,11 +5,11 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 It's a collection of modules for angular 6x
 
 ## Modules
-  - pdfjs-box2 : pdf viewer
+  - pdfjs-box : pdf viewer
 
-###pdfjs-box2
+###pdfjs-box
 
-pdfjs-box2 is implementation of pdfjs-box for angular 2x. It contains some components for use easily the [mozilla pdf viewer pdfjs](https://github.com/mozilla/pdf.js).
+pdfjs-box is implementation of pdfjs-box for angular 2x. It contains some components for use easily the [mozilla pdf viewer pdfjs](https://github.com/mozilla/pdf.js).
 
 ####dependencies
   - pdfjs-dist
@@ -20,7 +20,7 @@ pdfjs-box2 is implementation of pdfjs-box for angular 2x. It contains some compo
 ```
 npm install pdfjs-dist --save
 npm install @types/pdfjs-dist --save
-npm install pdfjs --save
+npm install @hhangular/pdfjs --save
 ```
 
 ####use
@@ -54,7 +54,6 @@ export class AppModule {
 ####Components
 
   - pdf-thumbnails
-  - pdf-thumbnail
   - pdf-view
 
 ####Control

@@ -11,7 +11,7 @@ before_script:
   - npm install
 script:
   - git checkout master
-  - ng build pdfjs-box2 --prod
+  - ng build pdfjs-box --prod
   - ng build --prod --base-href .
 deploy:
   - provider: script
