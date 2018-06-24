@@ -10,8 +10,8 @@
                     [dragMode]="ThumbnailDragMode.DUPLICATE"
                     [layout]="ThumbnailLayout.HORIZONTAL"
                     (select)="selectionItem($event)"></pdfjs-thumbnails>
-  <div class="row">
-    <div class="col s2">
+  <div fxLayout="row" >
+    <div fxFlex="100px">
       <pdfjs-thumbnails [pdfjsControl]="pdfjsControl2"
                         [selected]="selectedPdfjsControl === pdfjsControl2"
                         [previewDelay]="300"
@@ -27,7 +27,7 @@
                         [class.edit-mode]="editMode">
       </pdfjs-thumbnails>
     </div>
-    <div class="col s8">
+    <div fxFlex>
       <div class="button-row" style="text-align: center">
         <button mat-icon-button [disabled]="!selectedPdfjsControl || !selectedPdfjsControl.hasPrevious()"
                 (click)="selectedPdfjsControl.selectPrevious()">
@@ -93,7 +93,7 @@
                   [class.edit-mode]="editMode">
       </pdfjs-view>
     </div>
-    <div class="col s2">
+    <div fxFlex="100px">
       <pdfjs-thumbnails [pdfjsControl]="pdfjsControl2"
                         [selected]="selectedPdfjsControl === pdfjsControl2"
                         [previewDelay]="300"

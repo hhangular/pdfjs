@@ -24,7 +24,7 @@
 
 ### In application module add PdfjsBoxModule and configure worker
 
-```
+```typescript
 @NgModule({
 ...
 imports: [

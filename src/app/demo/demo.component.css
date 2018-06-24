@@ -1,12 +1,12 @@
 pdfjs-view {
-  height: calc(100vh - 100px - 40px - 20px);
+  height: calc(100vh - 64px - 6px - 100px - 40px);
 }
 pdfjs-view.edit-mode {
-  height: calc(100vh - 100px - 100px - 40px - 20px);
+  height: calc(100vh - 64px - 6px  - 100px - 100px - 40px);
 }
 .thumbnails-vertical {
-  height: calc(100vh - 100px - 20px);
+  height: calc(100vh - 64px - 100px);
 }
 .thumbnails-vertical.edit-mode {
-  height: calc(100vh - 100px - 100px - 20px);
+  height: calc(100vh - 64px - 100px - 100px);
 }
