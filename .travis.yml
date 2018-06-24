@@ -12,7 +12,7 @@ before_script:
 script:
   - git checkout master
   - ng build pdfjs-box2 --prod
-  - ng build --prod
+  - ng build --prod --base-href .
 deploy:
   - provider: script
     script: git commit -m "[ci skip]" package-lock.json; npm version patch -m "[ci skip]"
