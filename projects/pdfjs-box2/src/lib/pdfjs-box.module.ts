@@ -1,18 +1,9 @@
-import {
-  ApplicationRef,
-  ComponentFactoryResolver,
-  ComponentRef, CUSTOM_ELEMENTS_SCHEMA, EmbeddedViewRef,
-  Injector,
-  ModuleWithProviders,
-  NgModule,
-  Optional,
-  SkipSelf
-} from '@angular/core';
+import {ApplicationRef, ComponentFactoryResolver, ComponentRef, CUSTOM_ELEMENTS_SCHEMA, EmbeddedViewRef, InjectionToken, Injector, ModuleWithProviders, NgModule, Optional, SkipSelf} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {PDFJSBOX_COMPONENTS, PdfjsCommonComponent} from './components';
 import {PDFJSBOX_SERVICES} from './services';
-import {PdfjsControl} from './classes/pdfjs-control';
 import {PdfjsConfig} from './classes/pdfjs-objects';
+import {PdfjsControl} from './classes/pdfjs-control';
 
 @NgModule({
   imports: [
@@ -25,8 +16,8 @@ import {PdfjsConfig} from './classes/pdfjs-objects';
     PDFJSBOX_COMPONENTS
   ],
   providers: [
-  PDFJSBOX_SERVICES
-],
+    PDFJSBOX_SERVICES
+  ],
   entryComponents: [
     PdfjsCommonComponent // dynamic component
   ], schemas: [
@@ -35,28 +26,28 @@ import {PdfjsConfig} from './classes/pdfjs-objects';
 })
 export class PdfjsBoxModule {
   static forRoot(config: PdfjsConfig): ModuleWithProviders {
-    this.configPdfjs(config);
     return {
       ngModule: PdfjsBoxModule,
-      providers: []
+      providers: [
+        {provide: PdfjsConfig, useValue: config}
+      ]
     };
   }
 
   /**
-   * Configure Pdfjs
-   */
-  private static configPdfjs(config: PdfjsConfig) {
-    PdfjsControl.API.GlobalWorkerOptions.workerSrc = config.workerSrc;
-  }
-  /**
    * Constructor, prevent circular injection
    */
-  constructor(@Optional() @SkipSelf() parentModule: PdfjsBoxModule, private cfr: ComponentFactoryResolver,
-              private defaultInjector: Injector, private appRef: ApplicationRef) {
+  constructor(@Optional() @SkipSelf() parentModule: PdfjsBoxModule,
+              private cfr: ComponentFactoryResolver,
+              private defaultInjector: Injector,
+              private appRef: ApplicationRef,
+              config: PdfjsConfig
+  ) {
     if (parentModule) {
       throw new Error(
         'PdfjsBoxModule is already loaded. Import it in the AppModule only');
     }
+    PdfjsControl.API.GlobalWorkerOptions.workerSrc = config.workerSrc;
     this.addPdfjsCommonComponentToDom();
   }
 

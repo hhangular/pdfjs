@@ -2,6 +2,9 @@
 /src
 /projects
 
+# website
+/dist/pdfjs
+
 # compiled output
 /tmp
 /out-tsc

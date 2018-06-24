@@ -20,6 +20,7 @@ export class PdfjsItem {
     this._rotate = (rotate % 360);
     this.rotate$.next(this._rotate);
   }
+
   get rotate(): number {
     return this._rotate;
   }
@@ -53,5 +54,6 @@ export type PdfSource = string | PDFDataRangeTransport | Uint8Array |
   { data: Uint8Array } | { range: PDFDataRangeTransport } | { url: string };
 
 export class PdfjsConfig {
-  workerSrc: string;
+  constructor(public workerSrc: string) {
+  }
 }
