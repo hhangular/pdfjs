@@ -19,7 +19,7 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy, AfterViewIni
   private subSelectedItem: Subscription;
   private subItems: Subscription;
   private _pdfjsControl: PdfjsControl;
-  protected _pdfjsGroupControl: PdfjsGroupControl;
+  _pdfjsGroupControl: PdfjsGroupControl;
   private items: PdfjsItem[];
   private itemsRendered: PdfjsItem[];
   private itemToPreview$: Subject<PdfjsItem & DOMRect> = new Subject();
