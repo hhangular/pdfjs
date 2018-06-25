@@ -11,11 +11,11 @@ It's a collection of modules for angular 6x
 
 pdfjs-box is implementation of pdfjs-box for angular 2x. It contains some components for use easily the [mozilla pdf viewer pdfjs](https://github.com/mozilla/pdf.js).
 
-####dependencies
+### dependencies
   - pdfjs-dist
   - @types/pdfjs-dist
 
-####installation
+## installation
 
 ```
 npm install pdfjs-dist --save
@@ -23,7 +23,7 @@ npm install @types/pdfjs-dist --save
 npm install @hhangular/pdfjs --save
 ```
 
-####use
+## use
 
 Add assets pdfworker in angular.json
 
@@ -49,7 +49,7 @@ Add assets pdfworker in angular.json
 
 ### In application module add PdfjsBoxModule and configure worker
 
-```
+```typescript
 @NgModule({
 ...
 imports: [
@@ -63,13 +63,15 @@ export class AppModule {
 }
 ```
 
-####Components
+### Components
+  - pdfjs-thumbnails
+  - pdfjs-view
 
-  - pdf-thumbnails
-  - pdf-view
+### Control
+  - pdfjsControl
+  - pdfjsGroupControl
 
-####Control
-  - pdfControl
+### objects
 
-
+  - pdfjsItem
 
