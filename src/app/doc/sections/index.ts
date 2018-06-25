@@ -14,6 +14,7 @@ import {PdfjsViewComponent} from './components/pdfjsview/pdfjsview.component';
 import {OverviewPdfjsViewComponent} from './components/pdfjsview/overview/overview-pdfjsview.component';
 import {ApiPdfjsViewComponent} from './components/pdfjsview/api/api-pdfjsview.component';
 import {ExamplesPdfjsViewComponent} from './components/pdfjsview/examples/examples-pdfjsview.component';
+import {PdfjsGroupControlComponent} from './classes/pdfjsgroupcontrol/pdfjsgroupcontrol.component';
 
 export const SECTIONS: any[] = [
   InstallComponent,
@@ -28,6 +29,7 @@ export const SECTIONS: any[] = [
   ExamplesPdfjsViewComponent,
   PdfjsConfigComponent,
   PdfjsControlComponent,
+  PdfjsGroupControlComponent,
   PdfjsItemComponent,
   ThumbnailDragModeComponent,
   ThumbnailLayoutComponent,
@@ -50,3 +52,4 @@ export {PdfjsViewComponent} from './components/pdfjsview/pdfjsview.component';
 export {OverviewPdfjsViewComponent} from './components/pdfjsview/overview/overview-pdfjsview.component';
 export {ApiPdfjsViewComponent} from './components/pdfjsview/api/api-pdfjsview.component';
 export {ExamplesPdfjsViewComponent} from './components/pdfjsview/examples/examples-pdfjsview.component';
+export {PdfjsGroupControlComponent} from './classes/pdfjsgroupcontrol/pdfjsgroupcontrol.component';

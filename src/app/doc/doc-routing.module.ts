@@ -7,7 +7,7 @@ import {
   ThumbnailDragModeComponent, ThumbnailLayoutComponent, ViewFitComponent,
   OverviewPdfjsThumbnailsComponent, ApiPdfjsThumbnailsComponent, ExamplesPdfjsThumbnailsComponent,
   ExamplesPdfjsViewComponent, ApiPdfjsViewComponent, OverviewPdfjsViewComponent,
-  PdfjsViewComponent
+  PdfjsViewComponent, PdfjsGroupControlComponent
 } from './sections';
 
 const docRoutes: Routes = [
@@ -33,6 +33,7 @@ const docRoutes: Routes = [
       },
       {path: 'pdfjsconfig', component: PdfjsConfigComponent},
       {path: 'pdfjscontrol', component: PdfjsControlComponent},
+      {path: 'pdfjsgroupcontrol', component: PdfjsGroupControlComponent},
       {path: 'pdfjsitem', component: PdfjsItemComponent},
 
       {path: 'thumbnaildragmode', component: ThumbnailDragModeComponent},
