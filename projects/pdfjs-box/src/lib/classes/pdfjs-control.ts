@@ -1,6 +1,6 @@
 import {PdfjsItem, PdfSource} from './pdfjs-objects';
 import {PdfAPI} from './pdfapi';
-import {BehaviorSubject, Subject, Subscription} from 'rxjs';
+import {BehaviorSubject, Subscription} from 'rxjs';
 import * as api from 'pdfjs-dist/build/pdf';
 import {PDFDocumentProxy, PDFPromise} from 'pdfjs-dist';
 

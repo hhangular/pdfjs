@@ -1,22 +1,38 @@
-import {ApplicationRef, ComponentFactoryResolver, ComponentRef, CUSTOM_ELEMENTS_SCHEMA, EmbeddedViewRef, InjectionToken, Injector, ModuleWithProviders, NgModule, Optional, SkipSelf} from '@angular/core';
+import {ApplicationRef, ComponentFactoryResolver, ComponentRef, CUSTOM_ELEMENTS_SCHEMA, EmbeddedViewRef, Injector, ModuleWithProviders, NgModule, Optional, SkipSelf} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {PDFJSBOX_COMPONENTS, PdfjsCommonComponent} from './components';
-import {PDFJSBOX_SERVICES} from './services';
+import {PdfjsCommonComponent} from './components/pdfjs-common.component';
 import {PdfjsConfig} from './classes/pdfjs-objects';
 import {PdfjsControl} from './classes/pdfjs-control';
+import {PdfjsRemoveButtonComponent} from './components/pdfjs-thumbnail/pdfjs-remove.button/pdfjs-remove-button.component';
+import {PdfjsThumbnailComponent} from './components/pdfjs-thumbnail/pdfjs-thumbnail.component';
+import {PdfjsThumbnailsComponent} from './components/pdfjs-thumbnails/pdfjs-thumbnails.component';
+import {PdfjsViewComponent} from './components/pdfjs-view/pdfjs-view.component';
+import {ThumbnailDragService} from './services/thumbnail-drag.service';
+import {KeysService} from './services/keys.service';
+import {Pdfjs} from './services/pdfjs.service';
 
 @NgModule({
   imports: [
     CommonModule
   ],
   exports: [
-    PDFJSBOX_COMPONENTS
+    PdfjsCommonComponent,
+    PdfjsThumbnailsComponent,
+    PdfjsThumbnailComponent,
+    PdfjsRemoveButtonComponent,
+    PdfjsViewComponent
   ],
   declarations: [
-    PDFJSBOX_COMPONENTS
+    PdfjsCommonComponent,
+    PdfjsThumbnailsComponent,
+    PdfjsThumbnailComponent,
+    PdfjsRemoveButtonComponent,
+    PdfjsViewComponent
   ],
   providers: [
-    PDFJSBOX_SERVICES
+    Pdfjs,
+    ThumbnailDragService,
+    KeysService,
   ],
   entryComponents: [
     PdfjsCommonComponent // dynamic component

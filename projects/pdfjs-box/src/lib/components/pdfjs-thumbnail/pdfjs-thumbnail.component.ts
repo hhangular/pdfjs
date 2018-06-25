@@ -1,9 +1,9 @@
 import {Component, ElementRef, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {PdfjsItem, ThumbnailLayout} from '../../classes/pdfjs-objects';
 import {PDFPromise, PDFRenderTask} from 'pdfjs-dist';
-import {Pdfjs} from '../../services';
 import {BehaviorSubject, Subscription} from 'rxjs';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {Pdfjs} from '../../services/pdfjs.service';
 
 @Component({
   selector: 'pdfjs-thumbnail',

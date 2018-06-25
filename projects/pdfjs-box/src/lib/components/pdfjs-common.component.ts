@@ -1,10 +1,10 @@
 import {Component, ElementRef, HostListener} from '@angular/core';
 import {PdfjsItem, ThumbnailDragMode, ThumbnailLayout} from '../classes/pdfjs-objects';
 import {ThumbnailDragService} from '../services/thumbnail-drag.service';
-import {PdfjsThumbnailsComponent} from './index';
 import {Pdfjs} from '../services/pdfjs.service';
 import {PdfAPI} from '../classes/pdfapi';
-import {KeysService} from '../services';
+import {KeysService} from '../services/keys.service';
+import {PdfjsThumbnailsComponent} from './pdfjs-thumbnails/pdfjs-thumbnails.component';
 
 export enum KEY_CODE {
   ARROW_LEFT = 37,

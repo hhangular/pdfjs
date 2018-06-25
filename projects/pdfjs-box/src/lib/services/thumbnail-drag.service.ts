@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {PdfjsItem, ThumbnailDragMode, ThumbnailLayout} from '../classes/pdfjs-objects';
-import {PdfjsThumbnailsComponent} from '../components';
 import {PdfjsControl} from '../classes/pdfjs-control';
+import {PdfjsThumbnailsComponent} from '../components/pdfjs-thumbnails/pdfjs-thumbnails.component';
 
 @Injectable({
   providedIn: 'root'
@@ -68,19 +68,19 @@ export class ThumbnailDragService {
     return -1;
   }
 
-  removeItemFromSource()  {
+  removeItemFromSource() {
     if (ThumbnailDragService.sourcePdfjsControl) {
       ThumbnailDragService.sourcePdfjsControl.removeItem(ThumbnailDragService.sourceItem);
     }
   }
 
-  addItemToTarget(idx?: number)  {
+  addItemToTarget(idx?: number) {
     if (ThumbnailDragService.targetPdfjsControl) {
       ThumbnailDragService.targetPdfjsControl.addItem(ThumbnailDragService.targetItem, idx);
     }
   }
 
-  removeItemFromTarget()  {
+  removeItemFromTarget() {
     let item: PdfjsItem = null;
     if (ThumbnailDragService.targetPdfjsControl) {
       ThumbnailDragService.targetPdfjsControl.removeItem(ThumbnailDragService.targetItem);
@@ -89,18 +89,18 @@ export class ThumbnailDragService {
     return item;
   }
 
-  invalidSource()  {
+  invalidSource() {
     ThumbnailDragService.mode = null;
     ThumbnailDragService.sourcePdfjsControl = null;
     ThumbnailDragService.sourceItem = null;
   }
 
-  invalidTarget()  {
+  invalidTarget() {
     ThumbnailDragService.targetPdfjsControl = null;
     ThumbnailDragService.targetItem = null;
   }
 
-  getTargetItemsLength()  {
+  getTargetItemsLength() {
     if (ThumbnailDragService.targetPdfjsControl) {
       return ThumbnailDragService.targetPdfjsControl.getItemsLength();
     }

@@ -1,9 +1,9 @@
 import {AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {PdfjsItem, ThumbnailDragMode, ThumbnailLayout} from '../../classes/pdfjs-objects';
-import {ThumbnailDragService} from '../../services';
 import {PdfjsControl} from '../../classes/pdfjs-control';
 import {Subject, Subscription} from 'rxjs';
 import {debounceTime} from 'rxjs/operators';
+import {ThumbnailDragService} from '../../services/thumbnail-drag.service';
 
 @Component({
   selector: 'pdfjs-thumbnails',
