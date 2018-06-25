@@ -181,7 +181,7 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy, AfterViewIni
     if (item.atTop) {
       cls = 'top';
       previewThumbnail.style.top = `${rect.y - this.previewHeight - caretSize}px`;
-      previewThumbnail.style.paddingBottom = `${caretSize}px`;
+//      previewThumbnail.style.paddingBottom = `${caretSize}px`;
     } else {
       cls = 'bottom';
       previewThumbnail.style.top = `${rect.y + rect.height}px`;
