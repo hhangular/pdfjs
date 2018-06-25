@@ -1,9 +1,10 @@
-import {AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, HostListener, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {PdfjsItem, ThumbnailDragMode, ThumbnailLayout} from '../../classes/pdfjs-objects';
 import {PdfjsControl} from '../../classes/pdfjs-control';
 import {Subject, Subscription} from 'rxjs';
 import {debounceTime} from 'rxjs/operators';
 import {ThumbnailDragService} from '../../services/thumbnail-drag.service';
+import {PdfjsGroupControl} from '../../classes/pdfjs-group-control';
 
 @Component({
   selector: 'pdfjs-thumbnails',
@@ -18,6 +19,7 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy, AfterViewIni
   private subSelectedItem: Subscription;
   private subItems: Subscription;
   private _pdfjsControl: PdfjsControl;
+  protected _pdfjsGroupControl: PdfjsGroupControl;
   private items: PdfjsItem[];
   private itemsRendered: PdfjsItem[];
   private itemToPreview$: Subject<PdfjsItem & DOMRect> = new Subject();
@@ -30,13 +32,6 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   /**
-   * This thumbnail container is selected.
-   * Emit his PdfjsControl
-   */
-  @Output()
-  select: EventEmitter<PdfjsControl> = new EventEmitter<PdfjsControl>();
-
-  /**
    * Delay for show preview. 0 => disable preview
    */
   @Input()
@@ -47,12 +42,6 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy, AfterViewIni
    */
   @Input()
   previewHeight = 300;
-
-  /**
-   * This thumbnails container is it the selected container
-   */
-  @Input()
-  selected = true;
 
   /**
    * The quality of pdf render
@@ -91,7 +80,15 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy, AfterViewIni
   dragMode: ThumbnailDragMode = ThumbnailDragMode.DUPLICATE;
 
   /**
-   * Define the pdfjsControl for this thumbnails container
+   * Define the pdfjsGroupControl for thumbnail containers
+   */
+  @Input()
+  set pdfjsGroupControl(pdfjsGroupControl: PdfjsGroupControl) {
+    this._pdfjsGroupControl = pdfjsGroupControl;
+  }
+
+  /**
+   * Define the pdfjsControl for this thumbnail container
    */
   @Input()
   set pdfjsControl(pdfjsControl: PdfjsControl) {
@@ -231,7 +228,9 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy, AfterViewIni
 
   selection(item: PdfjsItem) {
     this.pdfjsControl.selectItemIndex(this.pdfjsControl.indexOfItem(item));
-    this.select.emit(this.pdfjsControl);
+    if (this._pdfjsGroupControl) {
+      this._pdfjsGroupControl.select(this.pdfjsControl);
+    }
   }
 
   ngAfterViewInit() {

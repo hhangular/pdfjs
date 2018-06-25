@@ -3,8 +3,9 @@ import {PdfAPI} from './pdfapi';
 import {BehaviorSubject, Subscription} from 'rxjs';
 import * as api from 'pdfjs-dist/build/pdf';
 import {PDFDocumentProxy, PDFPromise} from 'pdfjs-dist';
+import {PdfjsCommand} from './pdfjs-command';
 
-export class PdfjsControl {
+export class PdfjsControl implements PdfjsCommand {
   static API: PdfAPI = api as PdfAPI;
   private source: PdfSource;
   private items: PdfjsItem[] = [];

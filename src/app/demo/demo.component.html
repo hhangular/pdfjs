@@ -1,6 +1,5 @@
 <div>
-  <pdfjs-thumbnails [pdfjsControl]="pdfjsControl"
-                    [selected]="selectedPdfjsControl === pdfjsControl"
+  <pdfjs-thumbnails [pdfjsControl]="pdfjsControl" [pdfjsGroupControl]="pdfjsGroupControl"
                     [quality]="1"
                     [fitSize]="100"
                     [previewDelay]="300"
@@ -8,12 +7,10 @@
                     [allowDrop]="false"
                     [allowRemove]="false"
                     [dragMode]="ThumbnailDragMode.DUPLICATE"
-                    [layout]="ThumbnailLayout.HORIZONTAL"
-                    (select)="selectionItem($event)"></pdfjs-thumbnails>
+                    [layout]="ThumbnailLayout.HORIZONTAL"></pdfjs-thumbnails>
   <div fxLayout="row" >
     <div fxFlex="100px">
-      <pdfjs-thumbnails [pdfjsControl]="pdfjsControl2"
-                        [selected]="selectedPdfjsControl === pdfjsControl2"
+      <pdfjs-thumbnails [pdfjsControl]="pdfjsControl2" [pdfjsGroupControl]="pdfjsGroupControl"
                         [previewDelay]="300"
                         [previewHeight]="300"
                         [quality]="1"
@@ -22,58 +19,57 @@
                         [allowRemove]="true"
                         [allowDrop]="true"
                         [dragMode]="ThumbnailDragMode.DUPLICATE"
-                        (select)="selectionItem($event)"
                         class="thumbnails-vertical"
                         [class.edit-mode]="editMode">
       </pdfjs-thumbnails>
     </div>
     <div fxFlex>
       <div class="button-row" style="text-align: center">
-        <button mat-icon-button [disabled]="!selectedPdfjsControl || !selectedPdfjsControl.hasPrevious()"
-                (click)="selectedPdfjsControl.selectPrevious()">
+        <button mat-icon-button [disabled]="!pdfjsGroupControl.hasPrevious()"
+                (click)="pdfjsGroupControl.selectPrevious()">
           <i class="fas fa-lg fa-arrow-left"></i>
         </button>
         <button mat-icon-button [disabled]="true">
-          {{selectedPdfjsControl?.getPageIndex()}}/{{selectedPdfjsControl?.getNumberOfPages()}}
+          {{pdfjsGroupControl.getPageIndex()}}/{{pdfjsGroupControl.getNumberOfPages()}}
         </button>
-        <button mat-icon-button [disabled]="!selectedPdfjsControl || !selectedPdfjsControl.hasNext()"
-                (click)="selectedPdfjsControl.selectNext()">
+        <button mat-icon-button [disabled]="!pdfjsGroupControl.hasNext()"
+                (click)="pdfjsGroupControl.selectNext()">
           <i class="fas fa-lg fa-arrow-right"></i>
         </button>
-        <button mat-icon-button [disabled]="!selectedPdfjsControl" (click)="selectedPdfjsControl.rotate(-90)">
+        <button mat-icon-button [disabled]="pdfjsGroupControl.disabled" (click)="pdfjsGroupControl.rotate(-90)">
           <span class="fa-layers fa-lg fa-fw">
             <i class="far fa-copy"></i>
             <i class="fas fa-undo" data-fa-transform="shrink-11 right-2"></i>
           </span>
         </button>
-        <button mat-icon-button [disabled]="!selectedPdfjsControl" (click)="selectedPdfjsControl.rotateSelected(-90)">
+        <button mat-icon-button [disabled]="pdfjsGroupControl.disabled" (click)="pdfjsGroupControl.rotateSelected(-90)">
           <span class="fa-layers fa-lg fa-fw">
             <i class="far fa-file"></i>
             <i class="fas fa-undo" data-fa-transform="shrink-9 down-1"></i>
           </span>
         </button>
-        <button mat-icon-button [disabled]="!selectedPdfjsControl" (click)="selectedPdfjsControl.rotateSelected(90)">
+        <button mat-icon-button [disabled]="pdfjsGroupControl.disabled" (click)="pdfjsGroupControl.rotateSelected(90)">
           <span class="fa-layers fa-lg fa-fw">
             <i class="far fa-file"></i>
             <i class="fas fa-undo" data-fa-transform="shrink-9 flip-h down-1"></i>
           </span>
         </button>
-        <button mat-icon-button [disabled]="!selectedPdfjsControl" (click)="selectedPdfjsControl.rotate(90)">
+        <button mat-icon-button [disabled]="pdfjsGroupControl.disabled" (click)="pdfjsGroupControl.rotate(90)">
           <span class="fa-layers fa-lg fa-fw">
             <i class="far fa-copy"></i>
             <i class="fas fa-undo" data-fa-transform="shrink-11 flip-h right-2"></i>
           </span>
         </button>
-        <button mat-icon-button [disabled]="!selectedPdfjsControl" (click)="selectedPdfjsControl.zoom(0.9)">
+        <button mat-icon-button [disabled]="pdfjsGroupControl.disabled" (click)="pdfjsGroupControl.zoom(0.9)">
           <i class="fas fa-lg fa-search-minus"></i>
         </button>
-        <button mat-icon-button [disabled]="!selectedPdfjsControl" (click)="selectedPdfjsControl.fit()">
+        <button mat-icon-button [disabled]="pdfjsGroupControl.disabled" (click)="pdfjsGroupControl.fit()">
           <i class="fas fa-lg fa-expand-arrows-alt"></i>
         </button>
-        <button mat-icon-button [disabled]="!selectedPdfjsControl" (click)="selectedPdfjsControl.zoom(1.1)">
+        <button mat-icon-button [disabled]="pdfjsGroupControl.disabled" (click)="pdfjsGroupControl.zoom(1.1)">
           <i class="fas fa-lg fa-search-plus"></i>
         </button>
-        <button mat-icon-button [disabled]="!selectedPdfjsControl" (click)="selectedPdfjsControl.reload()">
+        <button mat-icon-button [disabled]="pdfjsGroupControl.disabled" (click)="pdfjsGroupControl.reload()">
           <i class="fas fa-lg fa-sync-alt"></i>
         </button>
         <button mat-icon-button (click)="editMode = !editMode">
@@ -86,7 +82,7 @@
           <i class="fas fa-lg fa-file-pdf"></i>
         </button>
       </div>
-      <pdfjs-view [pdfjsControl]="selectedPdfjsControl"
+      <pdfjs-view [control]="pdfjsGroupControl"
                   [textLayer]="false"
                   [fit]="ViewFit.VERTICAL"
                   [quality]="2"
@@ -94,8 +90,7 @@
       </pdfjs-view>
     </div>
     <div fxFlex="100px">
-      <pdfjs-thumbnails [pdfjsControl]="pdfjsControl2"
-                        [selected]="selectedPdfjsControl === pdfjsControl2"
+      <pdfjs-thumbnails [pdfjsControl]="pdfjsControl2" [pdfjsGroupControl]="pdfjsGroupControl"
                         [previewDelay]="300"
                         [previewHeight]="300"
                         [quality]="1"
@@ -104,14 +99,13 @@
                         [allowRemove]="true"
                         [allowDrop]="true"
                         [dragMode]="ThumbnailDragMode.DUPLICATE"
-                        (select)="selectionItem($event)"
                         class="thumbnails-vertical"
                         [class.edit-mode]="editMode">
       </pdfjs-thumbnails>
     </div>
   </div>
-  <pdfjs-thumbnails [pdfjsControl]="pdfjsControl1" *ngIf="editMode"
-                    [selected]="selectedPdfjsControl === pdfjsControl1"
+  <pdfjs-thumbnails [pdfjsControl]="pdfjsControl1" [pdfjsGroupControl]="pdfjsGroupControl"
+                    *ngIf="editMode"
                     [previewDelay]="300"
                     [previewHeight]="300"
                     [quality]="1"
@@ -119,6 +113,5 @@
                     [allowDrop]="true"
                     [allowRemove]="true"
                     [dragMode]="ThumbnailDragMode.MOVE"
-                    [layout]="ThumbnailLayout.HORIZONTAL"
-                    (select)="selectionItem($event)"></pdfjs-thumbnails>
+                    [layout]="ThumbnailLayout.HORIZONTAL"></pdfjs-thumbnails>
 </div>

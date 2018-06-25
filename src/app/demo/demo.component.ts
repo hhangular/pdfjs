@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {PdfjsControl} from '../../../projects/pdfjs-box/src/lib/classes/pdfjs-control';
-import {ViewFit, ThumbnailDragMode, ThumbnailLayout} from '../../../projects/pdfjs-box/src/lib/classes/pdfjs-objects';
+import {ThumbnailDragMode, ThumbnailLayout, ViewFit} from '../../../projects/pdfjs-box/src/lib/classes/pdfjs-objects';
+import {PdfjsGroupControl} from '../../../projects/pdfjs-box/src/lib/classes/pdfjs-group-control';
 
 @Component({
   selector: 'app-demo',
@@ -8,7 +9,6 @@ import {ViewFit, ThumbnailDragMode, ThumbnailLayout} from '../../../projects/pdf
   styleUrls: ['./demo.component.css']
 })
 export class DemoComponent implements OnInit {
-
   editMode = false;
 
   pdfs: any[] = [
@@ -16,22 +16,16 @@ export class DemoComponent implements OnInit {
     {fn: 'guide.pdf', url: '/assets/pdfs/guide.pdf'},
     {fn: 'UnicodeStandard.pdf', url: '/assets/pdfs/UnicodeStandard.pdf'}
   ];
+  pdfjsGroupControl: PdfjsGroupControl = new PdfjsGroupControl();
   pdfjsControl: PdfjsControl = new PdfjsControl();
   pdfjsControl1: PdfjsControl = new PdfjsControl();
   pdfjsControl2: PdfjsControl = new PdfjsControl();
-
-  selectedPdfjsControl: PdfjsControl;
 
   ThumbnailDragMode = ThumbnailDragMode;
   ThumbnailLayout = ThumbnailLayout;
   ViewFit = ViewFit;
 
-  constructor(
-  ) {
-  }
-
-  selectionItem(pdfjsControl: PdfjsControl) {
-    this.selectedPdfjsControl = pdfjsControl;
+  constructor() {
   }
 
   ngOnInit(): void {
