@@ -13,6 +13,7 @@ script:
   - git checkout master
   - ng build pdfjs-box --prod
   - ng build --prod --base-href .
+  - cp pdfjs/index.html pdfjs/404.html
 deploy:
   - provider: script
     script: git commit -m "[ci skip]" package-lock.json; npm version patch -m "[ci skip]"
