@@ -1,8 +1,8 @@
-import {AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, HostListener, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, HostListener, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {PdfjsItem, ThumbnailDragMode, ThumbnailLayout} from '../../classes/pdfjs-objects';
 import {PdfjsControl} from '../../classes/pdfjs-control';
 import {Subject, Subscription} from 'rxjs';
-import {debounceTime} from 'rxjs/operators';
+import {debounceTime, last, tap} from 'rxjs/operators';
 import {ThumbnailDragService} from '../../services/thumbnail-drag.service';
 import {PdfjsGroupControl} from '../../classes/pdfjs-group-control';
 
@@ -13,17 +13,15 @@ import {PdfjsGroupControl} from '../../classes/pdfjs-group-control';
 })
 export class PdfjsThumbnailsComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  @ViewChild('previewThumbnail')
-  private previewThumbnailRef: ElementRef;
-
   private subSelectedItem: Subscription;
+  private subSelected: Subscription;
   private subItems: Subscription;
   private _pdfjsControl: PdfjsControl;
-  _pdfjsGroupControl: PdfjsGroupControl;
+  private _pdfjsGroupControl: PdfjsGroupControl;
   private items: PdfjsItem[];
   private itemsRendered: PdfjsItem[];
-  private itemToPreview$: Subject<PdfjsItem & DOMRect> = new Subject();
   itemToPreview: PdfjsItem & DOMRect;
+  selected = false;
 
   constructor(
     public elementRef: ElementRef,
@@ -85,6 +83,16 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy, AfterViewIni
   @Input()
   set pdfjsGroupControl(pdfjsGroupControl: PdfjsGroupControl) {
     this._pdfjsGroupControl = pdfjsGroupControl;
+    if (this.subSelected) {
+      this.subSelected.unsubscribe();
+    }
+    if (!!pdfjsGroupControl) {
+      this.subSelected = pdfjsGroupControl.selectedPdfjsControl$.subscribe((pdfjsControl: PdfjsControl) => {
+        this.selected = this.pdfjsControl === pdfjsControl;
+      });
+    } else {
+      this.selected = false;
+    }
   }
 
   /**
@@ -92,6 +100,7 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy, AfterViewIni
    */
   @Input()
   set pdfjsControl(pdfjsControl: PdfjsControl) {
+    this.selected = false;
     this.itemsRendered = [];
     this.items = [];
     if (this.subSelectedItem) {
@@ -103,6 +112,7 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy, AfterViewIni
     this._pdfjsControl = pdfjsControl;
     if (pdfjsControl) {
       this.subSelectedItem = pdfjsControl.selectedIndex$.subscribe((index: number) => {
+        this.selected = true;
         this.ensurePdfjsItemIsVisible(index);
       });
       this.subItems = pdfjsControl.items$.subscribe((items: PdfjsItem[]) => {
@@ -122,7 +132,7 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy, AfterViewIni
   @HostListener('dragstart', ['$event'])
   onDragStart(event: DragEvent) {
     if (this.dragMode !== ThumbnailDragMode.NONE) {
-      this.itemToPreview$.next(null);
+      this.itemToPreview = null;
       const thumbnail: HTMLElement = this.thumbnailDragService.getFirstParentElementNamed(event.srcElement as HTMLElement, 'pdfjs-thumbnail');
       const thumbnails: HTMLElement = this.elementRef.nativeElement as HTMLElement;
       const idx: number = this.thumbnailDragService.getIndexOfThumbnailInThumbnails(thumbnail, thumbnails);
@@ -135,92 +145,12 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   removeThumbnail(item: PdfjsItem) {
-    this.itemToPreview$.next(null);
+    this.itemToPreview = null;
     this.pdfjsControl.removeItem(item);
   }
 
   ngOnInit() {
     this.thumbnailDragService.registerDropThumbnails(this);
-    if (this.previewDelay) {
-      this.itemToPreview$.pipe(
-        debounceTime(this.previewDelay)
-      ).subscribe((item: PdfjsItem & DOMRect & { atLeft: boolean, atTop: boolean }) => {
-        this.itemToPreview = item;
-        if (!!item) {
-          const caretSize = 10;
-          const previewThumbnail: HTMLElement = this.previewThumbnailRef.nativeElement;
-          this.resetPreviewThumbnail(previewThumbnail);
-          if (this.layout === ThumbnailLayout.HORIZONTAL) {
-            this.addVerticalCaret(previewThumbnail, item, caretSize);
-          } else {
-            this.addHorizontalCaret(previewThumbnail, item, caretSize);
-          }
-        }
-      });
-    }
-  }
-
-  private resetPreviewThumbnail(previewThumbnail: HTMLElement) {
-    previewThumbnail.classList.remove('right-top', 'left-top',
-      'right-bottom', 'left-bottom',
-      'top-left', 'top-right',
-      'bottom-left', 'bottom-right');
-    previewThumbnail.style.right = undefined;
-    previewThumbnail.style.left = undefined;
-    previewThumbnail.style.bottom = undefined;
-    previewThumbnail.style.top = undefined;
-    previewThumbnail.style.paddingBottom = '0px';
-    previewThumbnail.style.paddingTop = '0px';
-    previewThumbnail.style.paddingLeft = '0px';
-    previewThumbnail.style.paddingRight = '0px';
-  }
-
-  private addVerticalCaret(previewThumbnail: HTMLElement, item: PdfjsItem & DOMRect & { atLeft: boolean, atTop: boolean }, caretSize) {
-    const rect: DOMRect = (item as DOMRect);
-    const ratio = rect.width / rect.height;
-    let cls = '';
-    if (item.atTop) {
-      cls = 'top';
-      previewThumbnail.style.top = `${rect.y - this.previewHeight - caretSize}px`;
-//      previewThumbnail.style.paddingBottom = `${caretSize}px`;
-    } else {
-      cls = 'bottom';
-      previewThumbnail.style.top = `${rect.y + rect.height}px`;
-      previewThumbnail.style.paddingTop = `${caretSize}px`;
-    }
-    if (item.atLeft) {
-      cls += '-left';
-      previewThumbnail.style.left = `${rect.x + rect.width - (this.previewHeight * ratio)}px`;
-    } else {
-      cls += '-right';
-      previewThumbnail.style.left = `${rect.x}px`;
-    }
-    previewThumbnail.style.height = `${this.previewHeight + caretSize}px`;
-    previewThumbnail.classList.add(cls);
-  }
-
-  private addHorizontalCaret(previewThumbnail: HTMLElement, item: PdfjsItem & DOMRect & { atLeft: boolean, atTop: boolean }, caretSize) {
-    const rect: DOMRect = (item as DOMRect);
-    const ratio = rect.width / rect.height;
-    let cls = '';
-    if (item.atLeft) {
-      cls = 'left';
-      previewThumbnail.style.left = `${rect.x - ((this.previewHeight * ratio) + caretSize)}px`;
-      previewThumbnail.style.paddingRight = `${caretSize}px`;
-    } else {
-      cls = 'right';
-      previewThumbnail.style.left = `${rect.x + rect.width}px`;
-      previewThumbnail.style.paddingLeft = `${caretSize}px`;
-    }
-    if (item.atTop) {
-      cls += '-top';
-      previewThumbnail.style.top = `${rect.y + rect.height - this.previewHeight}px`;
-    } else {
-      cls += '-bottom';
-      previewThumbnail.style.top = `${rect.y}px`;
-    }
-    previewThumbnail.style.height = `${this.previewHeight}px`;
-    previewThumbnail.classList.add(cls);
   }
 
   ngOnDestroy() {
@@ -262,7 +192,7 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   showPreview(item: PdfjsItem & DOMRect) {
-    this.itemToPreview$.next(item);
+    this.itemToPreview = item;
   }
 
   /**
@@ -270,7 +200,12 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy, AfterViewIni
    */
   @HostListener('scroll', ['$event'])
   onScroll(event: Event) {
-    this.itemToPreview$.next(null);
+    this.itemToPreview = null;
+  }
+
+  @HostListener('mouseout', ['$event'])
+  mouseOut($event: MouseEvent) {
+    this.itemToPreview = null;
   }
 
 }

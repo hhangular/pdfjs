@@ -146,12 +146,11 @@ export class PdfjsThumbnailComponent implements OnInit, OnDestroy {
   }
 
   private isItemToRenderChanged(x: { item: PdfjsItem, rotation: number }, y: { item: PdfjsItem, rotation: number }) {
-    const isChanged = !(!x && !y) && (
+    return !(!x && !y) && (
       (!x && !!y) || (!!x && !y) ||
       this.isItemChanged(x.item, y.item) ||
       x.rotation !== y.rotation
     );
-    return isChanged;
   }
 
   private isItemChanged(x: PdfjsItem, y: PdfjsItem) {

@@ -7,13 +7,12 @@
                  [draggable]="dragMode !== 'none'"
                  [removable]="allowRemove"
                  (rendered)="nextThumbnail($event)"
-                 [class.active]="(!_pdfjsGroupControl || _pdfjsGroupControl.isSelected(pdfjsControl)) && pdfjsControl.isSelected(item)"
+                 [class.active]="selected && pdfjsControl.isSelected(item)"
                  (removeButtonClick)="removeThumbnail($event)"
                  [previewEnabled]="!!previewDelay"
                  (showPreview)="showPreview($event)"
 ></pdfjs-thumbnail>
-<span class="preview-thumbnail" #previewThumbnail [class.hidden]="!itemToPreview">
-  <pdfjs-thumbnail [fitSize]="previewHeight"
-                   draggable="false"
-                   [item]="itemToPreview" [quality]="2"></pdfjs-thumbnail>
-</span>
+<pdfjs-preview *ngIf="!!previewDelay" [item]="itemToPreview"
+               [layout]="layout"
+               [delay]="previewDelay"
+               [height]="previewHeight"></pdfjs-preview>

@@ -10,6 +10,7 @@ import {PdfjsViewComponent} from './components/pdfjs-view/pdfjs-view.component';
 import {ThumbnailDragService} from './services/thumbnail-drag.service';
 import {KeysService} from './services/keys.service';
 import {Pdfjs} from './services/pdfjs.service';
+import {PdfjsPreviewComponent} from './components/pdfjs-thumbnails/preview/pdfjs-preview.component';
 
 @NgModule({
   imports: [
@@ -20,14 +21,16 @@ import {Pdfjs} from './services/pdfjs.service';
     PdfjsThumbnailsComponent,
     PdfjsThumbnailComponent,
     PdfjsRemoveButtonComponent,
-    PdfjsViewComponent
+    PdfjsViewComponent,
+    PdfjsPreviewComponent
   ],
   declarations: [
     PdfjsCommonComponent,
     PdfjsThumbnailsComponent,
     PdfjsThumbnailComponent,
     PdfjsRemoveButtonComponent,
-    PdfjsViewComponent
+    PdfjsViewComponent,
+    PdfjsPreviewComponent
   ],
   providers: [
     Pdfjs,

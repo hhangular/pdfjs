@@ -1,0 +1,56 @@
+:host {
+  display:none;
+  position: fixed;
+  z-index: 1000;
+}
+:host pdfjs-thumbnail {
+  background-color: #ccc;
+}
+:host.right-top,
+:host.right-bottom {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 162 297'%3E%3Cpath fill='%23ccc' d='M168.66150093078613,20.040285766601556 v257.324 c0,17.818 -21.543,26.741 -34.142,14.142 L5.857500930786134,162.84428576660156 c-7.8100000000000005,-7.8100000000000005 -7.8100000000000005,-20.474 0,-28.284 l128.662,-128.662 c12.599,-12.6 34.142,-3.676 34.142,14.142 z'%3E%3C/path%3E%3C/svg%3E%0A") no-repeat;
+  background-position-x: left;
+  background-size: 15px;
+}
+:host.right-bottom {
+  background-position-y: top;
+}
+:host.right-top {
+  background-position-y: bottom;
+}
+:host.left-top,
+:host.left-bottom {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 162 297'%3E%3Cpath fill='%23ccc' d='M0,277.3638432617187 V20.039843261718744 c0,-17.818 21.543,-26.741 34.142,-14.142 l128.662,128.662 c7.8100000000000005,7.8100000000000005 7.8100000000000005,20.474 0,28.284 L34.142,291.5058432617187 C21.543,304.10584326171875 0,295.18184326171877 0,277.3638432617187 z'%3E%3C/path%3E%3C/svg%3E%0A") no-repeat;
+  background-position-x: right;
+  background-size: 15px;
+}
+:host.left-bottom {
+  background-position-y: top;
+}
+:host.left-top {
+  background-position-y: bottom;
+}
+:host.bottom-left,
+:host.bottom-right {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 297 162'%3E%3Cpath fill='%23ccc' d='M277.3638413543701,168.6614990234375 H20.039841354370118 c-17.818,0 -26.741,-21.543 -14.142,-34.142 l128.662,-128.662 c7.8100000000000005,-7.8100000000000005 20.474,-7.8100000000000005 28.284,0 l128.662,128.662 c12.6,12.599 3.676,34.142 -14.142,34.142 z'%3E%3C/path%3E%3C/svg%3E%0A") no-repeat;
+  background-size: 28px;
+  background-position-y: top;
+}
+:host.bottom-right {
+  background-position-x: left;
+}
+:host.bottom-left {
+  background-position-x: right;
+}
+:host.top-left,
+:host.top-right {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 297 162'%3E%3Cpath fill='%23ccc' d='M24.065683364868164,0 h238 c21.4,0 32.1,25.9 17,41 L160.06568336486816,160 c-9.4,9.4 -24.6,9.4 -33.9,0 L7.065683364868164,41 c-15.1,-15.1 -4.4,-41 17,-41 z'%3E%3C/path%3E%3C/svg%3E%0A") no-repeat;
+  background-size: 28px;
+  background-position-y: bottom;
+}
+:host.top-right {
+  background-position-x: left;
+}
+:host.top-left {
+  background-position-x: right;
+}

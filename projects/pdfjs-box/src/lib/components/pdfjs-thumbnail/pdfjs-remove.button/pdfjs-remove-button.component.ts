@@ -4,7 +4,7 @@ import {PdfjsItem} from '../../../classes/pdfjs-objects';
 /** @ignore */
 @Component({
   selector: 'pdfjs-remove-button',
-  template: `<span class="remove-button">X</span>`,
+  template: `<span class="remove-button">&nbsp;</span>`,
   styleUrls: ['./pdfjs-remove-button.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

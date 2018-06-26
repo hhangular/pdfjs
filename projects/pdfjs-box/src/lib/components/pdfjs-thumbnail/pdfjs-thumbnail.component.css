@@ -31,7 +31,7 @@ canvas {
 }
 pdfjs-remove-button {
   position: absolute;
-  top: 1px;
+  top: 7px;
   right:7px;
   z-index: 1;
 }
