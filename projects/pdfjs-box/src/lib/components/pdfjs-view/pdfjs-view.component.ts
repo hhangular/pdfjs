@@ -1,8 +1,8 @@
-import {AfterViewInit, Component, ElementRef, HostListener, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, HostListener, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {PdfjsItem, ViewFit} from '../../classes/pdfjs-objects';
 import {PDFPageProxy, PDFPageViewport, PDFRenderTask} from 'pdfjs-dist';
 import {PdfjsControl} from '../../classes/pdfjs-control';
-import {BehaviorSubject, combineLatest, Observable, Subscription} from 'rxjs';
+import {BehaviorSubject, combineLatest, Subscription} from 'rxjs';
 import {KeysService} from '../../services/keys.service';
 import {Pdfjs} from '../../services/pdfjs.service';
 import {PdfjsGroupControl} from '../../classes/pdfjs-group-control';

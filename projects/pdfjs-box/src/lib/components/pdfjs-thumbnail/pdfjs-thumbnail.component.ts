@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, Component, ElementRef, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {PdfjsItem, ThumbnailLayout} from '../../classes/pdfjs-objects';
 import {PDFPromise, PDFRenderTask} from 'pdfjs-dist';
 import {BehaviorSubject, Subscription} from 'rxjs';
@@ -8,7 +8,8 @@ import {Pdfjs} from '../../services/pdfjs.service';
 @Component({
   selector: 'pdfjs-thumbnail',
   templateUrl: './pdfjs-thumbnail.component.html',
-  styleUrls: ['./pdfjs-thumbnail.component.css']
+  styleUrls: ['./pdfjs-thumbnail.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PdfjsThumbnailComponent implements OnInit, OnDestroy {
 

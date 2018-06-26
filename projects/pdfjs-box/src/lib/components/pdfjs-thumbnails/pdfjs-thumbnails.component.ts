@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, HostListener, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, HostListener, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {PdfjsItem, ThumbnailDragMode, ThumbnailLayout} from '../../classes/pdfjs-objects';
 import {PdfjsControl} from '../../classes/pdfjs-control';
 import {Subject, Subscription} from 'rxjs';
@@ -135,6 +135,7 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   removeThumbnail(item: PdfjsItem) {
+    this.itemToPreview$.next(null);
     this.pdfjsControl.removeItem(item);
   }
 
