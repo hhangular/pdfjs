@@ -1,8 +1,7 @@
-import {AfterViewInit, Component, ElementRef, HostListener, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, HostListener, Input, OnDestroy, OnInit} from '@angular/core';
 import {PdfjsItem, ThumbnailDragMode, ThumbnailLayout} from '../../classes/pdfjs-objects';
 import {PdfjsControl} from '../../classes/pdfjs-control';
-import {Subject, Subscription} from 'rxjs';
-import {debounceTime, last, tap} from 'rxjs/operators';
+import {Subscription} from 'rxjs';
 import {ThumbnailDragService} from '../../services/thumbnail-drag.service';
 import {PdfjsGroupControl} from '../../classes/pdfjs-group-control';
 
