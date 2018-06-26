@@ -7,25 +7,23 @@ import {PdfjsCommand} from './pdfjs-command';
 
 export class PdfjsControl implements PdfjsCommand {
   static API: PdfAPI = api as PdfAPI;
+  id: string;
+  pdfId: string;
+  items$: BehaviorSubject<PdfjsItem[]> = new BehaviorSubject([]);
+  selectedItem$: BehaviorSubject<PdfjsItem> = new BehaviorSubject<PdfjsItem>(null);
+  selectedIndex$: BehaviorSubject<number> = new BehaviorSubject<number>(NaN);
+  scale$: BehaviorSubject<number> = new BehaviorSubject<number>(1);
+  rotate$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   private source: PdfSource;
   private items: PdfjsItem[] = [];
   private autoSelect = false;
   private itemIndex = NaN; // item selected index
   private rotateSubscription: Subscription;
 
-  id: string;
-  pdfId: string;
-
   constructor() {
     this.id = uuid();
     this.subscribe();
   }
-
-  items$: BehaviorSubject<PdfjsItem[]> = new BehaviorSubject([]);
-  selectedItem$: BehaviorSubject<PdfjsItem> = new BehaviorSubject<PdfjsItem>(null);
-  selectedIndex$: BehaviorSubject<number> = new BehaviorSubject<number>(NaN);
-  scale$: BehaviorSubject<number> = new BehaviorSubject<number>(1);
-  rotate$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
   getItemByIndex(idx: number) {
     return this.items[idx];
@@ -70,11 +68,6 @@ export class PdfjsControl implements PdfjsCommand {
     this.fixAfterAddItem();
   }
 
-  private fixAfterAddItem() {
-    this.itemIndex = this.indexOfItem(this.selectedItem$.getValue());
-    this.selectedIndex$.next(this.itemIndex);
-  }
-
   removeItem(item: PdfjsItem): PdfjsItem {
     const isSelected = this.isSelected(item);
     const idx: number = this.indexOfItem(item);
@@ -92,17 +85,6 @@ export class PdfjsControl implements PdfjsCommand {
     return removed;
   }
 
-  private fixAfterRemoveItem(wasSelected: boolean) {
-    if (wasSelected) {
-      this.itemIndex = NaN;
-      this.selectedIndex$.next(NaN);
-      this.selectedItem$.next(null);
-    } else {
-      this.itemIndex = this.indexOfItem(this.selectedItem$.getValue());
-      this.selectedIndex$.next(this.itemIndex);
-    }
-  }
-
   load(source: PdfSource, autoSelect = false) {
     this.pdfId = this.getPdfId(source);
     this.source = source;
@@ -117,30 +99,10 @@ export class PdfjsControl implements PdfjsCommand {
     });
   }
 
-  private getPdfId(source: any): string {
-    if (typeof source === 'string') {
-      return md5(source as string);
-    } else if (!!source.id) {
-      return source.id;
-    } else if (!!source.url) {
-      return md5(source.url);
-    } else {
-      return uuid();
-    }
-  }
-
   unload() {
     this.source = null;
     this.itemIndex = NaN;
     this.items = [];
-  }
-
-  private isValidList() {
-    return !!this.items;
-  }
-
-  private isValidIndex() {
-    return !isNaN(this.itemIndex);
   }
 
   unselect() {
@@ -162,13 +124,6 @@ export class PdfjsControl implements PdfjsCommand {
       this.rotateSubscription = item.rotate$.subscribe((angle: number) => {
         this.rotate$.next(angle);
       });
-    }
-  }
-
-  private unsubscribeRotateSubject() {
-    if (this.rotateSubscription) {
-      this.rotateSubscription.unsubscribe();
-      this.rotateSubscription = null;
     }
   }
 
@@ -236,15 +191,6 @@ export class PdfjsControl implements PdfjsCommand {
     }
   }
 
-  private subscribe() {
-    this.items$.subscribe((items: PdfjsItem[]) => {
-      this.items = items;
-      if (this.autoSelect) {
-        this.selectFirst();
-      }
-    });
-  }
-
   isSelected(item: PdfjsItem): boolean {
     return item && !isNaN(this.itemIndex) && this.items[this.itemIndex] && item.pdfId === this.items[this.itemIndex].pdfId && item.pageIdx === this.items[this.itemIndex].pageIdx;
   }
@@ -261,6 +207,58 @@ export class PdfjsControl implements PdfjsCommand {
    */
   getPageIndex() {
     return isNaN(this.itemIndex) ? this.itemIndex : this.itemIndex + 1;
+  }
+
+  private fixAfterAddItem() {
+    this.itemIndex = this.indexOfItem(this.selectedItem$.getValue());
+    this.selectedIndex$.next(this.itemIndex);
+  }
+
+  private fixAfterRemoveItem(wasSelected: boolean) {
+    if (wasSelected) {
+      this.itemIndex = NaN;
+      this.selectedIndex$.next(NaN);
+      this.selectedItem$.next(null);
+    } else {
+      this.itemIndex = this.indexOfItem(this.selectedItem$.getValue());
+      this.selectedIndex$.next(this.itemIndex);
+    }
+  }
+
+  private getPdfId(source: any): string {
+    if (typeof source === 'string') {
+      return md5(source as string);
+    } else if (!!source.id) {
+      return source.id;
+    } else if (!!source.url) {
+      return md5(source.url);
+    } else {
+      return uuid();
+    }
+  }
+
+  private isValidList() {
+    return !!this.items;
+  }
+
+  private isValidIndex() {
+    return !isNaN(this.itemIndex);
+  }
+
+  private unsubscribeRotateSubject() {
+    if (this.rotateSubscription) {
+      this.rotateSubscription.unsubscribe();
+      this.rotateSubscription = null;
+    }
+  }
+
+  private subscribe() {
+    this.items$.subscribe((items: PdfjsItem[]) => {
+      this.items = items;
+      if (this.autoSelect) {
+        this.selectFirst();
+      }
+    });
   }
 
   /**

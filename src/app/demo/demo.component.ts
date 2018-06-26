@@ -29,7 +29,8 @@ export class DemoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.pdfjsControl.load('assets/pdfs/guide.pdf');
+    this.pdfjsControl.load('assets/pdfs/guide.pdf', true);
+    this.pdfjsGroupControl.select(this.pdfjsControl);
   }
 
   showPdf($event: any) {

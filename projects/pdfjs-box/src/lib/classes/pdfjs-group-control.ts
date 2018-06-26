@@ -1,5 +1,5 @@
 import {PdfjsControl} from './pdfjs-control';
-import {Subject} from 'rxjs';
+import {BehaviorSubject, Subject} from 'rxjs';
 import {PdfjsCommand} from './pdfjs-command';
 
 export class PdfjsGroupControl implements PdfjsCommand {
@@ -7,7 +7,7 @@ export class PdfjsGroupControl implements PdfjsCommand {
 
   disabled = true;
 
-  selectedPdfjsControl$: Subject<PdfjsControl> = new Subject();
+  selectedPdfjsControl$: BehaviorSubject<PdfjsControl> = new BehaviorSubject(null);
 
   select(pdfjsControl: PdfjsControl) {
     this.selectedPdfjsControl = pdfjsControl;

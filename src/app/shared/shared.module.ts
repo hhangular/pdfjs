@@ -4,6 +4,7 @@ import {MatTabsModule, MatButtonModule, MatExpansionModule, MatFormFieldModule, 
 import {ScrollDispatchModule} from '@angular/cdk/scrolling';
 import {NgxMdModule} from 'ngx-md';
 import {FlexLayoutModule} from '@angular/flex-layout';
+import {PdfjsBoxModule} from '../../../projects/pdfjs-box/src/lib/pdfjs-box.module';
 
 const MODULES: any[] = [
   FlexLayoutModule,
@@ -26,11 +27,13 @@ const MODULES: any[] = [
   imports: [
     CommonModule,
     MODULES,
-    NgxMdModule.forRoot()
+    NgxMdModule.forRoot(),
+    PdfjsBoxModule.forRoot({workerSrc: 'assets/pdf.worker.js'}),
   ],
   exports: [
     MODULES,
-    NgxMdModule
+    NgxMdModule,
+    PdfjsBoxModule
   ],
   declarations: []
 })

@@ -60,8 +60,8 @@ export class PdfjsBoxModule {
               config: PdfjsConfig
   ) {
     if (parentModule) {
-      throw new Error(
-        'PdfjsBoxModule is already loaded. Import it in the AppModule only');
+//      throw new Error(
+//        'PdfjsBoxModule is already loaded. Import it in the AppModule only');
     }
     PdfjsControl.API.GlobalWorkerOptions.workerSrc = config.workerSrc;
     this.addPdfjsCommonComponentToDom();
