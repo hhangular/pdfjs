@@ -1,10 +1,14 @@
 :host {
   display: block;
   overflow-y: hidden;
-  overflow-x: scroll;
+  overflow-x: hidden;
 }
-:host.vertical {
-  overflow-y: scroll;
+:host:hover {
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+:host.vertical:hover {
+  overflow-y: auto;
   overflow-x: hidden;
 }
 :host > * {

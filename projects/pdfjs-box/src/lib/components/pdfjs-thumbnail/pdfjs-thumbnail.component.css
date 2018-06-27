@@ -1,7 +1,7 @@
 :host:hover {
   background-color: #ccc;
 }
-:host[ng-reflect-draggable=true] {
+:host[draggable=true] {
   cursor:move;
 }
 :host {

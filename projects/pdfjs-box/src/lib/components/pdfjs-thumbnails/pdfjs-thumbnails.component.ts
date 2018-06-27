@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, HostListener, Input, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, HostBinding, HostListener, Input, OnDestroy, OnInit} from '@angular/core';
 import {PdfjsItem, ThumbnailDragMode, ThumbnailLayout} from '../../classes/pdfjs-objects';
 import {PdfjsControl} from '../../classes/pdfjs-control';
 import {Subscription} from 'rxjs';
@@ -10,15 +10,19 @@ import {PdfjsGroupControl} from '../../classes/pdfjs-group-control';
   templateUrl: './pdfjs-thumbnails.component.html',
   styleUrls: ['./pdfjs-thumbnails.component.css']
 })
-export class PdfjsThumbnailsComponent implements OnInit, OnDestroy, AfterViewInit {
+export class PdfjsThumbnailsComponent implements OnInit, OnDestroy {
 
   ThumbnailDragMode = ThumbnailDragMode;
+
+  @HostBinding('class.vertical')
+  private vertical = false;
 
   private subSelectedItem: Subscription;
   private subSelected: Subscription;
   private subItems: Subscription;
   private _pdfjsControl: PdfjsControl;
   private _pdfjsGroupControl: PdfjsGroupControl;
+  private _layout: ThumbnailLayout = ThumbnailLayout.HORIZONTAL;
   private items: PdfjsItem[];
   private itemsRendered: PdfjsItem[];
   itemToPreview: PdfjsItem & DOMRect;
@@ -70,7 +74,20 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy, AfterViewIni
    * Layout direction
    */
   @Input()
-  layout: ThumbnailLayout = ThumbnailLayout.HORIZONTAL;
+  set layout(layout: ThumbnailLayout) {
+    this._layout = layout;
+    this.vertical = layout !== ThumbnailLayout.HORIZONTAL;
+    const thumbnails: HTMLElement = this.elementRef.nativeElement as HTMLElement;
+    if (this.vertical) {
+      thumbnails.style.width = `${this.fitSize}px`;
+    } else {
+      thumbnails.style.height = `${this.fitSize}px`;
+    }
+  }
+
+  get layout(): ThumbnailLayout {
+    return this._layout;
+  }
 
   /**
    * Drag mode
@@ -165,17 +182,6 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy, AfterViewIni
     }
   }
 
-  ngAfterViewInit() {
-    const thumbnails: HTMLElement = this.elementRef.nativeElement as HTMLElement;
-    if (this.layout === ThumbnailLayout.HORIZONTAL) {
-      thumbnails.classList.add('horizontal');
-      thumbnails.style.height = `${this.fitSize}px`;
-    } else {
-      thumbnails.classList.add('vertical');
-      thumbnails.style.width = `${this.fitSize}px`;
-    }
-  }
-
   private ensurePdfjsItemIsVisible(index: number) {
     const thumbnails: HTMLElement = this.elementRef.nativeElement as HTMLElement;
     if (!isNaN(index) && thumbnails.children.length > index) {
@@ -190,10 +196,6 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy, AfterViewIni
     if (this.itemsRendered.length < this.items.length) {
       this.itemsRendered.push(this.items[this.itemsRendered.length]);
     }
-  }
-
-  showPreview(item: PdfjsItem & DOMRect) {
-    this.itemToPreview = item;
   }
 
   /**
