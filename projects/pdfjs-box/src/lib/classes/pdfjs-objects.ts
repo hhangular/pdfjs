@@ -57,3 +57,5 @@ export class PdfjsConfig {
   constructor(public workerSrc: string) {
   }
 }
+
+export type InnerItem = PdfjsItem & DOMRect & { atLeft: boolean, atTop: boolean };

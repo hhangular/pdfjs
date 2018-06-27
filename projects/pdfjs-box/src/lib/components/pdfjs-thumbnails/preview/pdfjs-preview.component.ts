@@ -1,10 +1,8 @@
 import {AfterViewInit, Component, ElementRef, HostBinding, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {PdfjsItem, ThumbnailLayout} from '../../../classes/pdfjs-objects';
+import {InnerItem, PdfjsItem, ThumbnailLayout} from '../../../classes/pdfjs-objects';
 import {BehaviorSubject} from 'rxjs';
 import {debounceTime} from 'rxjs/operators';
 import {animate, state, style, transition, trigger} from '@angular/animations';
-
-type InnerItem = PdfjsItem & DOMRect & { atLeft: boolean, atTop: boolean };
 
 @Component({
   selector: 'pdfjs-preview',
@@ -130,7 +128,6 @@ export class PdfjsPreviewComponent implements OnInit {
 
   /**
    * The thumbnail is rendered, position it and show it
-   * @param {PdfjsItem} item
    */
   rendered(item: PdfjsItem) {
     const previewThumbnail: HTMLElement = this.elementRef.nativeElement;
