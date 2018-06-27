@@ -10,14 +10,16 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
   styleUrls: ['./pdfjs-preview.component.css'],
   animations: [
     trigger('previewState', [
-      state('inactive', style({
+      state('hidden', style({
+        display: 'none',
         transform: 'scale(0)'
       })),
-      state('active', style({
+      state('visible', style({
+        display: 'block',
         transform: 'scale(1)'
       })),
-      transition('inactive => active', animate('100ms ease-in')),
-      transition('active => inactive', animate('100ms ease-out'))
+      transition('hidden => visible', animate('100ms ease-in')),
+      transition('visible => hidden', animate('100ms ease-out'))
     ])
   ]
 })
@@ -50,14 +52,11 @@ export class PdfjsPreviewComponent implements OnInit {
 
   @Input()
   set item(item: InnerItem) {
-    if (!!item) {
-      this.item$.next(item);
-    } else {
+    if (!item) {
       this._item = null;
-      const previewThumbnail: HTMLElement = this.elementRef.nativeElement;
-      this.state = 'inactive';
-      previewThumbnail.style.display = 'none';
+      this.state = 'hidden';
     }
+    this.item$.next(item);
   }
 
   ngOnInit(): void {
@@ -139,11 +138,9 @@ export class PdfjsPreviewComponent implements OnInit {
       } else {
         this.addHorizontalCaret(previewThumbnail, this._item, caretSize);
       }
-      previewThumbnail.style.display = 'block';
-      this.state = 'active';
+      this.state = 'visible';
     } else {
-      this.state = 'inactive';
-      previewThumbnail.style.display = 'none';
+      this.state = 'hidden';
     }
   }
 }

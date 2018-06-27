@@ -4,7 +4,7 @@
                  [fitSize]="fitSize - 16"
                  [quality]="quality"
                  [layout]="layout"
-                 [draggable]="dragMode !== 'none'"
+                 [draggable]="dragMode !== ThumbnailDragMode.NONE"
                  [removable]="allowRemove"
                  (rendered)="nextThumbnail($event)"
                  [class.active]="selected && pdfjsControl.isSelected(item)"

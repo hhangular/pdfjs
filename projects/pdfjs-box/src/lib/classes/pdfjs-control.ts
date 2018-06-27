@@ -50,14 +50,20 @@ export class PdfjsControl implements PdfjsCommand {
   }
 
   addItem(item: PdfjsItem, idx?: number) {
+    const clone: PdfjsItem = item.clone();
+    let pos: number = this.indexOfItem(clone);
     if (idx === undefined) {
-      this.items.push(item.clone());
+      if (pos !== -1 && pos !== this.items.length - 1) {
+        this.items.splice(pos, 1);
+        pos = -1;
+      }
+      if (pos === -1) {
+        this.items.push(clone);
+      }
     } else {
-      const clone: PdfjsItem = item.clone();
-      const old: number = this.indexOfItem(clone);
-      if (old !== -1) {
-        this.items.splice(old, 1);
-        if (old < idx) {
+      if (pos !== -1) {
+        this.items.splice(pos, 1);
+        if (pos < idx) {
           idx--;
         }
       }
@@ -269,8 +275,8 @@ export class PdfjsControl implements PdfjsCommand {
     return PdfjsControl.API.getDocument(source).then((pdfDocumentProxy: PDFDocumentProxy) => {
       [].push.apply(items, Array.apply(null, {length: pdfDocumentProxy.numPages})
         .map((e: any, i: number) => {
-        return new PdfjsItem(pdfDocumentProxy, this.pdfId, source, i + 1, 0);
-      }, Number));
+          return new PdfjsItem(pdfDocumentProxy, this.pdfId, source, i + 1, 0);
+        }, Number));
       this.items$.next(items);
       return pdfDocumentProxy.numPages;
     }, (reason: string) => {
@@ -313,10 +319,10 @@ function getCryptoObj(): RandomSource {
  */
 function md5(stringToHash: string) {
   let AA: number, BB: number, CC: number, DD: number;
-  let S11 = 7, S12 = 12, S13 = 17, S14 = 22;
-  let S21 = 5, S22 = 9, S23 = 14, S24 = 20;
-  let S31 = 4, S32 = 11, S33 = 16, S34 = 23;
-  let S41 = 6, S42 = 10, S43 = 15, S44 = 21;
+  const S11 = 7, S12 = 12, S13 = 17, S14 = 22;
+  const S21 = 5, S22 = 9, S23 = 14, S24 = 20;
+  const S31 = 4, S32 = 11, S33 = 16, S34 = 23;
+  const S41 = 6, S42 = 10, S43 = 15, S44 = 21;
   stringToHash = Utf8Encode(stringToHash);
   const x = ConvertToWordArray(stringToHash);
   let a = 0x67452301;
@@ -328,7 +334,7 @@ function md5(stringToHash: string) {
     BB = b;
     CC = c;
     DD = d;
-    a = FF(a, b, c, d, x[k + 0], S11, 0xD76AA478);
+    a = FF(a, b, c, d, x[k], S11, 0xD76AA478);
     d = FF(d, a, b, c, x[k + 1], S12, 0xE8C7B756);
     c = FF(c, d, a, b, x[k + 2], S13, 0x242070DB);
     b = FF(b, c, d, a, x[k + 3], S14, 0xC1BDCEEE);
@@ -347,7 +353,7 @@ function md5(stringToHash: string) {
     a = GG(a, b, c, d, x[k + 1], S21, 0xF61E2562);
     d = GG(d, a, b, c, x[k + 6], S22, 0xC040B340);
     c = GG(c, d, a, b, x[k + 11], S23, 0x265E5A51);
-    b = GG(b, c, d, a, x[k + 0], S24, 0xE9B6C7AA);
+    b = GG(b, c, d, a, x[k], S24, 0xE9B6C7AA);
     a = GG(a, b, c, d, x[k + 5], S21, 0xD62F105D);
     d = GG(d, a, b, c, x[k + 10], S22, 0x2441453);
     c = GG(c, d, a, b, x[k + 15], S23, 0xD8A1E681);
@@ -369,14 +375,14 @@ function md5(stringToHash: string) {
     c = HH(c, d, a, b, x[k + 7], S33, 0xF6BB4B60);
     b = HH(b, c, d, a, x[k + 10], S34, 0xBEBFBC70);
     a = HH(a, b, c, d, x[k + 13], S31, 0x289B7EC6);
-    d = HH(d, a, b, c, x[k + 0], S32, 0xEAA127FA);
+    d = HH(d, a, b, c, x[k], S32, 0xEAA127FA);
     c = HH(c, d, a, b, x[k + 3], S33, 0xD4EF3085);
     b = HH(b, c, d, a, x[k + 6], S34, 0x4881D05);
     a = HH(a, b, c, d, x[k + 9], S31, 0xD9D4D039);
     d = HH(d, a, b, c, x[k + 12], S32, 0xE6DB99E5);
     c = HH(c, d, a, b, x[k + 15], S33, 0x1FA27CF8);
     b = HH(b, c, d, a, x[k + 2], S34, 0xC4AC5665);
-    a = II(a, b, c, d, x[k + 0], S41, 0xF4292244);
+    a = II(a, b, c, d, x[k], S41, 0xF4292244);
     d = II(d, a, b, c, x[k + 7], S42, 0x432AFF97);
     c = II(c, d, a, b, x[k + 14], S43, 0xAB9423A7);
     b = II(b, c, d, a, x[k + 5], S44, 0xFC93A039);
@@ -397,120 +403,120 @@ function md5(stringToHash: string) {
     c = AddUnsigned(c, CC);
     d = AddUnsigned(d, DD);
   }
-  let temp: string = WordToHex(a) + WordToHex(b) + WordToHex(c) + WordToHex(d);
+  const temp: string = WordToHex(a) + WordToHex(b) + WordToHex(c) + WordToHex(d);
   return temp.toLowerCase();
+}
 
-  function RotateLeft(lValue: number, iShiftBits: number) {
-    return (lValue << iShiftBits) | (lValue >>> (32 - iShiftBits));
+function RotateLeft(lValue: number, iShiftBits: number) {
+  return (lValue << iShiftBits) | (lValue >>> (32 - iShiftBits));
+}
+
+function AddUnsigned(lX: number, lY: number) {
+  let lX4: number, lY4: number, lX8: number, lY8: number, lResult: number;
+  lX8 = (lX & 0x80000000);
+  lY8 = (lY & 0x80000000);
+  lX4 = (lX & 0x40000000);
+  lY4 = (lY & 0x40000000);
+  lResult = (lX & 0x3FFFFFFF) + (lY & 0x3FFFFFFF);
+  if (lX4 & lY4) {
+    return (lResult ^ 0x80000000 ^ lX8 ^ lY8);
   }
-
-  function AddUnsigned(lX: number, lY: number) {
-    let lX4: number, lY4: number, lX8: number, lY8: number, lResult: number;
-    lX8 = (lX & 0x80000000);
-    lY8 = (lY & 0x80000000);
-    lX4 = (lX & 0x40000000);
-    lY4 = (lY & 0x40000000);
-    lResult = (lX & 0x3FFFFFFF) + (lY & 0x3FFFFFFF);
-    if (lX4 & lY4) {
-      return (lResult ^ 0x80000000 ^ lX8 ^ lY8);
-    }
-    if (lX4 | lY4) {
-      if (lResult & 0x40000000) {
-        return (lResult ^ 0xC0000000 ^ lX8 ^ lY8);
-      } else {
-        return (lResult ^ 0x40000000 ^ lX8 ^ lY8);
-      }
+  if (lX4 | lY4) {
+    if (lResult & 0x40000000) {
+      return (lResult ^ 0xC0000000 ^ lX8 ^ lY8);
     } else {
-      return (lResult ^ lX8 ^ lY8);
+      return (lResult ^ 0x40000000 ^ lX8 ^ lY8);
     }
+  } else {
+    return (lResult ^ lX8 ^ lY8);
   }
+}
 
-  function F(x: number, y: number, z: number) {
-    return (x & y) | ((~x) & z);
-  }
+function F(x: number, y: number, z: number) {
+  return (x & y) | ((~x) & z);
+}
 
-  function G(x: number, y: number, z: number) {
-    return (x & z) | (y & (~z));
-  }
+function G(x: number, y: number, z: number) {
+  return (x & z) | (y & (~z));
+}
 
-  function H(x: number, y: number, z: number) {
-    return (x ^ y ^ z);
-  }
+function H(x: number, y: number, z: number) {
+  return (x ^ y ^ z);
+}
 
-  function I(x: number, y: number, z: number) {
-    return (y ^ (x | (~z)));
-  }
+function I(x: number, y: number, z: number) {
+  return (y ^ (x | (~z)));
+}
 
-  function FF(a: number, b: number, c: number, d: number, x: number, s: number, ac: number) {
-    a = AddUnsigned(a, AddUnsigned(AddUnsigned(F(b, c, d), x), ac));
-    return AddUnsigned(RotateLeft(a, s), b);
-  }
+function FF(a: number, b: number, c: number, d: number, x: number, s: number, ac: number) {
+  a = AddUnsigned(a, AddUnsigned(AddUnsigned(F(b, c, d), x), ac));
+  return AddUnsigned(RotateLeft(a, s), b);
+}
 
-  function GG(a: number, b: number, c: number, d: number, x: number, s: number, ac: number) {
-    a = AddUnsigned(a, AddUnsigned(AddUnsigned(G(b, c, d), x), ac));
-    return AddUnsigned(RotateLeft(a, s), b);
-  }
+function GG(a: number, b: number, c: number, d: number, x: number, s: number, ac: number) {
+  a = AddUnsigned(a, AddUnsigned(AddUnsigned(G(b, c, d), x), ac));
+  return AddUnsigned(RotateLeft(a, s), b);
+}
 
-  function HH(a: number, b: number, c: number, d: number, x: number, s: number, ac: number) {
-    a = AddUnsigned(a, AddUnsigned(AddUnsigned(H(b, c, d), x), ac));
-    return AddUnsigned(RotateLeft(a, s), b);
-  }
+function HH(a: number, b: number, c: number, d: number, x: number, s: number, ac: number) {
+  a = AddUnsigned(a, AddUnsigned(AddUnsigned(H(b, c, d), x), ac));
+  return AddUnsigned(RotateLeft(a, s), b);
+}
 
-  function II(a: number, b: number, c: number, d: number, x: number, s: number, ac: number) {
-    a = AddUnsigned(a, AddUnsigned(AddUnsigned(I(b, c, d), x), ac));
-    return AddUnsigned(RotateLeft(a, s), b);
-  }
+function II(a: number, b: number, c: number, d: number, x: number, s: number, ac: number) {
+  a = AddUnsigned(a, AddUnsigned(AddUnsigned(I(b, c, d), x), ac));
+  return AddUnsigned(RotateLeft(a, s), b);
+}
 
-  function ConvertToWordArray(stringToHash: string) {
-    let lWordCount: number;
-    const lMessageLength: number = stringToHash.length;
-    const lNumberOfWords_temp1: number = lMessageLength + 8;
-    const lNumberOfWords_temp2: number = (lNumberOfWords_temp1 - (lNumberOfWords_temp1 % 64)) / 64;
-    const lNumberOfWords: number = (lNumberOfWords_temp2 + 1) * 16;
-    const lWordArray = Array(lNumberOfWords - 1);
-    let lBytePosition: number = 0;
-    let lByteCount: number = 0;
-    while (lByteCount < lMessageLength) {
-      lWordCount = (lByteCount - (lByteCount % 4)) / 4;
-      lBytePosition = (lByteCount % 4) * 8;
-      lWordArray[lWordCount] = (lWordArray[lWordCount] | (stringToHash.charCodeAt(lByteCount) << lBytePosition));
-      lByteCount++;
-    }
+function ConvertToWordArray(stringToHash: string) {
+  let lWordCount: number;
+  const lMessageLength: number = stringToHash.length;
+  const lNumberOfWords_temp1: number = lMessageLength + 8;
+  const lNumberOfWords_temp2: number = (lNumberOfWords_temp1 - (lNumberOfWords_temp1 % 64)) / 64;
+  const lNumberOfWords: number = (lNumberOfWords_temp2 + 1) * 16;
+  const lWordArray = Array(lNumberOfWords - 1);
+  let lBytePosition = 0;
+  let lByteCount = 0;
+  while (lByteCount < lMessageLength) {
     lWordCount = (lByteCount - (lByteCount % 4)) / 4;
     lBytePosition = (lByteCount % 4) * 8;
-    lWordArray[lWordCount] = lWordArray[lWordCount] | (0x80 << lBytePosition);
-    lWordArray[lNumberOfWords - 2] = lMessageLength << 3;
-    lWordArray[lNumberOfWords - 1] = lMessageLength >>> 29;
-    return lWordArray;
+    lWordArray[lWordCount] = (lWordArray[lWordCount] | (stringToHash.charCodeAt(lByteCount) << lBytePosition));
+    lByteCount++;
   }
+  lWordCount = (lByteCount - (lByteCount % 4)) / 4;
+  lBytePosition = (lByteCount % 4) * 8;
+  lWordArray[lWordCount] = lWordArray[lWordCount] | (0x80 << lBytePosition);
+  lWordArray[lNumberOfWords - 2] = lMessageLength << 3;
+  lWordArray[lNumberOfWords - 1] = lMessageLength >>> 29;
+  return lWordArray;
+}
 
-  function WordToHex(lValue: number) {
-    let WordToHexValue: string = '', WordToHexValue_temp: string = '';
-    let lByte: number, lCount: number;
-    for (lCount = 0; lCount <= 3; lCount++) {
-      lByte = (lValue >>> (lCount * 8)) & 255;
-      WordToHexValue_temp = `'0${lByte.toString(16)}`;
-      WordToHexValue = WordToHexValue + WordToHexValue_temp.substr(WordToHexValue_temp.length - 2, 2);
-    }
-    return WordToHexValue;
+function WordToHex(lValue: number) {
+  let WordToHexValue = '', WordToHexValue_temp = '';
+  let lByte: number, lCount: number;
+  for (lCount = 0; lCount <= 3; lCount++) {
+    lByte = (lValue >>> (lCount * 8)) & 255;
+    WordToHexValue_temp = `'0${lByte.toString(16)}`;
+    WordToHexValue = WordToHexValue + WordToHexValue_temp.substr(WordToHexValue_temp.length - 2, 2);
   }
+  return WordToHexValue;
+}
 
-  function Utf8Encode(stringToHash: string) {
-    stringToHash = stringToHash.replace(/\r\n/g, '\n');
-    let utfText: string = '';
-    for (let n = 0; n < stringToHash.length; n++) {
-      const c: number = stringToHash.charCodeAt(n);
-      if (c < 128) {
-        utfText += String.fromCharCode(c);
-      } else if ((c > 127) && (c < 2048)) {
-        utfText += String.fromCharCode((c >> 6) | 192);
-        utfText += String.fromCharCode((c & 63) | 128);
-      } else {
-        utfText += String.fromCharCode((c >> 12) | 224);
-        utfText += String.fromCharCode(((c >> 6) & 63) | 128);
-        utfText += String.fromCharCode((c & 63) | 128);
-      }
+function Utf8Encode(stringToHash: string) {
+  stringToHash = stringToHash.replace(/\r\n/g, '\n');
+  let utfText = '';
+  for (let n = 0; n < stringToHash.length; n++) {
+    const c: number = stringToHash.charCodeAt(n);
+    if (c < 128) {
+      utfText += String.fromCharCode(c);
+    } else if ((c > 127) && (c < 2048)) {
+      utfText += String.fromCharCode((c >> 6) | 192);
+      utfText += String.fromCharCode((c & 63) | 128);
+    } else {
+      utfText += String.fromCharCode((c >> 12) | 224);
+      utfText += String.fromCharCode(((c >> 6) & 63) | 128);
+      utfText += String.fromCharCode((c & 63) | 128);
     }
-    return utfText;
   }
+  return utfText;
 }

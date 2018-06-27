@@ -12,6 +12,8 @@ import {PdfjsGroupControl} from '../../classes/pdfjs-group-control';
 })
 export class PdfjsThumbnailsComponent implements OnInit, OnDestroy, AfterViewInit {
 
+  ThumbnailDragMode = ThumbnailDragMode;
+
   private subSelectedItem: Subscription;
   private subSelected: Subscription;
   private subItems: Subscription;

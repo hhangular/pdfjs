@@ -4,6 +4,7 @@ import {PDFPromise, PDFRenderTask} from 'pdfjs-dist';
 import {BehaviorSubject, Subscription} from 'rxjs';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {Pdfjs} from '../../services/pdfjs.service';
+import {ThumbnailDragService} from '../../services/thumbnail-drag.service';
 
 @Component({
   selector: 'pdfjs-thumbnail',
@@ -83,7 +84,7 @@ export class PdfjsThumbnailComponent implements OnInit, OnDestroy {
 
   @HostListener('mouseover', ['$event'])
   mouseOver($event: MouseEvent) {
-    if (this.previewEnabled) {
+    if (this.previewEnabled && $event.srcElement === this.canvasRef.nativeElement) {
       const rectList: DOMRectList = (this.elementRef.nativeElement as HTMLElement).getClientRects() as DOMRectList;
       const r: DOMRect = rectList[0];
       let atLeft = false;
@@ -110,7 +111,7 @@ export class PdfjsThumbnailComponent implements OnInit, OnDestroy {
     this.itemToPreview$.next(null);
   }
 
-  constructor(private elementRef: ElementRef, private pdfjs: Pdfjs) {
+  constructor(private elementRef: ElementRef, private pdfjs: Pdfjs, private thumbnailDragService: ThumbnailDragService) {
   }
 
   onClick(event: MouseEvent) {
