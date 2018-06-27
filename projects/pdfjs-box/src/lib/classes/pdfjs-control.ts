@@ -44,9 +44,13 @@ export class PdfjsControl implements PdfjsCommand {
   }
 
   indexOfItem(item: PdfjsItem): number {
-    return !!item ? this.items.findIndex((it: PdfjsItem) => {
-      return it.pdfId === item.pdfId && it.pageIdx === item.pageIdx;
-    }) : -1;
+    return !!item ? this.indexOfItemByIds(item.pdfId, item.pageIdx) : -1;
+  }
+
+  indexOfItemByIds(pdfId: string, pageIdx: number): number {
+    return this.items.findIndex((it: PdfjsItem) => {
+      return it.pdfId === pdfId && it.pageIdx === pageIdx;
+    });
   }
 
   addItem(item: PdfjsItem, idx?: number) {
