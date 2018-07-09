@@ -5,6 +5,7 @@ import {Pdfjs} from '../services/pdfjs.service';
 import {PdfAPI} from '../classes/pdfapi';
 import {KeysService} from '../services/keys.service';
 import {PdfjsThumbnailsComponent} from './pdfjs-thumbnails/pdfjs-thumbnails.component';
+import {PdfjsThumbnailComponent} from './pdfjs-thumbnail/pdfjs-thumbnail.component';
 
 export enum KEY_CODE {
   ARROW_LEFT = 37,
@@ -52,9 +53,118 @@ export class PdfjsCommonComponent {
     }
   }
 
+  /**
+   * On drag in the document
+   */
   @HostListener('document:dragover', ['$event'])
   @HostListener('document:dragenter', ['$event'])
   onDragOverInDocument(event: DragEvent) {
+    if (event.preventDefault) {
+      event.preventDefault(); // Necessary. Allows us to drop.
+    }
+    // considerate only item drag
+    if (this.thumbnailDragService.dataTransferInitiated()) {
+      const containerOver: HTMLElement = this.getThumbnailContainerOver(event.target);
+      const pdfjsThumbnailsComponent: PdfjsThumbnailsComponent = this.thumbnailDragService.getComponentAcceptDrop(containerOver);
+      // over a thumbnails container and it accepts drop items
+      if (!!pdfjsThumbnailsComponent) {
+        this.onDragOverContainer(event, containerOver);
+      } else {
+        this.onDragOutContainer(event);
+      }
+    }
+  }
+
+  /**
+   * Drag item in container
+   */
+  onDragOverContainer(event: DragEvent, containerOver: HTMLElement) {
+    // item is anywhere yet
+    if (!this.thumbnailDragService.getTargetPdfId()) {
+      this.onDragOverContainerAndItemNowhere(event, containerOver);
+    } else {
+      this.onDragOverContainerAndItemSomewhere(event, containerOver);
+    }
+  }
+
+  /**
+   * Drag out Container
+   */
+  onDragOutContainer(event: DragEvent) {
+    if (this.thumbnailDragService.getTargetPdfId()) {
+      this.thumbnailDragService.restoreSource();
+    } else {
+      this.thumbnailDragService.invalidTarget();
+      //  Drag not over one container and item not already somewhere, do nothing
+    }
+  }
+
+  /**
+   * Drag in container, so move item
+   */
+  onDragOverContainerAndItemSomewhere(event: DragEvent, containerOver: HTMLElement) {
+    const pdfjsThumbnailsComponent: PdfjsThumbnailsComponent = this.thumbnailDragService.getComponentAcceptDrop(containerOver);
+    if (pdfjsThumbnailsComponent.pdfjsControl !== this.thumbnailDragService.getTargetControl()) {
+      // change container
+      this.thumbnailDragService.restoreSource();
+      this.onDragOverContainerAndItemNowhere(event, containerOver);
+    } else {
+      // change position
+      this.onDragOverContainerAndItemSomewhereInIt(event, containerOver);
+    }
+  }
+
+  /**
+   * Drag in the same container
+   */
+  onDragOverContainerAndItemSomewhereInIt(event: DragEvent, containerOver: HTMLElement) {
+    const thumbnailOver: HTMLElement = this.getThumbnailOver(event.toElement);
+    const pdfjsThumbnailsComponent: PdfjsThumbnailsComponent = this.thumbnailDragService.getComponentAcceptDrop(containerOver);
+    if (thumbnailOver) { // over an other thumbnail
+      const currentPosition = this.thumbnailDragService.getIndexOfItemTarget();
+      const idx: number = this.thumbnailDragService.getIndexOfThumbnailInThumbnails(thumbnailOver, containerOver);
+      if (currentPosition !== idx) { // not over the same
+        let newPos: number = idx + this.getPositionFix(event, pdfjsThumbnailsComponent.layout, thumbnailOver, true);
+        if (currentPosition !== newPos) { // move to new place
+          this.thumbnailDragService.removeItemFromTarget();
+          if (currentPosition < idx) {
+            newPos--;
+          }
+          this.thumbnailDragService.addItemToTarget(newPos);
+        }
+      }
+    } else {
+      this.thumbnailDragService.addItemToTarget();
+    }
+  }
+
+  /**
+   * Drag in other container
+   */
+  onDragOverContainerAndItemSomewhereInOtherContainer(event: DragEvent) {
+
+  }
+
+  getInsertionPosition(): number {
+    return 0;
+  }
+
+  onDragOverContainerAndItemNowhere(event: DragEvent, containerOver: HTMLElement) {
+    const thumbnailOver: HTMLElement = this.getThumbnailOver(event.toElement);
+    const pdfjsThumbnailsComponent: PdfjsThumbnailsComponent = this.thumbnailDragService.getComponentAcceptDrop(containerOver);
+    this.thumbnailDragService.applyItemToTargetPdfControl(pdfjsThumbnailsComponent.pdfjsControl);
+    if (thumbnailOver) { // over an other thumbnail
+      const fix = this.getPositionFix(event, pdfjsThumbnailsComponent.layout, thumbnailOver, true);
+      const idx: number = this.thumbnailDragService.getIndexOfThumbnailInThumbnails(thumbnailOver, containerOver);
+      console.log('onDragOverContainerAndItemNowhere addAround', event.toElement, idx, fix);
+      this.thumbnailDragService.addItemToTarget(idx + fix);
+    } else {
+      console.log('onDragOverContainerAndItemNowhere add');
+      this.thumbnailDragService.addItemToTarget();
+    }
+  }
+
+  onDragOverInDocument_old(event: DragEvent) {
     if (event.preventDefault) {
       event.preventDefault(); // Necessary. Allows us to drop.
     }
@@ -80,7 +190,7 @@ export class PdfjsCommonComponent {
   private notYetCopyInThumbnails(pdfjsThumbnailsComponent: PdfjsThumbnailsComponent, thumbnailsOver: HTMLElement, event: DragEvent) {
     const item: PdfjsItem = this.thumbnailDragService.getSourceItem();
     if (pdfjsThumbnailsComponent) { // over drop thumbnailsOver
-      this.thumbnailDragService.applyItemToTargetPdfControl(item, pdfjsThumbnailsComponent.pdfjsControl);
+      this.thumbnailDragService.applyItemToTargetPdfControl(pdfjsThumbnailsComponent.pdfjsControl);
       const thumbnailOver: HTMLElement = this.getThumbnailOver(event.toElement);
       if (thumbnailOver) { // over an other thumbnail (not yet copy, so...)
         this.addAroundAnOtherThumbnail(pdfjsThumbnailsComponent.layout, thumbnailsOver, thumbnailOver, event);
@@ -102,6 +212,39 @@ export class PdfjsCommonComponent {
     }
   }
 
+  /**
+   * Compute if the thumbnail have to insert
+   */
+  getPositionFix($event: MouseEvent, layout: ThumbnailLayout, thumbnail: HTMLElement, debug: boolean) {
+    thumbnail.classList.remove('hover-right');
+    thumbnail.classList.remove('hover-left');
+    thumbnail.classList.remove('hover-bottom');
+    thumbnail.classList.remove('hover-top');
+    let position = 0;
+    let overAt: string;
+    const rectList: DOMRectList = thumbnail.getClientRects() as DOMRectList;
+    const r: DOMRect = rectList[0];
+    if (layout === ThumbnailLayout.HORIZONTAL) {
+      if ($event.clientX > (r.left + r.width / 2)) { // right
+        overAt = 'right';
+        position = 1;
+      } else {
+        overAt = 'left';
+      }
+    } else {
+      if ($event.clientY > (r.top + r.height / 2)) { // bottom
+        overAt = 'bottom';
+        position = 1;
+      } else {
+        overAt = 'top';
+      }
+    }
+    if (debug) {
+      thumbnail.classList.add(`hover-${overAt}`);
+    }
+    return position;
+  }
+
   private alreadyCopyInThumbnails(pdfjsThumbnailsComponent: PdfjsThumbnailsComponent, thumbnailsOver: HTMLElement, event: DragEvent) {
     if (pdfjsThumbnailsComponent) { // in drop thumbnailsOver
       this.adjustTargetContainer(pdfjsThumbnailsComponent);
@@ -109,6 +252,7 @@ export class PdfjsCommonComponent {
       const currentIdx = this.thumbnailDragService.getIndexOfItemTarget();
       if (thumbnailOver) { // over other thumbnail
         const newIdx: number = this.thumbnailDragService.getIndexOfThumbnailInThumbnails(thumbnailOver, thumbnailsOver);
+//        console.log(`au dessus d'une miniature index courant ${currentIdx}, index survolé ${newIdx}`);
         if (currentIdx !== newIdx) { // not over the same item
           this.thumbnailDragService.removeItemFromTarget();
           this.addAroundAnOtherThumbnail(pdfjsThumbnailsComponent.layout, thumbnailsOver, thumbnailOver, event);
@@ -137,7 +281,7 @@ export class PdfjsCommonComponent {
       if (this.thumbnailDragService.getTargetPdfId() !== this.thumbnailDragService.getSourcePdfId() || this.thumbnailDragService.getModeDataTransfer() === ThumbnailDragMode.MOVE) {
         this.thumbnailDragService.removeItemFromTarget();
       }
-      this.thumbnailDragService.applyItemToTargetPdfControl(item, pdfjsThumbnailsComponent.pdfjsControl);
+      this.thumbnailDragService.applyItemToTargetPdfControl(pdfjsThumbnailsComponent.pdfjsControl);
     }
   }
 
@@ -158,7 +302,7 @@ export class PdfjsCommonComponent {
   /**
    * Drop thumbnail in any element
    */
-  @HostListener('document:drop', ['$event'])
+//  @HostListener('document:drop', ['$event'])
   onDropInDocument(event: DragEvent) {
     if (this.thumbnailDragService.dataTransferInitiated()) { // dataTransfer exist
       const thumbnails: HTMLElement = this.getThumbnailContainerOver(event.target);

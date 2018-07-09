@@ -1,15 +1,16 @@
-import {PdfjsItem, PdfSource} from './pdfjs-objects';
+import {PdfjsItem, PdfjsItemEvent, PdfSource} from './pdfjs-objects';
 import {PdfAPI} from './pdfapi';
 import {BehaviorSubject, Subscription} from 'rxjs';
 import * as api from 'pdfjs-dist/build/pdf';
 import {PDFDocumentProxy, PDFPromise} from 'pdfjs-dist';
 import {PdfjsCommand} from './pdfjs-command';
+import {debounceTime, filter} from 'rxjs/operators';
 
 export class PdfjsControl implements PdfjsCommand {
   static API: PdfAPI = api as PdfAPI;
   id: string;
   pdfId: string;
-  items$: BehaviorSubject<PdfjsItem[]> = new BehaviorSubject([]);
+  itemEvent$: BehaviorSubject<PdfjsItemEvent> = new BehaviorSubject(null);
   selectedItem$: BehaviorSubject<PdfjsItem> = new BehaviorSubject<PdfjsItem>(null);
   selectedIndex$: BehaviorSubject<number> = new BehaviorSubject<number>(NaN);
   scale$: BehaviorSubject<number> = new BehaviorSubject<number>(1);
@@ -19,10 +20,75 @@ export class PdfjsControl implements PdfjsCommand {
   private autoSelect = false;
   private itemIndex = NaN; // item selected index
   private rotateSubscription: Subscription;
+  private addItemEvent: BehaviorSubject<PdfjsItemEvent> = new BehaviorSubject<PdfjsItemEvent>(null);
+  private removeItemEvent: BehaviorSubject<PdfjsItemEvent> = new BehaviorSubject<PdfjsItemEvent>(null);
 
   constructor() {
     this.id = uuid();
-    this.subscribe();
+    this.addItemEvent.pipe(
+      filter((itemEvent: PdfjsItemEvent) => {
+        return !!itemEvent;
+      }),
+      debounceTime(300)
+    ).subscribe((itemEvent: PdfjsItemEvent) => {
+      console.log(`addItemEvent : ${itemEvent}`);
+      let idx = itemEvent.to;
+      const clone: PdfjsItem = itemEvent.item.clone();
+      let pos: number = this.indexOfItem(clone);
+      console.log('receive addITemEvent', idx, pos);
+      if (idx === undefined) {
+        if (pos !== -1 && pos !== this.items.length - 1) {
+          this.items.splice(pos, 1);
+          console.log('add1', clone);
+          this.itemEvent$.next({item: clone, event: 'remove'});
+          pos = -1;
+        }
+        if (pos === -1) {
+          this.items.push(clone);
+          console.log('add2', clone);
+          this.itemEvent$.next({item: clone, event: 'add'});
+        }
+      } else {
+        if (pos !== -1) {
+          this.items.splice(pos, 1);
+          console.log('remove1', clone);
+          this.itemEvent$.next({item: clone, event: 'remove'});
+          if (pos < idx) {
+            idx--;
+          }
+        }
+        this.items.splice(idx, 0, clone);
+        console.log('add3', clone);
+        this.itemEvent$.next({item: clone, event: 'add', to: idx});
+        // in case where item add was before current selected index
+        this.fixAfterAddItem();
+      }
+    });
+    this.removeItemEvent.pipe(
+      filter((itemEvent: PdfjsItemEvent) => {
+        return !!itemEvent;
+      }),
+      debounceTime(300)
+    ).subscribe((itemEvent: PdfjsItemEvent) => {
+      const item: PdfjsItem = itemEvent.item;
+      const isSelected = this.isSelected(item);
+      const idx: number = this.indexOfItem(item);
+      let removed: PdfjsItem = null;
+      if (idx !== -1) {
+        removed = this.items.splice(idx, 1)[0];
+        if (removed.pdfId !== item.pdfId || removed.pageIdx !== item.pageIdx) {
+          this.items.splice(idx, 0, removed);
+          removed = null;
+        }
+        this.itemEvent$.next({item: item, event: 'remove'});
+        // in case where item removed was before current selected index or it was removed item
+        this.fixAfterRemoveItem(isSelected);
+      }
+    });
+  }
+
+  getItems() {
+    return this.items;
   }
 
   getItemByIndex(idx: number) {
@@ -54,45 +120,11 @@ export class PdfjsControl implements PdfjsCommand {
   }
 
   addItem(item: PdfjsItem, idx?: number) {
-    const clone: PdfjsItem = item.clone();
-    let pos: number = this.indexOfItem(clone);
-    if (idx === undefined) {
-      if (pos !== -1 && pos !== this.items.length - 1) {
-        this.items.splice(pos, 1);
-        pos = -1;
-      }
-      if (pos === -1) {
-        this.items.push(clone);
-      }
-    } else {
-      if (pos !== -1) {
-        this.items.splice(pos, 1);
-        if (pos < idx) {
-          idx--;
-        }
-      }
-      this.items.splice(idx, 0, item.clone());
-    }
-    this.items$.next(this.items);
-    // in case where item add was before current selected index
-    this.fixAfterAddItem();
+    this.addItemEvent.next({item: item, event: 'add', to: idx});
   }
 
-  removeItem(item: PdfjsItem): PdfjsItem {
-    const isSelected = this.isSelected(item);
-    const idx: number = this.indexOfItem(item);
-    let removed: PdfjsItem = null;
-    if (idx !== -1) {
-      removed = this.items.splice(idx, 1)[0];
-      if (removed.pdfId !== item.pdfId || removed.pageIdx !== item.pageIdx) {
-        this.items.splice(idx, 0, removed);
-        removed = null;
-      }
-      this.items$.next(this.items);
-    }
-    // in case where item removed was before current selected index or it was removed item
-    this.fixAfterRemoveItem(isSelected);
-    return removed;
+  removeItem(item: PdfjsItem) {
+    this.removeItemEvent.next({item: item, event: 'remove'});
   }
 
   load(source: PdfSource, autoSelect = false) {
@@ -262,29 +294,30 @@ export class PdfjsControl implements PdfjsCommand {
     }
   }
 
-  private subscribe() {
-    this.items$.subscribe((items: PdfjsItem[]) => {
-      this.items = items;
-      if (this.autoSelect) {
-        this.selectFirst();
-      }
-    });
-  }
-
   /**
    * build items
    */
   private buildItems(source: PdfSource): PDFPromise<number> {
-    const items: PdfjsItem[] = [];
+    if (this.items && this.items.length) {
+      this.items.forEach((item: PdfjsItem) => {
+        this.itemEvent$.next({item: item, event: 'remove'});
+      });
+    }
+    this.items = [];
+    this.itemEvent$.next({item: null, event: 'init'});
     return PdfjsControl.API.getDocument(source).then((pdfDocumentProxy: PDFDocumentProxy) => {
-      [].push.apply(items, Array.apply(null, {length: pdfDocumentProxy.numPages})
+      [].push.apply(this.items, Array.apply(null, {length: pdfDocumentProxy.numPages})
         .map((e: any, i: number) => {
-          return new PdfjsItem(pdfDocumentProxy, this.pdfId, source, i + 1, 0);
+          const item: PdfjsItem = new PdfjsItem(pdfDocumentProxy, this.pdfId, source, i + 1, 0);
+          this.itemEvent$.next({item: item, event: 'add', to: i});
+          return item;
         }, Number));
-      this.items$.next(items);
+      this.itemEvent$.next({item: null, event: 'endInit'});
+      if (this.autoSelect) {
+        this.selectFirst();
+      }
       return pdfDocumentProxy.numPages;
     }, (reason: string) => {
-      this.items$.error(reason);
     });
   }
 }

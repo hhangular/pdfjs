@@ -2,6 +2,13 @@ import {PDFDocumentProxy, PDFPageProxy, PDFPromise} from 'pdfjs-dist';
 import {PDFDataRangeTransport} from './pdfapi';
 import {BehaviorSubject} from 'rxjs';
 
+export class PdfjsItemEvent {
+  item: PdfjsItem;
+  event: 'init' | 'add' | 'remove' | 'move' | 'endInit';
+  from?: number;
+  to?: number;
+}
+
 export class PdfjsItem {
   private _rotate: number;
   public rotate$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
@@ -31,6 +38,9 @@ export class PdfjsItem {
 
   clone() {
     return new PdfjsItem(this.documentProxy, this.pdfId, this.document, this.pageIdx, this._rotate);
+  }
+  equals(other: PdfjsItem) {
+    return this.pdfId === other.pdfId && this.pageIdx === other.pageIdx;
   }
 }
 

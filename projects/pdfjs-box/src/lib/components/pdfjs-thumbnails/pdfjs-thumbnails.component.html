@@ -1,17 +1,4 @@
-<pdfjs-thumbnail *ngFor="let item of pdfjsControl?.items$ | async"
-                 [item]="item"
-                 (selectItem)="selection($event)"
-                 [fitSize]="fitSize"
-                 [quality]="quality"
-                 [layout]="layout"
-                 [draggable]="dragMode !== ThumbnailDragMode.NONE"
-                 [removable]="allowRemove"
-                 (rendered)="nextThumbnail($event)"
-                 [class.active]="selected && pdfjsControl.isSelected(item)"
-                 (removeButtonClick)="removeThumbnail($event)"
-                 [previewEnabled]="!!previewDelay"
-                 (showPreview)="itemToPreview = $event"
-></pdfjs-thumbnail>
+<ng-template #container></ng-template>
 <pdfjs-preview *ngIf="!!previewDelay" [item]="itemToPreview"
                [layout]="layout"
                [delay]="previewDelay"
