@@ -1,4 +1,19 @@
-import {ApplicationRef, Component, ComponentFactoryResolver, ComponentRef, ElementRef, HostBinding, HostListener, Injector, Input, OnDestroy, OnInit, Type, ViewChild, ViewContainerRef} from '@angular/core';
+import {
+  ApplicationRef,
+  Component,
+  ComponentFactoryResolver,
+  ComponentRef,
+  ElementRef,
+  HostBinding,
+  HostListener,
+  Injector,
+  Input,
+  OnDestroy,
+  OnInit,
+  Type,
+  ViewChild,
+  ViewContainerRef
+} from '@angular/core';
 import {PdfjsItem, PdfjsItemEvent, ThumbnailDragMode, ThumbnailLayout} from '../../classes/pdfjs-objects';
 import {PdfjsControl} from '../../classes/pdfjs-control';
 import {Subject} from 'rxjs';
@@ -29,6 +44,7 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy {
   private init = false;
   private _layout: ThumbnailLayout = ThumbnailLayout.HORIZONTAL;
   private items: PdfjsItem[] = [];
+  private timeStart: number = 0;
   itemEvent$: Subject<PdfjsItemEvent> = new Subject<PdfjsItemEvent>();
   thumbnailComponentRefs: ComponentRef<PdfjsThumbnailComponent>[] = [];
   itemToPreview: PdfjsItem & DOMRect;
@@ -117,17 +133,18 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy {
     this._pdfjsControl = pdfjsControl;
     if (pdfjsControl) {
       pdfjsControl.itemEvent$.pipe(
-/*
-        distinctUntilChanged((x: PdfjsItemEvent, y: PdfjsItemEvent) => {
-          const notChange = ((x ? 1 : 0) ^ (y ? 1 : 0));
-          return !!notChange || x.item.equals(y.item);
-        }),
-*/
+        /*
+                distinctUntilChanged((x: PdfjsItemEvent, y: PdfjsItemEvent) => {
+                  const notChange = ((x ? 1 : 0) ^ (y ? 1 : 0));
+                  return !!notChange || x.item.equals(y.item);
+                }),
+        */
         filter((next: PdfjsItemEvent) => {
           return !!next;
         })
       ).subscribe((next: PdfjsItemEvent) => {
         if (next.event === 'init') {
+          this.timeStart = new Date().getTime();
           this.items = [];
           this.init = true;
         } else if (next.event === 'endInit') {
@@ -195,10 +212,18 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy {
     }
   }
 
-  nextThumbnail($event: PdfjsItem) {
-    if (!!this.items && !!this.items.length) {
-      this.itemEvent$.next({event: 'add', item: this.items.shift()});
+  private nextThumbnail($event: PdfjsItem) {
+    if (!!this.items) {
+      if (!!this.items.length) {
+        this.itemEvent$.next({event: 'add', item: this.items.shift()});
+      } else {
+        const time = new Date().getTime() - this.timeStart;
+        const s = Math.trunc(time / 1000);
+        const ms = time - s * 1000;
+        console.log(`Render ${this._pdfjsControl.getItemsLength()} pages in ${s}s ${ms}ms`);
+      }
     }
+
   }
 
   /**
@@ -236,7 +261,6 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy {
     if (index === undefined) {
       index = this.thumbnailComponentRefs.length;
     }
-    console.log('addPdfjsThumbnailComponentToDom', item, index);
     const componentFactory = this.cfr.resolveComponentFactory(PdfjsThumbnailComponent);
     const componentRef: ComponentRef<PdfjsThumbnailComponent> = this.container.createComponent(componentFactory, index);
     this.thumbnailComponentRefs.splice(index, 0, componentRef);

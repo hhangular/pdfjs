@@ -4,7 +4,7 @@ import {BehaviorSubject, Subscription} from 'rxjs';
 import * as api from 'pdfjs-dist/build/pdf';
 import {PDFDocumentProxy, PDFPromise} from 'pdfjs-dist';
 import {PdfjsCommand} from './pdfjs-command';
-import {debounceTime, filter} from 'rxjs/operators';
+import {filter} from 'rxjs/operators';
 
 export class PdfjsControl implements PdfjsCommand {
   static API: PdfAPI = api as PdfAPI;
@@ -29,36 +29,29 @@ export class PdfjsControl implements PdfjsCommand {
       filter((itemEvent: PdfjsItemEvent) => {
         return !!itemEvent;
       }),
-      debounceTime(300)
     ).subscribe((itemEvent: PdfjsItemEvent) => {
-      console.log(`addItemEvent : ${itemEvent}`);
       let idx = itemEvent.to;
       const clone: PdfjsItem = itemEvent.item.clone();
       let pos: number = this.indexOfItem(clone);
-      console.log('receive addITemEvent', idx, pos);
       if (idx === undefined) {
         if (pos !== -1 && pos !== this.items.length - 1) {
           this.items.splice(pos, 1);
-          console.log('add1', clone);
           this.itemEvent$.next({item: clone, event: 'remove'});
           pos = -1;
         }
         if (pos === -1) {
           this.items.push(clone);
-          console.log('add2', clone);
           this.itemEvent$.next({item: clone, event: 'add'});
         }
       } else {
         if (pos !== -1) {
           this.items.splice(pos, 1);
-          console.log('remove1', clone);
           this.itemEvent$.next({item: clone, event: 'remove'});
           if (pos < idx) {
             idx--;
           }
         }
         this.items.splice(idx, 0, clone);
-        console.log('add3', clone);
         this.itemEvent$.next({item: clone, event: 'add', to: idx});
         // in case where item add was before current selected index
         this.fixAfterAddItem();
@@ -68,7 +61,6 @@ export class PdfjsControl implements PdfjsCommand {
       filter((itemEvent: PdfjsItemEvent) => {
         return !!itemEvent;
       }),
-      debounceTime(300)
     ).subscribe((itemEvent: PdfjsItemEvent) => {
       const item: PdfjsItem = itemEvent.item;
       const isSelected = this.isSelected(item);
@@ -134,9 +126,7 @@ export class PdfjsControl implements PdfjsCommand {
     this.selectedItem$.next(null);
     this.selectedIndex$.next(NaN);
     this.itemIndex = NaN;
-    const t0: number = new Date().getTime();
     return this.buildItems(source).then((numPages: number) => {
-      console.log(`Load ${numPages} pages in ${new Date().getTime() - t0}ms`);
       return numPages;
     });
   }
