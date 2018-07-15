@@ -1,5 +1,5 @@
 import {Component, ElementRef, HostListener} from '@angular/core';
-import {PdfjsItem, ThumbnailDragMode, ThumbnailLayout} from '../classes/pdfjs-objects';
+import {ThumbnailLayout} from '../classes/pdfjs-objects';
 import {ThumbnailDragService} from '../services/thumbnail-drag.service';
 import {Pdfjs} from '../services/pdfjs.service';
 import {PdfAPI} from '../classes/pdfapi';
