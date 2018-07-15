@@ -11,28 +11,29 @@ export class ThumbnailDragService {
   private static mode: ThumbnailDragMode = ThumbnailDragMode.NONE;
   private static sourceItem: PdfjsItem = null;
   private static sourcePdfjsControl: PdfjsControl = null;
+  private static initialPosition: number = -1;
   private static targetPdfjsControl: PdfjsControl = null;
   private static targetItem: PdfjsItem = null;
 
   constructor() {
   }
 
-  initDataTransfer(item: PdfjsItem, pdfjsControl: PdfjsControl, mode: ThumbnailDragMode) {
+  initDataTransfer(item: PdfjsItem, pdfjsControl: PdfjsControl, idx: number, mode: ThumbnailDragMode) {
     ThumbnailDragService.mode = mode;
     ThumbnailDragService.sourceItem = item;
+    ThumbnailDragService.initialPosition = idx;
     ThumbnailDragService.sourcePdfjsControl = pdfjsControl;
     ThumbnailDragService.targetItem = null;
     ThumbnailDragService.targetPdfjsControl = null;
   }
 
-  dataTransferInitiated() {
+  dataTransferInitiated(): boolean {
     return !!ThumbnailDragService.sourceItem;
   }
 
-  applyItemToTargetPdfControl(item: PdfjsItem, pdfjsControl: PdfjsControl) {
-    item = item.clone();
+  applyItemToTargetPdfControl(pdfjsControl: PdfjsControl) {
     ThumbnailDragService.targetPdfjsControl = pdfjsControl;
-    ThumbnailDragService.targetItem = item;
+    ThumbnailDragService.targetItem = ThumbnailDragService.sourceItem.clone();
   }
 
   getModeDataTransfer() {
@@ -47,8 +48,16 @@ export class ThumbnailDragService {
     return ThumbnailDragService.targetItem;
   }
 
+  getSourceControl() {
+    return ThumbnailDragService.sourcePdfjsControl;
+  }
+
+  getTargetControl() {
+    return ThumbnailDragService.targetPdfjsControl;
+  }
+
   getSourcePdfId(): string {
-    if (ThumbnailDragService.sourcePdfjsControl) {
+    if (!!ThumbnailDragService.sourcePdfjsControl) {
       return ThumbnailDragService.sourceItem.pdfId;
     }
     return null;
@@ -62,31 +71,39 @@ export class ThumbnailDragService {
   }
 
   getIndexOfItemTarget(): number {
-    if (ThumbnailDragService.targetPdfjsControl) {
+    if (!!ThumbnailDragService.targetPdfjsControl) {
       return ThumbnailDragService.targetPdfjsControl.indexOfItem(ThumbnailDragService.targetItem);
     }
     return -1;
   }
 
   removeItemFromSource() {
-    if (ThumbnailDragService.sourcePdfjsControl) {
+    if (!!ThumbnailDragService.sourcePdfjsControl) {
       ThumbnailDragService.sourcePdfjsControl.removeItem(ThumbnailDragService.sourceItem);
     }
   }
 
   addItemToTarget(idx?: number) {
-    if (ThumbnailDragService.targetPdfjsControl) {
+    if (!!ThumbnailDragService.targetPdfjsControl) {
       ThumbnailDragService.targetPdfjsControl.addItem(ThumbnailDragService.targetItem, idx);
     }
   }
 
   removeItemFromTarget() {
     let item: PdfjsItem = null;
-    if (ThumbnailDragService.targetPdfjsControl) {
+    if (!!ThumbnailDragService.targetPdfjsControl) {
       ThumbnailDragService.targetPdfjsControl.removeItem(ThumbnailDragService.targetItem);
       item = ThumbnailDragService.targetItem;
     }
     return item;
+  }
+
+  restoreSource() {
+    if (!!ThumbnailDragService.targetPdfjsControl && !!ThumbnailDragService.targetItem) {
+      ThumbnailDragService.targetPdfjsControl.removeItem(ThumbnailDragService.targetItem);
+      ThumbnailDragService.sourcePdfjsControl.addItem(ThumbnailDragService.sourceItem, ThumbnailDragService.initialPosition);
+    }
+    this.invalidTarget();
   }
 
   invalidSource() {

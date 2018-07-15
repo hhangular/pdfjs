@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, HostBinding, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, HostBinding, Input, OnInit} from '@angular/core';
 import {InnerItem, PdfjsItem, ThumbnailLayout} from '../../../classes/pdfjs-objects';
 import {BehaviorSubject} from 'rxjs';
 import {debounceTime} from 'rxjs/operators';
@@ -64,10 +64,10 @@ export class PdfjsPreviewComponent implements OnInit {
       debounceTime(this.delay),
     ).subscribe((item: InnerItem) => {
       this._item = item;
+      const previewThumbnail: HTMLElement = this.elementRef.nativeElement;
+      resetPreviewThumbnail(previewThumbnail);
       if (!!item) {
         const caretSize = 10;
-        const previewThumbnail: HTMLElement = this.elementRef.nativeElement;
-        resetPreviewThumbnail(previewThumbnail);
         if (this.layout === ThumbnailLayout.HORIZONTAL) {
           this.addVerticalCaret(previewThumbnail, item, caretSize);
         } else {
@@ -107,7 +107,8 @@ export class PdfjsPreviewComponent implements OnInit {
     let cls = '';
     if (item.atLeft) {
       cls = 'left';
-      previewThumbnail.style.left = `${rect.x - ((this.height * ratio) + caretSize)}px`;
+      const previewWidth = this.height * ratio;
+      previewThumbnail.style.left = `${rect.x - (previewWidth + caretSize)}px`;
       previewThumbnail.style.paddingRight = `${caretSize}px`;
     } else {
       cls = 'right';

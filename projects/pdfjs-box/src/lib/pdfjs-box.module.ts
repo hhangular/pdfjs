@@ -38,7 +38,7 @@ import {PdfjsPreviewComponent} from './components/pdfjs-thumbnails/preview/pdfjs
     KeysService,
   ],
   entryComponents: [
-    PdfjsCommonComponent // dynamic component
+    PdfjsCommonComponent, PdfjsThumbnailComponent // dynamic component
   ], schemas: [
     CUSTOM_ELEMENTS_SCHEMA
   ]
@@ -66,7 +66,9 @@ export class PdfjsBoxModule {
 //      throw new Error(
 //        'PdfjsBoxModule is already loaded. Import it in the AppModule only');
     }
-    PdfjsControl.API.GlobalWorkerOptions.workerSrc = config.workerSrc;
+    if (!PdfjsControl.API.GlobalWorkerOptions.workerSrc) {
+      PdfjsControl.API.GlobalWorkerOptions.workerSrc = config.workerSrc;
+    }
     this.addPdfjsCommonComponentToDom();
   }
 
@@ -74,10 +76,12 @@ export class PdfjsBoxModule {
    * add PdfjsCommonComponent to dom
    */
   private addPdfjsCommonComponentToDom() {
-    const componentFactory = this.cfr.resolveComponentFactory(PdfjsCommonComponent);
-    const componentRef: ComponentRef<PdfjsCommonComponent> = componentFactory.create(this.defaultInjector);
-    this.appRef.attachView(componentRef.hostView);
-    const componentElement = (componentRef.hostView as EmbeddedViewRef<any>).rootNodes[0] as HTMLElement;
-    document.body.appendChild(componentElement);
+    if (!document.body.querySelector('pdfjs-common')) {
+      const componentFactory = this.cfr.resolveComponentFactory(PdfjsCommonComponent);
+      const componentRef: ComponentRef<PdfjsCommonComponent> = componentFactory.create(this.defaultInjector);
+      this.appRef.attachView(componentRef.hostView);
+      const componentElement = (componentRef.hostView as EmbeddedViewRef<any>).rootNodes[0] as HTMLElement;
+      document.body.appendChild(componentElement);
+    }
   }
 }
