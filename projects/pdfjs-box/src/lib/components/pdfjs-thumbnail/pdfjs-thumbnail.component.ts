@@ -68,7 +68,7 @@ export class PdfjsThumbnailComponent implements OnInit, OnDestroy {
   @ViewChild('canvas')
   private canvasRef: ElementRef;
   @HostBinding('class.not_rendered')
-  private notRendered = true;
+   notRendered = true;
   private item$: BehaviorSubject<PdfjsItem> = new BehaviorSubject<PdfjsItem>(null);
   private pdfRenderTask: PDFRenderTask;
   private _pdfjsControl: PdfjsControl;

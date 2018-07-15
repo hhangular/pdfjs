@@ -38,7 +38,7 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy {
   ThumbnailDragMode = ThumbnailDragMode;
 
   @HostBinding('class.vertical')
-  private vertical = false;
+  vertical = false;
 
   private _pdfjsControl: PdfjsControl;
   private init = false;
