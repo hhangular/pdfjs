@@ -139,8 +139,12 @@
           "options": {
             "tsConfig": "projects/pdfjs-box/tsconfig.lib.json",
             "project": "projects/pdfjs-box/ng-package.json"
-          }
-        },
+          },
+          "configurations": {
+            "production": {
+              "project": "projects/pdfjs-box/ng-package.prod.json"
+            }
+          }        },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
