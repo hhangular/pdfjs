@@ -2,9 +2,7 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 import {FlexLayoutModule} from '@angular/flex-layout';
-import {MatButtonModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatListModule, MatMenuModule,
-  MatSidenavModule, MatTabsModule, MatToolbarModule, MatTreeModule} from '@angular/material';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {MatButtonModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatListModule, MatMenuModule, MatSidenavModule, MatTabsModule, MatToolbarModule, MatTreeModule} from '@angular/material';
 import {NgxMdModule} from 'ngx-md';
 import {PdfjsBoxModule} from '../../../projects/pdfjs-box/src/lib/pdfjs-box.module';
 
@@ -22,7 +20,6 @@ const MODULES: any[] = [
   MatFormFieldModule,
   MatIconModule,
   MatInputModule,
-  FontAwesomeModule,
 ];
 
 @NgModule({
