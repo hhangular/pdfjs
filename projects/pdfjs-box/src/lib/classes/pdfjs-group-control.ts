@@ -1,101 +1,101 @@
-import {PdfjsControl} from './pdfjs-control';
 import {BehaviorSubject, Subject} from 'rxjs';
 import {PdfjsCommand} from './pdfjs-command';
+import {PdfjsControl} from './pdfjs-control';
 
 export class PdfjsGroupControl implements PdfjsCommand {
+
+  public disabled = true;
+
+  public selectedPdfjsControl$: BehaviorSubject<PdfjsControl> = new BehaviorSubject(null);
   private selectedPdfjsControl: PdfjsControl = null;
 
-  disabled = true;
-
-  selectedPdfjsControl$: BehaviorSubject<PdfjsControl> = new BehaviorSubject(null);
-
-  select(pdfjsControl: PdfjsControl) {
+  public select(pdfjsControl: PdfjsControl) {
     this.selectedPdfjsControl = pdfjsControl;
     this.disabled = !pdfjsControl;
     this.selectedPdfjsControl$.next(pdfjsControl);
   }
 
-  isSelected(pdfjsControl: PdfjsControl): boolean {
+  public isSelected(pdfjsControl: PdfjsControl): boolean {
     return this.selectedPdfjsControl === pdfjsControl;
   }
 
-  fit() {
+  public fit() {
     if (!!this.selectedPdfjsControl) {
       this.selectedPdfjsControl.fit();
     }
   }
 
-  getNumberOfPages(): number {
+  public getNumberOfPages(): number {
     if (!!this.selectedPdfjsControl) {
       return this.selectedPdfjsControl.getNumberOfPages();
     }
     return 0;
   }
 
-  getPageIndex(): number {
+  public getPageIndex(): number {
     if (!!this.selectedPdfjsControl) {
       return this.selectedPdfjsControl.getPageIndex();
     }
     return NaN;
   }
 
-  hasNext(): boolean {
+  public hasNext(): boolean {
     if (!!this.selectedPdfjsControl) {
       return this.selectedPdfjsControl.hasNext();
     }
     return false;
   }
 
-  hasPrevious(): boolean {
+  public hasPrevious(): boolean {
     if (!!this.selectedPdfjsControl) {
       return this.selectedPdfjsControl.hasPrevious();
     }
     return false;
   }
 
-  reload() {
+  public reload() {
     if (!!this.selectedPdfjsControl) {
       this.selectedPdfjsControl.reload();
     }
   }
 
-  rotate(angle: number) {
+  public rotate(angle: number) {
     if (!!this.selectedPdfjsControl) {
       this.selectedPdfjsControl.rotate(angle);
     }
   }
 
-  rotateSelected(angle: number) {
+  public rotateSelected(angle: number) {
     if (!!this.selectedPdfjsControl) {
       this.selectedPdfjsControl.rotateSelected(angle);
     }
   }
 
-  selectFirst() {
+  public selectFirst() {
     if (!!this.selectedPdfjsControl) {
       this.selectedPdfjsControl.selectFirst();
     }
   }
 
-  selectLast() {
+  public selectLast() {
     if (!!this.selectedPdfjsControl) {
       this.selectedPdfjsControl.selectLast();
     }
   }
 
-  selectNext() {
+  public selectNext() {
     if (!!this.selectedPdfjsControl) {
       this.selectedPdfjsControl.selectNext();
     }
   }
 
-  selectPrevious() {
+  public selectPrevious() {
     if (!!this.selectedPdfjsControl) {
       this.selectedPdfjsControl.selectPrevious();
     }
   }
 
-  zoom(zoom: number) {
+  public zoom(zoom: number) {
     if (!!this.selectedPdfjsControl) {
       this.selectedPdfjsControl.zoom(zoom);
     }

@@ -9,27 +9,27 @@ export class KeysService {
   constructor() {
   }
 
-  setPdfjsControl(pdfjsControl: PdfjsControl) {
+  public setPdfjsControl(pdfjsControl: PdfjsControl) {
     KeysService.pdfjsControl = pdfjsControl;
   }
 
-  clearPdfjsControl() {
+  public clearPdfjsControl() {
     KeysService.pdfjsControl = null;
   }
 
-  selectFirst() {
+  public selectFirst() {
     KeysService.pdfjsControl ? KeysService.pdfjsControl.selectFirst() : this.doNothing();
   }
 
-  selectPrevious() {
+  public selectPrevious() {
     KeysService.pdfjsControl ? KeysService.pdfjsControl.selectPrevious() : this.doNothing();
   }
 
-  selectNext() {
+  public selectNext() {
     KeysService.pdfjsControl ? KeysService.pdfjsControl.selectNext() : this.doNothing();
   }
 
-  selectLast() {
+  public selectLast() {
     KeysService.pdfjsControl ? KeysService.pdfjsControl.selectLast() : this.doNothing();
   }
 

@@ -1,15 +1,17 @@
-import {NgModule} from '@angular/core';
+import {ScrollingModule} from '@angular/cdk/scrolling';
 import {CommonModule} from '@angular/common';
-import {MatTabsModule, MatButtonModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatListModule, MatMenuModule, MatSidenavModule, MatToolbarModule, MatTreeModule} from '@angular/material';
-import {ScrollDispatchModule} from '@angular/cdk/scrolling';
-import {NgxMdModule} from 'ngx-md';
+import {NgModule} from '@angular/core';
 import {FlexLayoutModule} from '@angular/flex-layout';
+import {MatButtonModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatListModule, MatMenuModule,
+  MatSidenavModule, MatTabsModule, MatToolbarModule, MatTreeModule} from '@angular/material';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {NgxMdModule} from 'ngx-md';
 import {PdfjsBoxModule} from '../../../projects/pdfjs-box/src/lib/pdfjs-box.module';
 
 const MODULES: any[] = [
   FlexLayoutModule,
   MatTabsModule,
-  ScrollDispatchModule,
+  ScrollingModule,
   MatButtonModule,
   MatListModule,
   MatMenuModule,
@@ -19,9 +21,9 @@ const MODULES: any[] = [
   MatExpansionModule,
   MatFormFieldModule,
   MatIconModule,
-  MatInputModule
+  MatInputModule,
+  FontAwesomeModule,
 ];
-
 
 @NgModule({
   imports: [
@@ -33,9 +35,9 @@ const MODULES: any[] = [
   exports: [
     MODULES,
     NgxMdModule,
-    PdfjsBoxModule
+    PdfjsBoxModule,
   ],
-  declarations: []
+  declarations: [],
 })
 export class SharedModule {
 }

@@ -12,87 +12,22 @@ import {
   OnInit,
   Type,
   ViewChild,
-  ViewContainerRef
+  ViewContainerRef,
 } from '@angular/core';
-import {PdfjsItem, PdfjsItemEvent, ThumbnailDragMode, ThumbnailLayout} from '../../classes/pdfjs-objects';
-import {PdfjsControl} from '../../classes/pdfjs-control';
 import {Subject} from 'rxjs';
-import {ThumbnailDragService} from '../../services/thumbnail-drag.service';
-import {PdfjsGroupControl} from '../../classes/pdfjs-group-control';
-import {PdfjsThumbnailComponent} from '../pdfjs-thumbnail/pdfjs-thumbnail.component';
 import {filter} from 'rxjs/operators';
+import {PdfjsControl} from '../../classes/pdfjs-control';
+import {PdfjsGroupControl} from '../../classes/pdfjs-group-control';
+import {PdfjsItem, PdfjsItemEvent, ThumbnailDragMode, ThumbnailLayout} from '../../classes/pdfjs-objects';
+import {ThumbnailDragService} from '../../services/thumbnail-drag.service';
+import {PdfjsThumbnailComponent} from '../pdfjs-thumbnail/pdfjs-thumbnail.component';
 
 @Component({
   selector: 'pdfjs-thumbnails',
   templateUrl: './pdfjs-thumbnails.component.html',
-  styleUrls: ['./pdfjs-thumbnails.component.css']
+  styleUrls: ['./pdfjs-thumbnails.component.css'],
 })
 export class PdfjsThumbnailsComponent implements OnInit, OnDestroy {
-
-  @ViewChild('container', {read: ViewContainerRef})
-  container: ViewContainerRef;
-
-  @ViewChild('pdfjs-preview')
-  previewRef: ElementRef;
-
-  ThumbnailDragMode = ThumbnailDragMode;
-
-  @HostBinding('class.vertical')
-  vertical = false;
-
-  private _pdfjsControl: PdfjsControl;
-  private init = false;
-  private _layout: ThumbnailLayout = ThumbnailLayout.HORIZONTAL;
-  private items: PdfjsItem[] = [];
-  private timeStart: number = 0;
-  itemEvent$: Subject<PdfjsItemEvent> = new Subject<PdfjsItemEvent>();
-  thumbnailComponentRefs: ComponentRef<PdfjsThumbnailComponent>[] = [];
-  itemToPreview: PdfjsItem & DOMRect;
-
-  constructor(
-    private cfr: ComponentFactoryResolver,
-    private defaultInjector: Injector,
-    private appRef: ApplicationRef,
-    public elementRef: ElementRef,
-    private thumbnailDragService: ThumbnailDragService
-  ) {
-  }
-
-  /**
-   * Delay for show preview. 0 => disable preview
-   */
-  @Input()
-  previewDelay = 0;
-
-  /**
-   * Height of preview
-   */
-  @Input()
-  previewHeight = 300;
-
-  /**
-   * The quality of pdf render
-   */
-  @Input()
-  quality: 1 | 2 | 3 | 4 | 5 = 1;
-
-  /**
-   * The remove button on thumbnail is it visible
-   */
-  @Input()
-  allowRemove = false;
-
-  /**
-   * This container accept drop thumbnail
-   */
-  @Input()
-  allowDrop = false;
-
-  /**
-   * size to fit. Depends of direction layout
-   */
-  @Input()
-  fitSize = 100;
 
   /**
    * Layout direction
@@ -114,18 +49,6 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Drag mode
-   */
-  @Input()
-  dragMode: ThumbnailDragMode = ThumbnailDragMode.DUPLICATE;
-
-  /**
-   * Define the pdfjsGroupControl for thumbnail containers
-   */
-  @Input()
-  pdfjsGroupControl: PdfjsGroupControl;
-
-  /**
    * Define the pdfjsControl for this thumbnail container
    */
   @Input()
@@ -141,7 +64,7 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy {
         */
         filter((next: PdfjsItemEvent) => {
           return !!next;
-        })
+        }),
       ).subscribe((next: PdfjsItemEvent) => {
         if (next.event === 'init') {
           this.timeStart = new Date().getTime();
@@ -167,14 +90,91 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy {
     return this._pdfjsControl;
   }
 
+  @ViewChild('container', {static: true, read: ViewContainerRef})
+  public container: ViewContainerRef;
+
+  @ViewChild('pdfjs-preview', {static: true})
+  public previewRef: ElementRef;
+
+  public ThumbnailDragMode = ThumbnailDragMode;
+
+  @HostBinding('class.vertical')
+  public vertical = false;
+  public itemEvent$: Subject<PdfjsItemEvent> = new Subject<PdfjsItemEvent>();
+  public thumbnailComponentRefs: Array<ComponentRef<PdfjsThumbnailComponent>> = [];
+  public itemToPreview: PdfjsItem & DOMRect;
+
+  /**
+   * Delay for show preview. 0 => disable preview
+   */
+  @Input()
+  public previewDelay = 0;
+
+  /**
+   * Height of preview
+   */
+  @Input()
+  public previewHeight = 300;
+
+  /**
+   * The quality of pdf render
+   */
+  @Input()
+  public quality: 1 | 2 | 3 | 4 | 5 = 1;
+
+  /**
+   * The remove button on thumbnail is it visible
+   */
+  @Input()
+  public allowRemove = false;
+
+  /**
+   * This container accept drop thumbnail
+   */
+  @Input()
+  public allowDrop = false;
+
+  /**
+   * size to fit. Depends of direction layout
+   */
+  @Input()
+  public fitSize = 100;
+
+  /**
+   * Drag mode
+   */
+  @Input()
+  public dragMode: ThumbnailDragMode = ThumbnailDragMode.DUPLICATE;
+
+  /**
+   * Define the pdfjsGroupControl for thumbnail containers
+   */
+  @Input()
+  public pdfjsGroupControl: PdfjsGroupControl;
+
+  private _pdfjsControl: PdfjsControl;
+  private init = false;
+  private _layout: ThumbnailLayout = ThumbnailLayout.HORIZONTAL;
+  private items: PdfjsItem[] = [];
+  private timeStart = 0;
+
+  constructor(
+    private cfr: ComponentFactoryResolver,
+    private defaultInjector: Injector,
+    private appRef: ApplicationRef,
+    public elementRef: ElementRef,
+    private thumbnailDragService: ThumbnailDragService,
+  ) {
+  }
+
   /**
    * Start process of drag thumbnail
    */
   @HostListener('dragstart', ['$event'])
-  onDragStart(event: DragEvent) {
+  public onDragStart(event: DragEvent) {
     this.itemToPreview = null;
     if (this.dragMode !== ThumbnailDragMode.NONE) {
-      const thumbnail: HTMLElement = this.thumbnailDragService.getFirstParentElementNamed(event.srcElement as HTMLElement, 'pdfjs-thumbnail');
+      const thumbnail: HTMLElement = this.thumbnailDragService.getFirstParentElementNamed(event.target as HTMLElement, 'pdfjs-thumbnail');
       const thumbnails: HTMLElement = this.elementRef.nativeElement as HTMLElement;
       const idx: number = this.thumbnailDragService.getIndexOfThumbnailInThumbnails(thumbnail, thumbnails);
       if (!isNaN(idx)) {
@@ -185,12 +185,12 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy {
     }
   }
 
-  removeThumbnail(item: PdfjsItem) {
+  public removeThumbnail(item: PdfjsItem) {
     this.itemToPreview = null;
     this.pdfjsControl.removeItem(item);
   }
 
-  ngOnInit() {
+  public ngOnInit() {
     this.thumbnailDragService.registerDropThumbnails(this);
     this.itemEvent$.subscribe((itemEvent: PdfjsItemEvent) => {
       if (itemEvent.event === 'add') {
@@ -201,15 +201,40 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy() {
     this.thumbnailDragService.unregisterDropThumbnails(this);
   }
 
-  selection(item: PdfjsItem) {
+  public selection(item: PdfjsItem) {
     this.pdfjsControl.selectItemIndex(this.pdfjsControl.indexOfItem(item));
     if (this.pdfjsGroupControl) {
       this.pdfjsGroupControl.select(this.pdfjsControl);
     }
+  }
+
+  /**
+   * scrolling
+   */
+  @HostListener('scroll', ['$event'])
+  public onScroll(event: Event) {
+    this.itemToPreview = null;
+  }
+
+  @HostListener('mouseout', ['$event'])
+  public mouseOut($event: MouseEvent) {
+    this.itemToPreview = null;
+  }
+
+  public removeComponent(componentClass: Type<any>) {
+    // Find the component
+    /*    const component = this.components.find((component) => component.instance instanceof componentClass);
+        const componentIndex = this.components.indexOf(component);
+
+        if (componentIndex !== -1) {
+          // Remove component from both view and array
+          this.container.remove(this.container.indexOf(component));
+          this.components.splice(componentIndex, 1);
+        } */
   }
 
   private nextThumbnail($event: PdfjsItem) {
@@ -224,19 +249,6 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy {
       }
     }
 
-  }
-
-  /**
-   * scrolling
-   */
-  @HostListener('scroll', ['$event'])
-  onScroll(event: Event) {
-    this.itemToPreview = null;
-  }
-
-  @HostListener('mouseout', ['$event'])
-  mouseOut($event: MouseEvent) {
-    this.itemToPreview = null;
   }
 
   /**
@@ -292,17 +304,5 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy {
     });
     instance.pdfjsControl = this._pdfjsControl;
     instance.pdfjsGroupControl = this.pdfjsGroupControl;
-  }
-
-  removeComponent(componentClass: Type<any>) {
-    // Find the component
-    /*    const component = this.components.find((component) => component.instance instanceof componentClass);
-        const componentIndex = this.components.indexOf(component);
-
-        if (componentIndex !== -1) {
-          // Remove component from both view and array
-          this.container.remove(this.container.indexOf(component));
-          this.components.splice(componentIndex, 1);
-        } */
   }
 }

@@ -4,17 +4,17 @@ import {GithubService} from '../github.service';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css']
+  styleUrls: ['./navbar.component.css'],
 })
-export class NavbarComponent implements OnInit {
+export class NavBarComponent implements OnInit {
 
-  version = '';
-  url = '';
+  public version = '';
+  public url = '';
 
   constructor(private githubService: GithubService) {
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.githubService.getPackageJson().subscribe((json: any) => {
       this.version = json.version;
       this.url = json.repository.url;

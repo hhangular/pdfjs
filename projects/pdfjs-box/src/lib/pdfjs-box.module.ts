@@ -1,20 +1,20 @@
-import {ApplicationRef, ComponentFactoryResolver, ComponentRef, CUSTOM_ELEMENTS_SCHEMA, EmbeddedViewRef, Injector, ModuleWithProviders, NgModule, Optional, SkipSelf} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {PdfjsCommonComponent} from './components/pdfjs-common.component';
-import {PdfjsConfig} from './classes/pdfjs-objects';
+import {ApplicationRef, ComponentFactoryResolver, ComponentRef, CUSTOM_ELEMENTS_SCHEMA, EmbeddedViewRef, Injector, ModuleWithProviders, NgModule, Optional, SkipSelf} from '@angular/core';
 import {PdfjsControl} from './classes/pdfjs-control';
+import {PdfjsConfig} from './classes/pdfjs-objects';
+import {PdfjsCommonComponent} from './components/pdfjs-common.component';
 import {PdfjsRemoveButtonComponent} from './components/pdfjs-thumbnail/pdfjs-remove.button/pdfjs-remove-button.component';
 import {PdfjsThumbnailComponent} from './components/pdfjs-thumbnail/pdfjs-thumbnail.component';
 import {PdfjsThumbnailsComponent} from './components/pdfjs-thumbnails/pdfjs-thumbnails.component';
+import {PdfjsPreviewComponent} from './components/pdfjs-thumbnails/preview/pdfjs-preview.component';
 import {PdfjsViewComponent} from './components/pdfjs-view/pdfjs-view.component';
-import {ThumbnailDragService} from './services/thumbnail-drag.service';
 import {KeysService} from './services/keys.service';
 import {Pdfjs} from './services/pdfjs.service';
-import {PdfjsPreviewComponent} from './components/pdfjs-thumbnails/preview/pdfjs-preview.component';
+import {ThumbnailDragService} from './services/thumbnail-drag.service';
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
   ],
   exports: [
     PdfjsCommonComponent,
@@ -22,7 +22,7 @@ import {PdfjsPreviewComponent} from './components/pdfjs-thumbnails/preview/pdfjs
     PdfjsThumbnailComponent,
     PdfjsRemoveButtonComponent,
     PdfjsViewComponent,
-    PdfjsPreviewComponent
+    PdfjsPreviewComponent,
   ],
   declarations: [
     PdfjsCommonComponent,
@@ -30,7 +30,7 @@ import {PdfjsPreviewComponent} from './components/pdfjs-thumbnails/preview/pdfjs
     PdfjsThumbnailComponent,
     PdfjsRemoveButtonComponent,
     PdfjsViewComponent,
-    PdfjsPreviewComponent
+    PdfjsPreviewComponent,
   ],
   providers: [
     Pdfjs,
@@ -38,18 +38,18 @@ import {PdfjsPreviewComponent} from './components/pdfjs-thumbnails/preview/pdfjs
     KeysService,
   ],
   entryComponents: [
-    PdfjsCommonComponent, PdfjsThumbnailComponent // dynamic component
+    PdfjsCommonComponent, PdfjsThumbnailComponent, // dynamic component
   ], schemas: [
-    CUSTOM_ELEMENTS_SCHEMA
-  ]
+    CUSTOM_ELEMENTS_SCHEMA,
+  ],
 })
 export class PdfjsBoxModule {
-  static forRoot(config: PdfjsConfig): ModuleWithProviders {
+  public static forRoot(config: PdfjsConfig): ModuleWithProviders {
     return {
       ngModule: PdfjsBoxModule,
       providers: [
-        {provide: PdfjsConfig, useValue: config}
-      ]
+        {provide: PdfjsConfig, useValue: config},
+      ],
     };
   }
 
@@ -60,7 +60,7 @@ export class PdfjsBoxModule {
               private cfr: ComponentFactoryResolver,
               private defaultInjector: Injector,
               private appRef: ApplicationRef,
-              config: PdfjsConfig
+              config: PdfjsConfig,
   ) {
     if (parentModule) {
 //      throw new Error(

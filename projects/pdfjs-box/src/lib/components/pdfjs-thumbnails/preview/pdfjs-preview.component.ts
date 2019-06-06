@@ -1,8 +1,8 @@
+import {animate, state, style, transition, trigger} from '@angular/animations';
 import {Component, ElementRef, HostBinding, Input, OnInit} from '@angular/core';
-import {InnerItem, PdfjsItem, ThumbnailLayout} from '../../../classes/pdfjs-objects';
 import {BehaviorSubject} from 'rxjs';
 import {debounceTime} from 'rxjs/operators';
-import {animate, state, style, transition, trigger} from '@angular/animations';
+import {InnerItem, PdfjsItem, ThumbnailLayout} from '../../../classes/pdfjs-objects';
 
 @Component({
   selector: 'pdfjs-preview',
@@ -12,43 +12,18 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
     trigger('previewState', [
       state('hidden', style({
         display: 'none',
-        transform: 'scale(0)'
+        transform: 'scale(0)',
       })),
       state('visible', style({
         display: 'block',
-        transform: 'scale(1)'
+        transform: 'scale(1)',
       })),
       transition('hidden => visible', animate('100ms ease-in')),
-      transition('visible => hidden', animate('100ms ease-out'))
-    ])
-  ]
+      transition('visible => hidden', animate('100ms ease-out')),
+    ]),
+  ],
 })
 export class PdfjsPreviewComponent implements OnInit {
-
-  constructor(private elementRef: ElementRef) {
-  }
-
-  @HostBinding('@previewState')
-  state = 'inactive';
-
-  private item$: BehaviorSubject<InnerItem> = new BehaviorSubject<InnerItem>(null);
-
-  _item: InnerItem = null;
-
-  @Input()
-  layout: ThumbnailLayout = ThumbnailLayout.HORIZONTAL;
-
-  /**
-   * Delay for show preview. 0 => disable preview
-   */
-  @Input()
-  delay = 0;
-
-  /**
-   * Height of preview
-   */
-  @Input()
-  height = 300;
 
   @Input()
   set item(item: InnerItem) {
@@ -59,7 +34,32 @@ export class PdfjsPreviewComponent implements OnInit {
     this.item$.next(item);
   }
 
-  ngOnInit(): void {
+  @HostBinding('@previewState')
+  public state = 'inactive';
+
+  public _item: InnerItem = null;
+
+  @Input()
+  public layout: ThumbnailLayout = ThumbnailLayout.HORIZONTAL;
+
+  /**
+   * Delay for show preview. 0 => disable preview
+   */
+  @Input()
+  public delay = 0;
+
+  /**
+   * Height of preview
+   */
+  @Input()
+  public height = 300;
+
+  private item$: BehaviorSubject<InnerItem> = new BehaviorSubject<InnerItem>(null);
+
+  constructor(private elementRef: ElementRef) {
+  }
+
+  public ngOnInit(): void {
     this.item$.pipe(
       debounceTime(this.delay),
     ).subscribe((item: InnerItem) => {
@@ -75,6 +75,25 @@ export class PdfjsPreviewComponent implements OnInit {
         }
       }
     });
+  }
+
+  /**
+   * The thumbnail is rendered, position it and show it
+   */
+  public rendered(item: PdfjsItem) {
+    const previewThumbnail: HTMLElement = this.elementRef.nativeElement;
+    if (!!item) {
+      const caretSize = 10;
+      resetPreviewThumbnail(previewThumbnail);
+      if (this.layout === ThumbnailLayout.HORIZONTAL) {
+        this.addVerticalCaret(previewThumbnail, this._item, caretSize);
+      } else {
+        this.addHorizontalCaret(previewThumbnail, this._item, caretSize);
+      }
+      this.state = 'visible';
+    } else {
+      this.state = 'hidden';
+    }
   }
 
   private addVerticalCaret(previewThumbnail: HTMLElement, item: PdfjsItem & DOMRect & { atLeft: boolean, atTop: boolean }, caretSize) {
@@ -124,25 +143,6 @@ export class PdfjsPreviewComponent implements OnInit {
     }
     previewThumbnail.style.height = `${this.height}px`;
     previewThumbnail.classList.add(cls);
-  }
-
-  /**
-   * The thumbnail is rendered, position it and show it
-   */
-  rendered(item: PdfjsItem) {
-    const previewThumbnail: HTMLElement = this.elementRef.nativeElement;
-    if (!!item) {
-      const caretSize = 10;
-      resetPreviewThumbnail(previewThumbnail);
-      if (this.layout === ThumbnailLayout.HORIZONTAL) {
-        this.addVerticalCaret(previewThumbnail, this._item, caretSize);
-      } else {
-        this.addHorizontalCaret(previewThumbnail, this._item, caretSize);
-      }
-      this.state = 'visible';
-    } else {
-      this.state = 'hidden';
-    }
   }
 }
 

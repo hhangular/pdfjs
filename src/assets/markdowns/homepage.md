@@ -1,15 +1,15 @@
 # pdfjs
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.0.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.0.0.
 
-It's a collection of modules for angular 6x
+It's a collection of modules for angular 8x
 
 ## Modules
   - pdfjs-box : pdf viewer
 
-###pdfjs-box
+### pdfjs-box
 
-pdfjs-box is implementation of pdfjs-box for angular 2x. It contains some components for use easily the [mozilla pdf viewer pdfjs](https://github.com/mozilla/pdf.js).
+pdfjs-box is implementation of pdfjs-box for angular 8x. It contains some components for use easily the [mozilla pdf viewer pdfjs](https://github.com/mozilla/pdf.js).
 
 ### dependencies
   - pdfjs-dist

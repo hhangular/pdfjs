@@ -1,22 +1,21 @@
-import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
 
-import {AppComponent} from './app.component';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {CommonModule} from '@angular/common';
-import {GithubService} from './github.service';
 import {HttpClientModule} from '@angular/common/http';
-import {NavbarComponent} from './navbar/navbar.component';
-import {HomepageComponent} from './main/homepage.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AppRoutingModule} from './app-routing.module';
+import {AppComponent} from './app.component';
+import {GithubService} from './github.service';
+import {HomepageComponent} from './main/homepage.component';
+import {NavBarComponent} from './navbar/navbar.component';
 import {SharedModule} from './shared/shared.module';
-
 
 @NgModule({
   declarations: [
     AppComponent,
     HomepageComponent,
-    NavbarComponent
+    NavBarComponent,
   ],
   imports: [
     BrowserModule,
@@ -24,11 +23,11 @@ import {SharedModule} from './shared/shared.module';
     SharedModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    AppRoutingModule
+    AppRoutingModule,
   ],
   providers: [GithubService],
   bootstrap: [AppComponent],
-  entryComponents: []
+  entryComponents: [],
 })
 export class AppModule {
 }

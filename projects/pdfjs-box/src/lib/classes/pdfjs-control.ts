@@ -1,20 +1,20 @@
-import {PdfjsItem, PdfjsItemEvent, PdfSource} from './pdfjs-objects';
-import {PdfAPI} from './pdfapi';
-import {BehaviorSubject, Subscription} from 'rxjs';
-import * as api from 'pdfjs-dist/build/pdf';
 import {PDFDocumentProxy, PDFPromise} from 'pdfjs-dist';
-import {PdfjsCommand} from './pdfjs-command';
+import * as api from 'pdfjs-dist/build/pdf';
+import {BehaviorSubject, Subscription} from 'rxjs';
 import {filter} from 'rxjs/operators';
+import {PdfAPI} from './pdfapi';
+import {PdfjsCommand} from './pdfjs-command';
+import {PdfjsItem, PdfjsItemEvent, PdfSource} from './pdfjs-objects';
 
 export class PdfjsControl implements PdfjsCommand {
-  static API: PdfAPI = api as PdfAPI;
-  id: string;
-  pdfId: string;
-  itemEvent$: BehaviorSubject<PdfjsItemEvent> = new BehaviorSubject(null);
-  selectedItem$: BehaviorSubject<PdfjsItem> = new BehaviorSubject<PdfjsItem>(null);
-  selectedIndex$: BehaviorSubject<number> = new BehaviorSubject<number>(NaN);
-  scale$: BehaviorSubject<number> = new BehaviorSubject<number>(1);
-  rotate$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+  public static API: PdfAPI = api as PdfAPI;
+  public id: string;
+  public pdfId: string;
+  public itemEvent$: BehaviorSubject<PdfjsItemEvent> = new BehaviorSubject(null);
+  public selectedItem$: BehaviorSubject<PdfjsItem> = new BehaviorSubject<PdfjsItem>(null);
+  public selectedIndex$: BehaviorSubject<number> = new BehaviorSubject<number>(NaN);
+  public scale$: BehaviorSubject<number> = new BehaviorSubject<number>(1);
+  public rotate$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   private source: PdfSource;
   private items: PdfjsItem[] = [];
   private autoSelect = false;
@@ -72,54 +72,54 @@ export class PdfjsControl implements PdfjsCommand {
           this.items.splice(idx, 0, removed);
           removed = null;
         }
-        this.itemEvent$.next({item: item, event: 'remove'});
+        this.itemEvent$.next({item, event: 'remove'});
         // in case where item removed was before current selected index or it was removed item
         this.fixAfterRemoveItem(isSelected);
       }
     });
   }
 
-  getItems() {
+  public getItems() {
     return this.items;
   }
 
-  getItemByIndex(idx: number) {
+  public getItemByIndex(idx: number) {
     return this.items[idx];
   }
 
-  getItemsLength(): number {
+  public getItemsLength(): number {
     return this.items.length;
   }
 
-  getNumberOfPages(): number {
+  public getNumberOfPages(): number {
     return this.items.length;
   }
 
-  containsItem(item: PdfjsItem): boolean {
+  public containsItem(item: PdfjsItem): boolean {
     return this.items.some((it: PdfjsItem) => {
       return it.pdfId === item.pdfId && it.pageIdx === item.pageIdx;
     });
   }
 
-  indexOfItem(item: PdfjsItem): number {
+  public indexOfItem(item: PdfjsItem): number {
     return !!item ? this.indexOfItemByIds(item.pdfId, item.pageIdx) : -1;
   }
 
-  indexOfItemByIds(pdfId: string, pageIdx: number): number {
+  public indexOfItemByIds(pdfId: string, pageIdx: number): number {
     return this.items.findIndex((it: PdfjsItem) => {
       return it.pdfId === pdfId && it.pageIdx === pageIdx;
     });
   }
 
-  addItem(item: PdfjsItem, idx?: number) {
-    this.addItemEvent.next({item: item, event: 'add', to: idx});
+  public addItem(item: PdfjsItem, idx?: number) {
+    this.addItemEvent.next({item, event: 'add', to: idx});
   }
 
-  removeItem(item: PdfjsItem) {
-    this.removeItemEvent.next({item: item, event: 'remove'});
+  public removeItem(item: PdfjsItem) {
+    this.removeItemEvent.next({item, event: 'remove'});
   }
 
-  load(source: PdfSource, autoSelect = false) {
+  public load(source: PdfSource, autoSelect = false) {
     this.pdfId = this.getPdfId(source);
     this.source = source;
     this.autoSelect = autoSelect;
@@ -131,17 +131,17 @@ export class PdfjsControl implements PdfjsCommand {
     });
   }
 
-  unload() {
+  public unload() {
     this.source = null;
     this.itemIndex = NaN;
     this.items = [];
   }
 
-  unselect() {
+  public unselect() {
     this.selectItemIndex(NaN);
   }
 
-  selectItemIndex(index: number) {
+  public selectItemIndex(index: number) {
     if (isNaN(index)) {
       this.selectedItem$.next(null);
       this.selectedIndex$.next(NaN);
@@ -159,60 +159,60 @@ export class PdfjsControl implements PdfjsCommand {
     }
   }
 
-  selectFirst() {
+  public selectFirst() {
     if (this.isValidList()) {
       this.selectItemIndex(0);
     }
   }
 
-  selectLast() {
+  public selectLast() {
     if (this.isValidList()) {
       this.selectItemIndex(this.items.length - 1);
     }
   }
 
-  hasNext() {
+  public hasNext() {
     return this.isValidList() && this.isValidIndex() && this.itemIndex + 1 < this.items.length;
   }
 
-  hasPrevious() {
+  public hasPrevious() {
     return this.isValidList() && this.isValidIndex() && this.itemIndex > 0;
   }
 
-  selectNext() {
+  public selectNext() {
     if (this.hasNext()) {
       this.selectItemIndex(this.itemIndex + 1);
     }
   }
 
-  selectPrevious() {
+  public selectPrevious() {
     if (this.hasPrevious()) {
       this.selectItemIndex(isNaN(this.itemIndex) ? NaN : this.itemIndex - 1);
     }
   }
 
-  rotate(angle: number) {
+  public rotate(angle: number) {
     this.items.forEach((item: PdfjsItem) => {
       item.rotate += angle;
     });
   }
 
-  rotateSelected(angle: number) {
+  public rotateSelected(angle: number) {
     if (!!this.items.length) {
       this.items[this.itemIndex].rotate += angle;
     }
   }
 
-  zoom(zoom: number) {
+  public zoom(zoom: number) {
     const scale = this.scale$.getValue() * zoom;
     this.scale$.next(scale);
   }
 
-  fit() {
+  public fit() {
     this.scale$.next(1);
   }
 
-  reload() {
+  public reload() {
     if (!!this.pdfId) {
       const idx = this.itemIndex;
       this.selectItemIndex(NaN);
@@ -223,21 +223,21 @@ export class PdfjsControl implements PdfjsCommand {
     }
   }
 
-  isSelected(item: PdfjsItem): boolean {
+  public isSelected(item: PdfjsItem): boolean {
     return item && !isNaN(this.itemIndex) && this.items[this.itemIndex] && item.pdfId === this.items[this.itemIndex].pdfId && item.pageIdx === this.items[this.itemIndex].pageIdx;
   }
 
   /**
    * index based 0
    */
-  getItemIndex() {
+  public getItemIndex() {
     return this.itemIndex;
   }
 
   /**
    * index based 1
    */
-  getPageIndex() {
+  public getPageIndex() {
     return isNaN(this.itemIndex) ? this.itemIndex : this.itemIndex + 1;
   }
 
@@ -290,7 +290,7 @@ export class PdfjsControl implements PdfjsCommand {
   private buildItems(source: PdfSource): PDFPromise<number> {
     if (this.items && this.items.length) {
       this.items.forEach((item: PdfjsItem) => {
-        this.itemEvent$.next({item: item, event: 'remove'});
+        this.itemEvent$.next({item, event: 'remove'});
       });
     }
     this.items = [];
@@ -299,7 +299,7 @@ export class PdfjsControl implements PdfjsCommand {
       [].push.apply(this.items, Array.apply(null, {length: pdfDocumentProxy.numPages})
         .map((e: any, i: number) => {
           const item: PdfjsItem = new PdfjsItem(pdfDocumentProxy, this.pdfId, source, i + 1, 0);
-          this.itemEvent$.next({item: item, event: 'add', to: i});
+          this.itemEvent$.next({item, event: 'add', to: i});
           return item;
         }, Number));
       this.itemEvent$.next({item: null, event: 'endInit'});
@@ -331,13 +331,13 @@ function uuid(): string {
  * return RandomSource implementation
  */
 function getCryptoObj(): RandomSource {
-  return window.crypto || window['msCrypto'] as RandomSource || {
-    getRandomValues: function (buf) {
+  return window.crypto || {
+    getRandomValues(buf) {
       for (let i = 0, l = buf.length; i < l; i++) {
         buf[i] = Math.floor(Math.random() * 256);
       }
       return buf;
-    }
+    },
   };
 }
 
@@ -345,11 +345,26 @@ function getCryptoObj(): RandomSource {
  * MD%
  */
 function md5(stringToHash: string) {
-  let AA: number, BB: number, CC: number, DD: number;
-  const S11 = 7, S12 = 12, S13 = 17, S14 = 22;
-  const S21 = 5, S22 = 9, S23 = 14, S24 = 20;
-  const S31 = 4, S32 = 11, S33 = 16, S34 = 23;
-  const S41 = 6, S42 = 10, S43 = 15, S44 = 21;
+  let AA: number;
+  let BB: number;
+  let CC: number;
+  let DD: number;
+  const S11 = 7;
+  const S12 = 12;
+  const S13 = 17;
+  const S14 = 22;
+  const S21 = 5;
+  const S22 = 9;
+  const S23 = 14;
+  const S24 = 20;
+  const S31 = 4;
+  const S32 = 11;
+  const S33 = 16;
+  const S34 = 23;
+  const S41 = 6;
+  const S42 = 10;
+  const S43 = 15;
+  const S44 = 21;
   stringToHash = Utf8Encode(stringToHash);
   const x = ConvertToWordArray(stringToHash);
   let a = 0x67452301;
@@ -439,7 +454,11 @@ function RotateLeft(lValue: number, iShiftBits: number) {
 }
 
 function AddUnsigned(lX: number, lY: number) {
-  let lX4: number, lY4: number, lX8: number, lY8: number, lResult: number;
+  let lX4: number;
+  let lY4: number;
+  let lX8: number;
+  let lY8: number;
+  let lResult: number;
   lX8 = (lX & 0x80000000);
   lY8 = (lY & 0x80000000);
   lX4 = (lX & 0x40000000);
@@ -498,9 +517,9 @@ function II(a: number, b: number, c: number, d: number, x: number, s: number, ac
 function ConvertToWordArray(stringToHash: string) {
   let lWordCount: number;
   const lMessageLength: number = stringToHash.length;
-  const lNumberOfWords_temp1: number = lMessageLength + 8;
-  const lNumberOfWords_temp2: number = (lNumberOfWords_temp1 - (lNumberOfWords_temp1 % 64)) / 64;
-  const lNumberOfWords: number = (lNumberOfWords_temp2 + 1) * 16;
+  const lNumberOfWordsTemp1 = lMessageLength + 8;
+  const lNumberOfWordsTemp2 = (lNumberOfWordsTemp1 - (lNumberOfWordsTemp1 % 64)) / 64;
+  const lNumberOfWords: number = (lNumberOfWordsTemp2 + 1) * 16;
   const lWordArray = Array(lNumberOfWords - 1);
   let lBytePosition = 0;
   let lByteCount = 0;
@@ -519,12 +538,14 @@ function ConvertToWordArray(stringToHash: string) {
 }
 
 function WordToHex(lValue: number) {
-  let WordToHexValue = '', WordToHexValue_temp = '';
-  let lByte: number, lCount: number;
+  let WordToHexValue = '';
+  let WordToHexValueTemp = '';
+  let lByte: number;
+  let lCount: number;
   for (lCount = 0; lCount <= 3; lCount++) {
     lByte = (lValue >>> (lCount * 8)) & 255;
-    WordToHexValue_temp = `'0${lByte.toString(16)}`;
-    WordToHexValue = WordToHexValue + WordToHexValue_temp.substr(WordToHexValue_temp.length - 2, 2);
+    WordToHexValueTemp = `'0${lByte.toString(16)}`;
+    WordToHexValue = WordToHexValue + WordToHexValueTemp.substr(WordToHexValueTemp.length - 2, 2);
   }
   return WordToHexValue;
 }

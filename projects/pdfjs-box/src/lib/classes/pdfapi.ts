@@ -1,47 +1,47 @@
 import {PDFDocumentProxy, PDFPromise, TextContent} from 'pdfjs-dist';
 export declare class PdfAPI {
-  apiCompatibilityParams: any;
-  build: string;
-  version: string;
+  public apiCompatibilityParams: any;
+  public build: string;
+  public version: string;
 
-  AnnotationLayer: AnnotationLayer;
-  GlobalWorkerOptions: GlobalWorkerOptions;
-  InvalidPDFException: InvalidPDFException;
-  LinkTarget: LinkTarget;
-  LoopbackPort: LoopbackPort;
-  MissingPDFException: MissingPDFException;
-  NativeImageDecoding: NativeImageDecoding;
-  OPS: OPS;
-  PDFDataRangeTransport: PDFDataRangeTransport;
-  PDFWorker: PDFWorker;
-  PasswordResponses: PasswordResponses;
-  RenderingCancelledException: RenderingCancelledException;
-  SVGGraphics: SVGGraphics;
-  UNSUPPORTED_FEATURES: UNSUPPORTED_FEATURES;
-  UnexpectedResponseException: UnexpectedResponseException;
-  Util: Util;
-  VerbosityLevel: VerbosityLevel;
+  public AnnotationLayer: AnnotationLayer;
+  public GlobalWorkerOptions: GlobalWorkerOptions;
+  public InvalidPDFException: InvalidPDFException;
+  public LinkTarget: LinkTarget;
+  public LoopbackPort: LoopbackPort;
+  public MissingPDFException: MissingPDFException;
+  public NativeImageDecoding: NativeImageDecoding;
+  public OPS: OPS;
+  public PDFDataRangeTransport: PDFDataRangeTransport;
+  public PDFWorker: PDFWorker;
+  public PasswordResponses: PasswordResponses;
+  public RenderingCancelledException: RenderingCancelledException;
+  public SVGGraphics: SVGGraphics;
+  public UNSUPPORTED_FEATURES: any;
+  public UnexpectedResponseException: UnexpectedResponseException;
+  public Util: Util;
+  public VerbosityLevel: VerbosityLevel;
 
-  addLinkAttributes();
+  public addLinkAttributes();
 
-  createBlob(data: any, contentType: any): any;
+  public createBlob(data: any, contentType: any): any;
 
-  createObjectURL(data: any, contentType: any);
+  public createObjectURL(data: any, contentType: any);
 
-  createPromiseCapability(): any;
+  public createPromiseCapability(): any;
 
-  createValidAbsoluteUrl(url: string, baseUrl: string): string;
+  public createValidAbsoluteUrl(url: string, baseUrl: string): string;
 
-  getDocument(src: string | PDFDataRangeTransport | Uint8Array |
+  public getDocument(src: string | PDFDataRangeTransport | Uint8Array |
     { data: Uint8Array } | { range: PDFDataRangeTransport } | { url: string }): PDFPromise<PDFDocumentProxy>;
 
-  getFilenameFromUrl(url): string;
+  public getFilenameFromUrl(url): string;
 
-  removeNullCharacters(str: string);
+  public removeNullCharacters(str: string);
 
-  renderTextLayer(renderParameters: RenderParameters): TextLayerRenderTask;
+  public renderTextLayer(renderParameters: RenderParameters): TextLayerRenderTask;
 
-  shadow(obj: any, prop: any, value: any): any;
+  public shadow(obj: any, prop: any, value: any): any;
 
 }
 
@@ -50,23 +50,23 @@ export interface TextLayerRenderTask extends PDFPromise<TextContent> {
 }
 
 export declare class RenderParameters {
-  textContent?: any;
-  textContentStream?: any;
-  container?: any;
-  viewport?: any;
-  textDivs?: any;
-  textContentItemsStr?: any;
-  enhanceTextSelection?: any;
-  timeout?: any;
+  public textContent?: any;
+  public textContentStream?: any;
+  public container?: any;
+  public viewport?: any;
+  public textDivs?: any;
+  public textContentItemsStr?: any;
+  public enhanceTextSelection?: any;
+  public timeout?: any;
 }
 
 export declare class AnnotationLayer {
-  static render(parameters: {annotations: any[], div: HTMLDivElement,
+  public static render(parameters: {annotations: any[], div: HTMLDivElement,
     page: any, viewport: any, linkService: any, downloadManager: any, imageResourcesPath: string,
-    renderInteractiveForms: boolean
+    renderInteractiveForms: boolean,
   }): void;
 
-  static update(parameters: {annotations: any[], div: HTMLDivElement, viewport: any}): void;
+  public static update(parameters: {annotations: any[], div: HTMLDivElement, viewport: any}): void;
 }
 
 export interface GlobalWorkerOptions {
@@ -82,19 +82,19 @@ export enum LinkTarget {
   SELF = 1,
   BLANK = 2,
   PARENT = 3,
-  TOP = 4
+  TOP = 4,
 }
 
 export declare class LoopbackPort {
-  addEventListener(name: string, listener: any);
 
   constructor(defer: any);
+  public addEventListener(name: string, listener: any);
 
-  postMessage(obj: any, transfers: any): any;
+  public postMessage(obj: any, transfers: any): any;
 
-  removeEventListener(name: any, listener: any): any;
+  public removeEventListener(name: any, listener: any): any;
 
-  terminate(): any;
+  public terminate(): any;
 }
 
 export declare class MissingPDFException {
@@ -203,44 +203,43 @@ export interface OPS {
 export declare class PDFDataRangeTransport {
   constructor(length: number, initialData: any);
 
-  abort();
+  public abort();
 
-  addProgressListener(listener: any);
+  public addProgressListener(listener: any);
 
-  addProgressiveReadListener(listener: any);
+  public addProgressiveReadListener(listener: any);
 
-  addRangeListener(listener: any);
+  public addRangeListener(listener: any);
 
-  onDataProgress(loaded: any);
+  public onDataProgress(loaded: any);
 
-  onDataProgressiveRead(chunk: any);
+  public onDataProgressiveRead(chunk: any);
 
-  onDataRange(begin: number, chunk: any);
+  public onDataRange(begin: number, chunk: any);
 
-  requestDataRange(begin: number, end: number);
+  public requestDataRange(begin: number, end: number);
 
-  transportReady();
+  public transportReady();
 }
 
 export declare class PDFWorker {
-  messageHandler: any;
+  public messageHandler: any;
 
-  port: any;
+  public port: any;
 
-  promise: any;
+  public promise: any;
 
-  static fromPort(params);
+  public static fromPort(params);
 
-  static getWorkerSrc();
+  public static getWorkerSrc();
 
-  destroy();
+  public destroy();
 
-  _initializeFromPort(port);
+  public _initializeFromPort(port);
 
-  _setupFakeWorker();
+  public _setupFakeWorker();
 
 }
-
 
 export interface PasswordResponses {
   NEED_PASSWORD: 1;
@@ -254,114 +253,111 @@ export declare class RenderingCancelledException {
 export declare class SVGGraphics {
   constructor(commonObjs: any, objs: any, forceDataSchema: any);
 
-  addFontStyle(fontObj: any);
+  public addFontStyle(fontObj: any);
 
-  beginText();
+  public beginText();
 
-  clip(type: any);
+  public clip(type: any);
 
-  closeEOFillStroke();
+  public closeEOFillStroke();
 
-  closeFillStroke();
+  public closeFillStroke();
 
-  closePath();
+  public closePath();
 
-  closeStroke();
+  public closeStroke();
 
-  constructPath(ops: any, args: any);
+  public constructPath(ops: any, args: any);
 
-  convertOpList(operatorList: any);
+  public convertOpList(operatorList: any);
 
-  endPath();
+  public endPath();
 
-  endText();
+  public endText();
 
-  eoFill();
+  public eoFill();
 
-  eoFillStroke();
+  public eoFillStroke();
 
-  executeOpTree(opTree: any);
+  public executeOpTree(opTree: any);
 
-  fill();
+  public fill();
 
-  fillStroke();
+  public fillStroke();
 
-  getSVG(operatorList: any, viewport: any);
+  public getSVG(operatorList: any, viewport: any);
 
-  group(items: any);
+  public group(items: any);
 
-  loadDependencies(operatorList: any);
+  public loadDependencies(operatorList: any);
 
-  moveText(x: any, y: any);
+  public moveText(x: any, y: any);
 
-  nextLine();
+  public nextLine();
 
-  paintFormXObjectBegin(matrix: any, bbox: any);
+  public paintFormXObjectBegin(matrix: any, bbox: any);
 
-  paintFormXObjectEnd();
+  public paintFormXObjectEnd();
 
-  paintImageMaskXObject(imgData: any);
+  public paintImageMaskXObject(imgData: any);
 
-  paintImageXObject(objId: any);
+  public paintImageXObject(objId: any);
 
-  paintInlineImageXObject(imgData: any, mask: any);
+  public paintInlineImageXObject(imgData: any, mask: any);
 
-  paintJpegXObject(objId: any, w: any, h: any);
+  public paintJpegXObject(objId: any, w: any, h: any);
 
-  paintSolidColorImageMask();
+  public paintSolidColorImageMask();
 
-  restore();
+  public restore();
 
-  save();
+  public save();
 
-  setCharSpacing(charSpacing: any);
+  public setCharSpacing(charSpacing: any);
 
-  setDash(dashArray: any, dashPhase: any);
+  public setDash(dashArray: any, dashPhase: any);
 
-  setFillAlpha(fillAlpha: any);
+  public setFillAlpha(fillAlpha: any);
 
-  setFillRGBColor(r: number, g: number, b: number);
+  public setFillRGBColor(r: number, g: number, b: number);
 
-  setFont(details: any);
+  public setFont(details: any);
 
-  setGState(states: any);
+  public setGState(states: any);
 
-  setHScale(scale: any);
+  public setHScale(scale: any);
 
-  setLeading(leading: any);
+  public setLeading(leading: any);
 
-  setLeadingMoveText(x: number, y: number);
+  public setLeadingMoveText(x: number, y: number);
 
-  setLineCap(style: any);
+  public setLineCap(style: any);
 
-  setLineJoin(style: any);
+  public setLineJoin(style: any);
 
-  setLineWidth(width: number);
+  public setLineWidth(width: number);
 
-  setMiterLimit(limit: any);
+  public setMiterLimit(limit: any);
 
-  setStrokeAlpha(strokeAlpha: number);
+  public setStrokeAlpha(strokeAlpha: number);
 
-  setStrokeRGBColor(r: number, g: number, b: number);
+  public setStrokeRGBColor(r: number, g: number, b: number);
 
-  setTextMatrix(a: any, b: any, c: any, d: any, e: any, f: any);
+  public setTextMatrix(a: any, b: any, c: any, d: any, e: any, f: any);
 
-  setTextRise(textRise: any);
+  public setTextRise(textRise: any);
 
-  setWordSpacing(wordSpacing: any);
+  public setWordSpacing(wordSpacing: any);
 
-  showText(glyphs: any);
+  public showText(glyphs: any);
 
-  stroke();
+  public stroke();
 
-  transform(a: any, b: any, c: any, d: any, e: any, f: any);
+  public transform(a: any, b: any, c: any, d: any, e: any, f: any);
 
-  _ensureClipGroup();
+  public _ensureClipGroup();
 
-  _ensureTransformGroup();
-}
-
-export interface UNSUPPORTED_FEATURES {
+  public _ensureTransformGroup();
 }
 
 export declare class UnexpectedResponseException {
@@ -369,22 +365,22 @@ export declare class UnexpectedResponseException {
 }
 
 export declare class Util {
-  appendToArray(arr1: any, arr2: any);
-  apply3dTransform(m: any, v: any);
-  applyInverseTransform(p: any, m: any);
-  applyTransform(p: any, m: any);
-  extendObj(obj1: any, obj2: any);
-  getAxialAlignedBoundingBox(r: any, m: any);
-  inherit(sub: any, base: any, prototype: any);
-  intersect(rect1: any, rect2: any);
-  inverseTransform(m: any);
-  loadScript(src: any, callback: any);
-  makeCssRgb(r: any, g: any, b: any);
-  normalizeRect(rect: any);
-  prependToArray(arr1: any, arr2: any);
-  singularValueDecompose2dScale(m: any);
-  toRoman(number: any, lowerCase: any);
-  transform(m1: any, m2: any);
+  public appendToArray(arr1: any, arr2: any);
+  public apply3dTransform(m: any, v: any);
+  public applyInverseTransform(p: any, m: any);
+  public applyTransform(p: any, m: any);
+  public extendObj(obj1: any, obj2: any);
+  public getAxialAlignedBoundingBox(r: any, m: any);
+  public inherit(sub: any, base: any, prototype: any);
+  public intersect(rect1: any, rect2: any);
+  public inverseTransform(m: any);
+  public loadScript(src: any, callback: any);
+  public makeCssRgb(r: any, g: any, b: any);
+  public normalizeRect(rect: any);
+  public prependToArray(arr1: any, arr2: any);
+  public singularValueDecompose2dScale(m: any);
+  public toRoman(num: any, lowerCase: any);
+  public transform(m1: any, m2: any);
 }
 
 export interface VerbosityLevel {

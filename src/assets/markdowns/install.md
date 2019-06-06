@@ -22,7 +22,7 @@ npm install @types/pdfjs-dist --save
 npm install @hhangular/pdfjs --save 
 ```
 
-### NPM
+### YARN
 
 ```jshelllanguage
 # dependencies
