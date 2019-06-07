@@ -5,12 +5,12 @@
         Get start
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <mat-list>
-      <a mat-list-item routerLink="install" routerLinkActive="active">
-        <i class="fas fa-download"></i>&nbsp;Installation
+    <mat-list routerLinkActive="active">
+      <a mat-list-item routerLink="install">
+        <fa-icon [icon]="faDownload"></fa-icon>&nbsp;Installation
       </a>
-      <a mat-list-item routerLink="configuration" routerLinkActive="active">
-        <i class="fas fa-cogs"></i>&nbsp;Configuration
+      <a mat-list-item routerLink="configuration">
+        <fa-icon [icon]="faCogs"></fa-icon>&nbsp;Configuration
       </a>
     </mat-list>
   </mat-expansion-panel>
@@ -20,15 +20,14 @@
         Components
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <mat-list>
-      <a mat-list-item routerLink="pdfjsthumbnails" routerLinkActive="active">
-        <i class="far fa-file-pdf"></i>
-        <i class="fas fa-file-pdf"></i>
-        <i class="far fa-file-pdf"></i>&nbsp;
-        PdfjsThumbnailsComponent
+    <mat-list routerLinkActive="active">
+      <a mat-list-item routerLink="pdfjsthumbnails">
+        <fa-icon [icon]="fasFilePdf"></fa-icon>
+        <fa-icon [icon]="farFilePdf"></fa-icon>
+        <fa-icon [icon]="fasFilePdf"></fa-icon>&nbsp;PdfjsThumbnails
       </a>
-      <a mat-list-item routerLink="pdfjsview" routerLinkActive="active">
-        <i class="fas fa-lg fa-file-pdf"></i>&nbsp;PdfjsViewComponent
+      <a mat-list-item routerLink="pdfjsview">
+        <fa-icon [icon]="fasFilePdf"></fa-icon>&nbsp;PdfjsView
       </a>
     </mat-list>
   </mat-expansion-panel>
@@ -38,11 +37,11 @@
         Classes
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <mat-list>
-      <a mat-list-item routerLink="pdfjscontrol" routerLinkActive="active">PdfjsControl</a>
-      <a mat-list-item routerLink="pdfjsgroupcontrol" routerLinkActive="active">PdfjsGroupControl</a>
-      <a mat-list-item routerLink="pdfjsconfig" routerLinkActive="active">PdfjsConfig</a>
-      <a mat-list-item routerLink="pdfjsitem" routerLinkActive="active">PdfjsItem</a>
+    <mat-list routerLinkActive="active">
+      <a mat-list-item routerLink="pdfjscontrol"><fa-icon [icon]="faDharmachakra"></fa-icon>&nbsp;PdfjsControl</a>
+      <a mat-list-item routerLink="pdfjsgroupcontrol">PdfjsGroupControl</a>
+      <a mat-list-item routerLink="pdfjsconfig">PdfjsConfig</a>
+      <a mat-list-item routerLink="pdfjsitem">PdfjsItem</a>
     </mat-list>
   </mat-expansion-panel>
   <mat-expansion-panel>
@@ -51,10 +50,10 @@
         Enum
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <mat-list>
-      <a mat-list-item routerLink="thumbnaillayout" routerLinkActive="active">ThumbnailLayout</a>
-      <a mat-list-item routerLink="thumbnaildragmode" routerLinkActive="active">ThumbnailDragMode</a>
-      <a mat-list-item routerLink="viewfit" routerLinkActive="active">ViewFit</a>
+    <mat-list routerLinkActive="active">
+      <a mat-list-item routerLink="thumbnaillayout"><fa-icon [icon]="faBuromobelexperte"></fa-icon>&nbsp;ThumbnailLayout</a>
+      <a mat-list-item routerLink="thumbnaildragmode"><fa-icon [icon]="faArrowsAlt"></fa-icon>&nbsp;ThumbnailDragMode</a>
+      <a mat-list-item routerLink="viewfit"><fa-icon [icon]="faExpandArrowsAlt"></fa-icon>&nbsp;ViewFit</a>
     </mat-list>
   </mat-expansion-panel>
 </mat-accordion>

@@ -4,7 +4,9 @@
   <a mat-button routerLink="demo">Demo</a>
   <div class="flex-spacer"></div>
   <label>{{version}}</label>
-  <a mat-button [href]="url" target="_blank"><i class="fab fa-2x fa-github"></i>&nbsp;Github</a>
+  <a mat-button [href]="url" target="_blank">
+    <fa-icon [icon]="faGithub" size="2x"></fa-icon>&nbsp;Github
+  </a>
 </mat-toolbar>
 <nav class="docs-navbar-header">
 </nav>

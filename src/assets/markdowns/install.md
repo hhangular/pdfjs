@@ -9,15 +9,15 @@ For existing apps, follow these steps to begin using Mozilla pdfjs in your Angul
 You can use either the npm or yarn command-line tool to install packages. Use whichever is appropriate for your project in the examples below.
 
 ### Peer dependencies
+
+Peer dependencies will be imported with @hhangular/pdfjs
+
   - pdfjs-dist
   - @types/pdfjs-dist
 
 ### NPM
 
 ```jshelllanguage
-# dependencies
-npm install pdfjs-dist --save
-npm install @types/pdfjs-dist --save
 # @hhangular/pdfjs
 npm install @hhangular/pdfjs --save 
 ```
@@ -25,9 +25,6 @@ npm install @hhangular/pdfjs --save
 ### YARN
 
 ```jshelllanguage
-# dependencies
-yarn add pdfjs-dist
-yarn add @types/pdfjs-dist
 # @hhangular/pdfjs
 yarn add @hhangular/pdfjs
 ```

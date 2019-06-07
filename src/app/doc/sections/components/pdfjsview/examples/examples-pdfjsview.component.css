@@ -4,3 +4,7 @@
 pdfjs-view {
   height: calc(100vh - 64px - 64px - 48px - 100px - 40px - 7px);
 }
+:host {
+  padding-left: 40px;
+  display: block;
+}

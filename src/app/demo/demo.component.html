@@ -27,59 +27,59 @@
       <div class="button-row" style="text-align: center">
         <button mat-icon-button [disabled]="!pdfjsGroupControl.hasPrevious()"
                 (click)="pdfjsGroupControl.selectPrevious()">
-          <i class="fas fa-lg fa-arrow-left"></i>
+          <fa-icon size="lg" [icon]="faArrowLeft"></fa-icon>
         </button>
         <button mat-icon-button [disabled]="true">
           {{pdfjsGroupControl.getPageIndex()}}/{{pdfjsGroupControl.getNumberOfPages()}}
         </button>
         <button mat-icon-button [disabled]="!pdfjsGroupControl.hasNext()"
                 (click)="pdfjsGroupControl.selectNext()">
-          <i class="fas fa-lg fa-arrow-right"></i>
+          <fa-icon size="lg" [icon]="faArrowRight"></fa-icon>
         </button>
         <button mat-icon-button [disabled]="pdfjsGroupControl.disabled" (click)="pdfjsGroupControl.rotate(-90)">
-          <span class="fa-layers fa-lg fa-fw">
-            <i class="far fa-copy"></i>
-            <i class="fas fa-undo" data-fa-transform="shrink-11 right-2"></i>
-          </span>
+          <fa-layers size="lg">
+            <fa-icon [icon]="faCopy"></fa-icon>
+            <fa-icon [icon]="faUndo" transform="shrink-11 right-2"></fa-icon>
+          </fa-layers>
         </button>
         <button mat-icon-button [disabled]="pdfjsGroupControl.disabled" (click)="pdfjsGroupControl.rotateSelected(-90)">
-          <span class="fa-layers fa-lg fa-fw">
-            <i class="far fa-file"></i>
-            <i class="fas fa-undo" data-fa-transform="shrink-9 down-1"></i>
-          </span>
+          <fa-layers size="lg">
+            <fa-icon [icon]="faFile"></fa-icon>
+            <fa-icon [icon]="faUndo" transform="shrink-9 down-1"></fa-icon>
+          </fa-layers>
         </button>
         <button mat-icon-button [disabled]="pdfjsGroupControl.disabled" (click)="pdfjsGroupControl.rotateSelected(90)">
-          <span class="fa-layers fa-lg fa-fw">
-            <i class="far fa-file"></i>
-            <i class="fas fa-undo" data-fa-transform="shrink-9 flip-h down-1"></i>
-          </span>
+          <fa-layers size="lg">
+            <fa-icon [icon]="faFile"></fa-icon>
+            <fa-icon [icon]="faUndo" transform="shrink-9 flip-h down-1"></fa-icon>
+          </fa-layers>
         </button>
         <button mat-icon-button [disabled]="pdfjsGroupControl.disabled" (click)="pdfjsGroupControl.rotate(90)">
-          <span class="fa-layers fa-lg fa-fw">
-            <i class="far fa-copy"></i>
-            <i class="fas fa-undo" data-fa-transform="shrink-11 flip-h right-2"></i>
-          </span>
+          <fa-layers size="lg">
+            <fa-icon [icon]="faCopy"></fa-icon>
+            <fa-icon [icon]="faUndo" transform="shrink-11 flip-h right-2"></fa-icon>
+          </fa-layers>
         </button>
         <button mat-icon-button [disabled]="pdfjsGroupControl.disabled" (click)="pdfjsGroupControl.zoom(0.9)">
-          <i class="fas fa-lg fa-search-minus"></i>
+          <fa-icon [icon]="faSearchMinus" size="lg"></fa-icon>
         </button>
         <button mat-icon-button [disabled]="pdfjsGroupControl.disabled" (click)="pdfjsGroupControl.fit()">
-          <i class="fas fa-lg fa-expand-arrows-alt"></i>
+          <fa-icon [icon]="faExpandArrowsAlt" size="lg"></fa-icon>
         </button>
         <button mat-icon-button [disabled]="pdfjsGroupControl.disabled" (click)="pdfjsGroupControl.zoom(1.1)">
-          <i class="fas fa-lg fa-search-plus"></i>
+          <fa-icon [icon]="faSearchPlus" size="lg"></fa-icon>
         </button>
         <button mat-icon-button [disabled]="pdfjsGroupControl.disabled" (click)="pdfjsGroupControl.reload()">
-          <i class="fas fa-lg fa-sync-alt"></i>
+          <fa-icon [icon]="faSyncAlt" size="lg"></fa-icon>
         </button>
         <button mat-icon-button (click)="editMode = !editMode">
-          <i class="fas fa-lg fa-edit"></i>
+          <fa-icon [icon]="faEdit" size="lg"></fa-icon>
         </button>
         <mat-menu #appMenu="matMenu">
           <button mat-menu-item *ngFor="let pdf of pdfs" (click)="showPdf(pdf)">{{pdf.fn}}</button>
         </mat-menu>
         <button mat-icon-button [matMenuTriggerFor]="appMenu">
-          <i class="fas fa-lg fa-file-pdf"></i>
+          <fa-icon [icon]="faFilePdf" size="lg"></fa-icon>
         </button>
       </div>
       <pdfjs-view [control]="pdfjsGroupControl"

@@ -12,14 +12,15 @@ It's a collection of modules for angular 8x
 pdfjs-box is implementation of pdfjs-box for angular 8x. It contains some components for use easily the [mozilla pdf viewer pdfjs](https://github.com/mozilla/pdf.js).
 
 ### dependencies
+
+Peer dependencies will be imported with @hhangular/pdfjs
+
   - pdfjs-dist
   - @types/pdfjs-dist
 
 ## installation
 
 ```
-npm install pdfjs-dist --save
-npm install @types/pdfjs-dist --save
 npm install @hhangular/pdfjs --save
 ```
 

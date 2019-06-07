@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {GithubService} from '../github.service';
+import {faGithub} from '@fortawesome/free-brands-svg-icons';
 
 @Component({
   selector: 'app-navbar',
@@ -8,6 +9,7 @@ import {GithubService} from '../github.service';
 })
 export class NavBarComponent implements OnInit {
 
+  faGithub = faGithub;
   public version = '';
   public url = '';
 

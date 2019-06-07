@@ -1,3 +1,4 @@
+<ngx-md [path]="'assets/markdowns/components/pdfjsView/examples.md'"></ngx-md>
 <pdfjs-thumbnails [pdfjsControl]="pdfjsControl"
                   [quality]="1"
                   [fitSize]="100"
@@ -10,47 +11,47 @@
 <div class="button-row" style="text-align: center">
   <button mat-icon-button [disabled]="!pdfjsControl.hasPrevious()"
           (click)="pdfjsControl.selectPrevious()">
-    <i class="fas fa-lg fa-arrow-left"></i>
+    <fa-icon size="lg" [icon]="faArrowLeft"></fa-icon>
   </button>
   <button mat-icon-button [disabled]="true">
     {{pdfjsControl.getPageIndex()}}/{{pdfjsControl.getNumberOfPages()}}
   </button>
   <button mat-icon-button [disabled]="!pdfjsControl.hasNext()"
           (click)="pdfjsControl.selectNext()">
-    <i class="fas fa-lg fa-arrow-right"></i>
+    <fa-icon size="lg" [icon]="faArrowRight"></fa-icon>
   </button>
   <button mat-icon-button (click)="pdfjsControl.rotate(-90)">
-          <span class="fa-layers fa-lg fa-fw">
-            <i class="far fa-copy"></i>
-            <i class="fas fa-undo" data-fa-transform="shrink-11 right-2"></i>
-          </span>
+    <fa-layers size="lg">
+      <fa-icon [icon]="faCopy"></fa-icon>
+      <fa-icon [icon]="faUndo" transform="shrink-11 right-2"></fa-icon>
+    </fa-layers>
   </button>
   <button mat-icon-button (click)="pdfjsControl.rotateSelected(-90)">
-          <span class="fa-layers fa-lg fa-fw">
-            <i class="far fa-file"></i>
-            <i class="fas fa-undo" data-fa-transform="shrink-9 down-1"></i>
-          </span>
+    <fa-layers size="lg">
+      <fa-icon [icon]="faFile"></fa-icon>
+      <fa-icon [icon]="faUndo" transform="shrink-9 down-1"></fa-icon>
+    </fa-layers>
   </button>
   <button mat-icon-button (click)="pdfjsControl.rotateSelected(90)">
-          <span class="fa-layers fa-lg fa-fw">
-            <i class="far fa-file"></i>
-            <i class="fas fa-undo" data-fa-transform="shrink-9 flip-h down-1"></i>
-          </span>
+    <fa-layers size="lg">
+      <fa-icon [icon]="faFile"></fa-icon>
+      <fa-icon [icon]="faUndo" transform="shrink-9 flip-h down-1"></fa-icon>
+    </fa-layers>
   </button>
   <button mat-icon-button (click)="pdfjsControl.rotate(90)">
-          <span class="fa-layers fa-lg fa-fw">
-            <i class="far fa-copy"></i>
-            <i class="fas fa-undo" data-fa-transform="shrink-11 flip-h right-2"></i>
-          </span>
+    <fa-layers size="lg">
+      <fa-icon [icon]="faCopy"></fa-icon>
+      <fa-icon [icon]="faUndo" transform="shrink-11 flip-h right-2"></fa-icon>
+    </fa-layers>
   </button>
   <button mat-icon-button (click)="pdfjsControl.zoom(0.9)">
-    <i class="fas fa-lg fa-search-minus"></i>
+    <fa-icon [icon]="faSearchMinus" size="lg"></fa-icon>
   </button>
   <button mat-icon-button (click)="pdfjsControl.fit()">
-    <i class="fas fa-lg fa-expand-arrows-alt"></i>
+    <fa-icon [icon]="faExpandArrowsAlt" size="lg"></fa-icon>
   </button>
   <button mat-icon-button (click)="pdfjsControl.zoom(1.1)">
-    <i class="fas fa-lg fa-search-plus"></i>
+    <fa-icon [icon]="faSearchPlus" size="lg"></fa-icon>
   </button>
 </div>
 <pdfjs-view [control]="pdfjsControl"
