@@ -1,15 +1,15 @@
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import {Component, ComponentRef, ElementRef, EventEmitter, HostBinding, HostListener, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, HostBinding, HostListener, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {PDFPromise, PDFRenderTask} from 'pdfjs-dist';
 import {BehaviorSubject, combineLatest, of, Subscription} from 'rxjs';
 import {distinctUntilChanged, flatMap, map} from 'rxjs/operators';
 import {PdfjsControl} from '../../classes/pdfjs-control';
 import {PdfjsGroupControl} from '../../classes/pdfjs-group-control';
-import {PdfjsItem, PdfjsItemEvent, ThumbnailLayout} from '../../classes/pdfjs-objects';
+import {PdfjsItem, RenderQuality, Selectors, ThumbnailLayout} from '../../classes/pdfjs-objects';
 import {Pdfjs} from '../../services/pdfjs.service';
 
 @Component({
-  selector: 'pdfjs-thumbnail',
+  selector: Selectors.THUMBNAIL,
   templateUrl: './pdfjs-thumbnail.component.html',
   styleUrls: ['./pdfjs-thumbnail.component.css'],
   animations: [
@@ -113,9 +113,9 @@ export class PdfjsThumbnailComponent implements OnInit, OnDestroy {
   @Input()
   public fitSize = 100;
   @Input()
-  public quality: 1 | 2 | 3 | 4 | 5 = 2;
+  public quality: RenderQuality = 2;
   @HostBinding('class.not_rendered')
-   public notRendered = true;
+  public notRendered = true;
   @ViewChild('canvas', {static: true})
   private canvasRef: ElementRef;
   private item$: BehaviorSubject<PdfjsItem> = new BehaviorSubject<PdfjsItem>(null);
@@ -134,7 +134,7 @@ export class PdfjsThumbnailComponent implements OnInit, OnDestroy {
   }
 
   @HostListener('@thumbnailState.done', ['$event.toState'])
-  public removeAnimationDone(toState: string) {
+  removeAnimationDone(toState: string) {
     if (toState === 'removed') {
       const canvas: HTMLCanvasElement = this.canvasRef.nativeElement;
       this.cancelRenderTask();
@@ -171,8 +171,8 @@ export class PdfjsThumbnailComponent implements OnInit, OnDestroy {
     }
   }
 
-  @HostListener('mouseout', ['$event'])
-  public mouseOut($event: MouseEvent) {
+  @HostListener('mouseout', [])
+  mouseOut() {
     this.showPreview.emit(null);
     const thumbnail: HTMLElement = this.elementRef.nativeElement;
     thumbnail.classList.remove('hover-right');

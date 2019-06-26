@@ -20,7 +20,7 @@ Peer dependencies will be imported with @hhangular/pdfjs
 
 ## installation
 
-```
+```javascript
 npm install @hhangular/pdfjs --save
 ```
 
@@ -28,7 +28,7 @@ npm install @hhangular/pdfjs --save
 
 Add assets pdfworker in angular.json
 
-```json
+```javascript
 {
   ...
   "projects": {
@@ -50,7 +50,7 @@ Add assets pdfworker in angular.json
 
 ### In application module add PdfjsBoxModule and configure worker
 
-```typescript
+```javascript
 @NgModule({
 ...
 imports: [

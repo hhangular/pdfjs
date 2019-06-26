@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
 import {PdfjsControl} from '../classes/pdfjs-control';
-import {PdfjsItem, ThumbnailDragMode, ThumbnailLayout} from '../classes/pdfjs-objects';
+import {PdfjsItem, Selectors, ThumbnailDragMode, ThumbnailLayout} from '../classes/pdfjs-objects';
 import {PdfjsThumbnailsComponent} from '../components/pdfjs-thumbnails/pdfjs-thumbnails.component';
+import {PdfjsThumbnailComponent} from '../components/pdfjs-thumbnail/pdfjs-thumbnail.component';
 
 @Injectable({
   providedIn: 'root',
@@ -127,6 +128,14 @@ export class ThumbnailDragService {
   public stopMoving() {
     this.invalidSource();
     this.invalidTarget();
+  }
+
+  public getFirstParentThumbnail(target: HTMLElement): HTMLElement {
+    return this.getFirstParentElementNamed(target, Selectors.THUMBNAIL);
+  }
+
+  public getFirstParentThumbnails(target: HTMLElement): HTMLElement {
+    return this.getFirstParentElementNamed(target, Selectors.THUMBNAILS);
   }
 
   public getFirstParentElementNamed(target: HTMLElement, nodeName: string): HTMLElement {

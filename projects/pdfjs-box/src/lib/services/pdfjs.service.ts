@@ -2,9 +2,9 @@ import {Injectable} from '@angular/core';
 import {PDFPageProxy, PDFPageViewport, PDFPromise, PDFRenderTask, TextContent} from 'pdfjs-dist';
 import * as api from 'pdfjs-dist/build/pdf';
 import {PdfAPI, RenderingCancelledException} from '../classes/pdfapi';
-import {PdfjsItem} from '../classes/pdfjs-objects';
+import {PdfjsItem, RenderQuality} from '../classes/pdfjs-objects';
 
-type Fitter = (canvas: HTMLCanvasElement, size: number, rect: DOMRect, quality: number) => number;
+type Fitter = (canvas: HTMLCanvasElement, size: number, rect: DOMRect, quality: RenderQuality) => number;
 
 @Injectable()
 export class Pdfjs {
@@ -21,17 +21,17 @@ export class Pdfjs {
   /**
    * Render page in canvas
    */
-  public renderItemInCanvasHeightFitted(item: PdfjsItem, quality: 1 | 2 | 3 | 4 | 5, canvas: HTMLCanvasElement, height: number): PDFPromise<any> {
+  public renderItemInCanvasHeightFitted(item: PdfjsItem, quality: RenderQuality, canvas: HTMLCanvasElement, height: number): PDFPromise<any> {
     return this.renderItemInCanvasFitted(item, quality, canvas, height,
-      (c: HTMLCanvasElement, size: number, rect: DOMRect, q: number) => this.horizontalFitter(c, size, rect, q));
+      (c: HTMLCanvasElement, size: number, rect: DOMRect, q: RenderQuality) => this.horizontalFitter(c, size, rect, q));
   }
 
   /**
    * Render page in canvas
    */
-  public renderItemInCanvasWidthFitted(item: PdfjsItem, quality: 1 | 2 | 3 | 4 | 5, canvas: HTMLCanvasElement, width: number): PDFPromise<any> {
+  public renderItemInCanvasWidthFitted(item: PdfjsItem, quality: RenderQuality, canvas: HTMLCanvasElement, width: number): PDFPromise<any> {
     return this.renderItemInCanvasFitted(item, quality, canvas, width,
-      (c: HTMLCanvasElement, size: number, rect: DOMRect, q: number) => this.verticalFitter(c, size, rect, q));
+      (c: HTMLCanvasElement, size: number, rect: DOMRect, q: RenderQuality) => this.verticalFitter(c, size, rect, q));
   }
 
   /**
@@ -51,7 +51,7 @@ export class Pdfjs {
   /**
    * fitter for vertical thumbnail container
    */
-  public verticalFitter(canvas: HTMLCanvasElement, width: number, rect: DOMRect, quality: number): number {
+  public verticalFitter(canvas: HTMLCanvasElement, width: number, rect: DOMRect, quality: RenderQuality): number {
     const scale = width / rect.width;
     const ratio: number = rect.height / rect.width;
     this.setCanvasSize(canvas, width, width * ratio, quality);
@@ -61,7 +61,7 @@ export class Pdfjs {
   /**
    * fitter for horizontal thumbnail container
    */
-  public horizontalFitter(canvas: HTMLCanvasElement, height: number, rect: DOMRect, quality: number): number {
+  public horizontalFitter(canvas: HTMLCanvasElement, height: number, rect: DOMRect, quality: RenderQuality): number {
     const scale = height / rect.height;
     const ratio: number = rect.width / rect.height;
     this.setCanvasSize(canvas, height * ratio, height, quality);
@@ -71,7 +71,7 @@ export class Pdfjs {
   /**
    * Define sizes of canvas
    */
-  public setCanvasSize(canvas: HTMLCanvasElement, width: number, height: number, quality: number) {
+  public setCanvasSize(canvas: HTMLCanvasElement, width: number, height: number, quality: RenderQuality) {
     canvas.setAttribute('width', `${width * quality}px`);
     canvas.setAttribute('height', `${height * quality}px`);
     canvas.style.width = `${width}px`;
@@ -115,7 +115,7 @@ export class Pdfjs {
   /**
    * Render page in canvas
    */
-  private renderItemInCanvasFitted(item: PdfjsItem, quality: 1 | 2 | 3 | 4 | 5,
+  private renderItemInCanvasFitted(item: PdfjsItem, quality: RenderQuality,
                                    canvas: HTMLCanvasElement, size: number, fitter: Fitter): PDFPromise<any> {
     const ctx: CanvasRenderingContext2D = this.cleanCanvas(canvas);
     return !!item ? item.getPage().then((pdfPageProxy: PDFPageProxy) => {

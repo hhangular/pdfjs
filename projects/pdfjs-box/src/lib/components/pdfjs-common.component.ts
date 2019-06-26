@@ -1,6 +1,6 @@
 import {Component, ElementRef, HostListener} from '@angular/core';
 import {PdfAPI} from '../classes/pdfapi';
-import {ThumbnailLayout} from '../classes/pdfjs-objects';
+import {ThumbnailLayout, ThumbnailOver, ThumbnailOverValues} from '../classes/pdfjs-objects';
 import {KeysService} from '../services/keys.service';
 import {Pdfjs} from '../services/pdfjs.service';
 import {ThumbnailDragService} from '../services/thumbnail-drag.service';
@@ -47,6 +47,11 @@ export class PdfjsCommonComponent {
     }
   }
 
+  @HostListener('document:scroll', [])
+  public onScroll() {
+    console.log('scroll');
+  }
+
   /**
    * On drag in the document
    */
@@ -58,7 +63,7 @@ export class PdfjsCommonComponent {
     }
     // considerate only item drag
     if (this.thumbnailDragService.dataTransferInitiated()) {
-      const containerOver: HTMLElement = this.getThumbnailContainerOver(event.target);
+      const containerOver: HTMLElement = this.getThumbnailsContainerOver(event.target);
       const pdfjsThumbnailsComponent: PdfjsThumbnailsComponent = this.thumbnailDragService.getComponentAcceptDrop(containerOver);
       // over a thumbnails container and it accepts drop items
       if (!!pdfjsThumbnailsComponent) {
@@ -143,22 +148,22 @@ export class PdfjsCommonComponent {
    */
   public getPositionFix($event: MouseEvent, layout: ThumbnailLayout, thumbnail: HTMLElement) {
     let position = 0;
-    let overAt: 'right' | 'left' | 'bottom' | 'top';
+    let overAt: ThumbnailOver;
     const rectList: DOMRectList = thumbnail.getClientRects() as DOMRectList;
     const r: DOMRect = rectList[0];
     if (layout === ThumbnailLayout.HORIZONTAL) {
       if ($event.clientX > (r.left + r.width / 2)) { // right
-        overAt = 'right';
+        overAt = ThumbnailOverValues.RIGHT;
         position = 1;
       } else {
-        overAt = 'left';
+        overAt = ThumbnailOverValues.LEFT;
       }
     } else {
       if ($event.clientY > (r.top + r.height / 2)) { // bottom
-        overAt = 'bottom';
+        overAt = ThumbnailOverValues.BOTTOM;
         position = 1;
       } else {
-        overAt = 'top';
+        overAt = ThumbnailOverValues.TOP;
       }
     }
     this.debugThumbnailOver(thumbnail, overAt);
@@ -176,27 +181,32 @@ export class PdfjsCommonComponent {
   /**
    * Add css class for debug the moving of thumbnail over an other
    */
-  private debugThumbnailOver(thumbnail: HTMLElement, overAt: 'right' | 'left' | 'bottom' | 'top') {
+  private debugThumbnailOver(thumbnail: HTMLElement, overAt: ThumbnailOver) {
     if (PdfjsCommonComponent.DEBUG_OVER) {
-      thumbnail.classList.remove('hover-right');
-      thumbnail.classList.remove('hover-left');
-      thumbnail.classList.remove('hover-bottom');
-      thumbnail.classList.remove('hover-top');
+      this.removeDebugBorder(thumbnail.previousElementSibling);
+      thumbnail.previousElementSibling && this.removeDebugBorder(thumbnail.previousElementSibling.previousElementSibling);
+      this.removeDebugBorder(thumbnail);
+      this.removeDebugBorder(thumbnail.nextElementSibling);
+      thumbnail.nextElementSibling && this.removeDebugBorder(thumbnail.nextElementSibling.nextElementSibling);
       thumbnail.classList.add(`hover-${overAt}`);
     }
+  }
+
+  private removeDebugBorder(thumbnail: Element) {
+    thumbnail && thumbnail.classList.remove(...Object.values(ThumbnailOverValues).map(value => `hover-${value}`));
   }
 
   /**
    * get thumbnails element mouseover
    */
-  private getThumbnailContainerOver(eventTarget: EventTarget): HTMLElement {
-    return this.thumbnailDragService.getFirstParentElementNamed(eventTarget as HTMLElement, 'pdfjs-thumbnails');
+  private getThumbnailsContainerOver(eventTarget: EventTarget): HTMLElement {
+    return this.thumbnailDragService.getFirstParentThumbnails(eventTarget as HTMLElement);
   }
 
   /**
    * get thumbnail element mouseover
    */
   private getThumbnailOver(eventTarget: EventTarget): HTMLElement {
-    return this.thumbnailDragService.getFirstParentElementNamed(eventTarget as HTMLElement, 'pdfjs-thumbnail');
+    return this.thumbnailDragService.getFirstParentThumbnail(eventTarget as HTMLElement);
   }
 }

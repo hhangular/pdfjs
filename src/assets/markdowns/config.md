@@ -2,7 +2,7 @@
 
 ### Add assets pdfworker in angular.json
 
-```json
+```javascript
 {
   ...
   "projects": {
@@ -24,7 +24,7 @@
 
 ### In application module add PdfjsBoxModule and configure worker
 
-```typescript
+```javascript
 @NgModule({
 ...
 imports: [

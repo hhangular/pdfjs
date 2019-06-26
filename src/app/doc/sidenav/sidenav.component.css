@@ -9,7 +9,7 @@ a:hover {
   text-decoration: none;
   color: darkorange;
 }
-a:active {
+a:active, a.active {
   text-decoration: none;
   color: dodgerblue;
 }

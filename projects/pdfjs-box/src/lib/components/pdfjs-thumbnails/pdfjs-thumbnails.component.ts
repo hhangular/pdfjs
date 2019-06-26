@@ -18,12 +18,13 @@ import {Subject} from 'rxjs';
 import {filter} from 'rxjs/operators';
 import {PdfjsControl} from '../../classes/pdfjs-control';
 import {PdfjsGroupControl} from '../../classes/pdfjs-group-control';
-import {PdfjsItem, PdfjsItemEvent, ThumbnailDragMode, ThumbnailLayout} from '../../classes/pdfjs-objects';
+import {PdfjsItem, PdfjsItemEvent, RenderQuality, Selectors, ThumbnailDragMode, ThumbnailLayout} from '../../classes/pdfjs-objects';
 import {ThumbnailDragService} from '../../services/thumbnail-drag.service';
 import {PdfjsThumbnailComponent} from '../pdfjs-thumbnail/pdfjs-thumbnail.component';
+import {logger} from 'codelyzer/util/logger';
 
 @Component({
-  selector: 'pdfjs-thumbnails',
+  selector: Selectors.THUMBNAILS,
   templateUrl: './pdfjs-thumbnails.component.html',
   styleUrls: ['./pdfjs-thumbnails.component.css'],
 })
@@ -34,7 +35,6 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy {
    */
   @Input()
   set layout(layout: ThumbnailLayout) {
-    this._layout = layout;
     this.vertical = layout !== ThumbnailLayout.HORIZONTAL;
     const thumbnails: HTMLElement = this.elementRef.nativeElement as HTMLElement;
     if (this.vertical) {
@@ -45,7 +45,7 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy {
   }
 
   get layout(): ThumbnailLayout {
-    return this._layout;
+    return this.vertical ? ThumbnailLayout.VERTICAL : ThumbnailLayout.HORIZONTAL;
   }
 
   /**
@@ -120,7 +120,7 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy {
    * The quality of pdf render
    */
   @Input()
-  public quality: 1 | 2 | 3 | 4 | 5 = 1;
+  public quality: RenderQuality = 1;
 
   /**
    * The remove button on thumbnail is it visible
@@ -154,7 +154,6 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy {
 
   private _pdfjsControl: PdfjsControl;
   private init = false;
-  private _layout: ThumbnailLayout = ThumbnailLayout.HORIZONTAL;
   private items: PdfjsItem[] = [];
   private timeStart = 0;
 
@@ -174,7 +173,7 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy {
   public onDragStart(event: DragEvent) {
     this.itemToPreview = null;
     if (this.dragMode !== ThumbnailDragMode.NONE) {
-      const thumbnail: HTMLElement = this.thumbnailDragService.getFirstParentElementNamed(event.target as HTMLElement, 'pdfjs-thumbnail');
+      const thumbnail: HTMLElement = this.thumbnailDragService.getFirstParentThumbnail(event.target as HTMLElement);
       const thumbnails: HTMLElement = this.elementRef.nativeElement as HTMLElement;
       const idx: number = this.thumbnailDragService.getIndexOfThumbnailInThumbnails(thumbnail, thumbnails);
       if (!isNaN(idx)) {
@@ -194,9 +193,9 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy {
     this.thumbnailDragService.registerDropThumbnails(this);
     this.itemEvent$.subscribe((itemEvent: PdfjsItemEvent) => {
       if (itemEvent.event === 'add') {
-        this.addPdfjsThumbnailComponentToDom(itemEvent.item, itemEvent.to);
+        this.addThumbnailComponentToDom(itemEvent.item, itemEvent.to);
       } else if (itemEvent.event === 'remove') {
-        this.removePdfjsThumbnailComponentToDom(itemEvent.item, itemEvent.from);
+        this.removeThumbnailComponentToDom(itemEvent.item, itemEvent.from);
       }
     });
   }
@@ -215,8 +214,8 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy {
   /**
    * scrolling
    */
-  @HostListener('scroll', ['$event'])
-  public onScroll(event: Event) {
+  @HostListener('scroll', [])
+  public onScroll() {
     this.itemToPreview = null;
   }
 
@@ -254,7 +253,7 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy {
   /**
    * remove PdfjsThumbnailComponent from dom
    */
-  private removePdfjsThumbnailComponentToDom(item: PdfjsItem, index: number) {
+  private removeThumbnailComponentToDom(item: PdfjsItem, index: number) {
     const idx = this.thumbnailComponentRefs.findIndex((component: ComponentRef<PdfjsThumbnailComponent>) => {
       const it: PdfjsItem = component.instance.item;
       return it.pdfId === item.pdfId && it.pageIdx === item.pageIdx;
@@ -267,19 +266,19 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * add PdfjsThumbnailComponent to dom
+   * add ThumbnailComponent to dom
    */
-  private addPdfjsThumbnailComponentToDom(item: PdfjsItem, index: number) {
+  private addThumbnailComponentToDom(item: PdfjsItem, index: number) {
     if (index === undefined) {
       index = this.thumbnailComponentRefs.length;
     }
     const componentFactory = this.cfr.resolveComponentFactory(PdfjsThumbnailComponent);
     const componentRef: ComponentRef<PdfjsThumbnailComponent> = this.container.createComponent(componentFactory, index);
     this.thumbnailComponentRefs.splice(index, 0, componentRef);
-    this.initPdfjsThumbnailComponent(componentRef.instance, item);
+    this.initThumbnailComponent(componentRef.instance, item);
   }
 
-  private initPdfjsThumbnailComponent(instance: PdfjsThumbnailComponent, item: PdfjsItem) {
+  private initThumbnailComponent(instance: PdfjsThumbnailComponent, item: PdfjsItem) {
     instance.item = item;
     instance.quality = this.quality;
     instance.removable = this.allowRemove;

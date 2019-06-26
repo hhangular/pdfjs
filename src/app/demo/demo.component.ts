@@ -54,6 +54,6 @@ export class DemoComponent implements OnInit {
   }
 
   showPdf($event: any) {
-    this.pdfjsControl.load($event.url);
+    this.pdfjsControl.load($event.url, true);
   }
 }

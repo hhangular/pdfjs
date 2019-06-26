@@ -4,12 +4,12 @@ import {BehaviorSubject, combineLatest, Subscription} from 'rxjs';
 import {distinctUntilChanged, filter, flatMap, tap} from 'rxjs/operators';
 import {PdfjsControl} from '../../classes/pdfjs-control';
 import {PdfjsGroupControl} from '../../classes/pdfjs-group-control';
-import {PdfjsItem, ViewFit} from '../../classes/pdfjs-objects';
+import {PdfjsItem, RenderQuality, Selectors, ViewFit} from '../../classes/pdfjs-objects';
 import {KeysService} from '../../services/keys.service';
 import {Pdfjs} from '../../services/pdfjs.service';
 
 @Component({
-  selector: 'pdfjs-view',
+  selector: Selectors.VIEW,
   templateUrl: './pdfjs-view.component.html',
   styleUrls: ['./pdfjs-view.component.css'],
 })
@@ -41,7 +41,7 @@ export class PdfjsViewComponent implements OnDestroy, OnInit, AfterViewInit {
   public pageRef: ElementRef;
   public pdfRenderTask: PDFRenderTask;
   @Input()
-  public quality: 1 | 2 | 3 | 4 | 5 = 2;
+  public quality: RenderQuality = 2;
   @Input()
   public textLayer = false;
   @Input()

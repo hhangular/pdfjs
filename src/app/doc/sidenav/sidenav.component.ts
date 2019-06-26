@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {
-  faArrowsAlt,
+  faArrowsAlt, faBorderNone,
   faCogs,
   faDharmachakra,
   faDownload,
   faExpandArrowsAlt,
-  faFilePdf as fasFilePdf
+  faFilePdf as fasFilePdf, faGamepad, faListUl, faWrench
 } from '@fortawesome/free-solid-svg-icons';
 import {faFilePdf as farFilePdf} from '@fortawesome/free-regular-svg-icons';
 import {faBuromobelexperte} from '@fortawesome/free-brands-svg-icons';
@@ -25,6 +25,10 @@ export class SidenavComponent implements OnInit {
   faBuromobelexperte = faBuromobelexperte;
   faArrowsAlt = faArrowsAlt;
   faExpandArrowsAlt = faExpandArrowsAlt;
+  faBorderNone = faBorderNone;
+  faGamepad = faGamepad;
+  faWrench = faWrench;
+  faListUl = faListUl;
 
   constructor() {
   }

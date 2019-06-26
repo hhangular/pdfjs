@@ -1,17 +1,18 @@
-import {BehaviorSubject, Subject} from 'rxjs';
+import {BehaviorSubject} from 'rxjs';
 import {PdfjsCommand} from './pdfjs-command';
 import {PdfjsControl} from './pdfjs-control';
 
 export class PdfjsGroupControl implements PdfjsCommand {
 
-  public disabled = true;
+  public get disabled(): boolean {
+    return !this.selectedPdfjsControl || isNaN(this.getPageIndex());
+  }
 
   public selectedPdfjsControl$: BehaviorSubject<PdfjsControl> = new BehaviorSubject(null);
   private selectedPdfjsControl: PdfjsControl = null;
 
   public select(pdfjsControl: PdfjsControl) {
     this.selectedPdfjsControl = pdfjsControl;
-    this.disabled = !pdfjsControl;
     this.selectedPdfjsControl$.next(pdfjsControl);
   }
 
@@ -40,17 +41,11 @@ export class PdfjsGroupControl implements PdfjsCommand {
   }
 
   public hasNext(): boolean {
-    if (!!this.selectedPdfjsControl) {
-      return this.selectedPdfjsControl.hasNext();
-    }
-    return false;
+    return !!this.selectedPdfjsControl && this.selectedPdfjsControl.hasNext();
   }
 
   public hasPrevious(): boolean {
-    if (!!this.selectedPdfjsControl) {
-      return this.selectedPdfjsControl.hasPrevious();
-    }
-    return false;
+    return !!this.selectedPdfjsControl && this.selectedPdfjsControl.hasPrevious();
   }
 
   public reload() {

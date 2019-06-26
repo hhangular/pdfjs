@@ -1,11 +1,25 @@
-<nav mat-tab-nav-bar>
-  <a mat-tab-link
-     *ngFor="let link of navLinks"
-     [routerLink]="link.path"
-     routerLinkActive #rla="routerLinkActive"
-     [active]="rla.isActive">
-    {{link.label}}
-  </a>
-</nav>
+<h2>pdfjs-thumbnails</h2>
+<h3>guide.pdf</h3>
+<pdfjs-thumbnails [pdfjsControl]="pdfjsControl1"
+                  [quality]="1"
+                  [fitSize]="100"
+                  [previewDelay]="300"
+                  [previewHeight]="300"
+                  [allowDrop]="false"
+                  [allowRemove]="false"
+                  [dragMode]="ThumbnailDragMode.NONE"
+                  [layout]="ThumbnailLayout.HORIZONTAL"></pdfjs-thumbnails>
+<h3>conditions.pdf</h3>
+<pdfjs-thumbnails [pdfjsControl]="pdfjsControl2"
+                  [quality]="1"
+                  [fitSize]="100"
+                  [previewDelay]="300"
+                  [previewHeight]="300"
+                  [allowDrop]="false"
+                  [allowRemove]="false"
+                  [dragMode]="ThumbnailDragMode.NONE"
+                  [layout]="ThumbnailLayout.HORIZONTAL"></pdfjs-thumbnails>
 
-<router-outlet></router-outlet>
+<ngx-md [path]="'assets/markdowns/components/thumbnails.md'"></ngx-md>
+
+

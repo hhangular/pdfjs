@@ -60,6 +60,22 @@ export enum ThumbnailDragMode {
   DUPLICATE = 'duplicate',
 }
 
+export enum Selectors {
+  THUMBNAIL = 'pdfjs-thumbnail',
+  THUMBNAILS = 'pdfjs-thumbnails',
+  VIEW = 'pdfjs-view'
+}
+
+export type ThumbnailOver = ThumbnailOverValues.RIGHT | ThumbnailOverValues.LEFT | ThumbnailOverValues.BOTTOM | ThumbnailOverValues.TOP;
+export enum ThumbnailOverValues {
+  RIGHT = 'right',
+  LEFT = 'left',
+  BOTTOM = 'bottom',
+  TOP = 'top'
+}
+
+export type RenderQuality = 1 | 2 | 3 | 4 | 5;
+
 export type PdfSource = string | PDFDataRangeTransport | Uint8Array |
   { data: Uint8Array } | { range: PDFDataRangeTransport } | { url: string };
 
