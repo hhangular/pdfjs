@@ -28,7 +28,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.scss"
             ],
             "scripts": [
               "node_modules/prismjs/prism.js",
@@ -92,7 +92,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.scss"
             ],
             "scripts": []
           }
@@ -140,7 +140,8 @@
             "production": {
               "project": "projects/pdfjs-box/ng-package.prod.json"
             }
-          }        },
+          }
+        },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
@@ -162,6 +163,12 @@
           }
         }
       }
-    }},
-  "defaultProject": "pdfjs"
+    }
+  },
+  "defaultProject": "pdfjs",
+  "schematics": {
+    "@schematics/angular:component": {
+      "styleext": "scss"
+    }
+  }
 }

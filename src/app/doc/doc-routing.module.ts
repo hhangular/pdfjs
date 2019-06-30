@@ -5,7 +5,6 @@ import {
   PdfjsConfigComponent, ConfigComponent, PdfjsThumbnailsComponent, InstallComponent,
   PdfjsControlComponent, PdfjsItemComponent,
   ThumbnailDragModeComponent, ThumbnailLayoutComponent, ViewFitComponent,
-  ExamplesPdfjsViewComponent, ApiPdfjsViewComponent, OverviewPdfjsViewComponent,
   PdfjsViewComponent, PdfjsGroupControlComponent
 } from './sections';
 
@@ -15,17 +14,8 @@ const docRoutes: Routes = [
       {path: '', redirectTo: 'install', pathMatch: 'full'},
       {path: 'install', component: InstallComponent},
       {path: 'configuration', component: ConfigComponent},
-      {
-        path: 'pdfjsview', component: PdfjsViewComponent, children: [
-          {path: '', redirectTo: 'overview', pathMatch: 'full'},
-          {path: 'overview', component: OverviewPdfjsViewComponent},
-          {path: 'api', component: ApiPdfjsViewComponent},
-          {path: 'examples', component: ExamplesPdfjsViewComponent},
-        ]
-      },
-      {
-        path: 'pdfjsthumbnails', component: PdfjsThumbnailsComponent
-      },
+      {path: 'pdfjsview', component: PdfjsViewComponent},
+      {path: 'pdfjsthumbnails', component: PdfjsThumbnailsComponent},
       {path: 'pdfjsconfig', component: PdfjsConfigComponent},
       {path: 'pdfjscontrol', component: PdfjsControlComponent},
       {path: 'pdfjsgroupcontrol', component: PdfjsGroupControlComponent},

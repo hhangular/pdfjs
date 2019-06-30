@@ -41,7 +41,7 @@
   line-height: 1.0;
 }
 
-.textLayer > div {
+.textLayer /deep/ > div, .textLayer /deep/ > span {
   color: transparent;
   position: absolute;
   white-space: pre;

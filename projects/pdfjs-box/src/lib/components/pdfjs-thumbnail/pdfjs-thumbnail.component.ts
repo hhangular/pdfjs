@@ -5,11 +5,11 @@ import {BehaviorSubject, combineLatest, of, Subscription} from 'rxjs';
 import {distinctUntilChanged, flatMap, map} from 'rxjs/operators';
 import {PdfjsControl} from '../../classes/pdfjs-control';
 import {PdfjsGroupControl} from '../../classes/pdfjs-group-control';
-import {PdfjsItem, RenderQuality, Selectors, ThumbnailLayout} from '../../classes/pdfjs-objects';
+import {PdfjsItem, RenderQuality, ThumbnailLayout} from '../../classes/pdfjs-objects';
 import {Pdfjs} from '../../services/pdfjs.service';
 
 @Component({
-  selector: Selectors.THUMBNAIL,
+  selector: 'pdfjs-thumbnail',
   templateUrl: './pdfjs-thumbnail.component.html',
   styleUrls: ['./pdfjs-thumbnail.component.css'],
   animations: [
@@ -26,7 +26,6 @@ import {Pdfjs} from '../../services/pdfjs.service';
 
 })
 export class PdfjsThumbnailComponent implements OnInit, OnDestroy {
-
   get item(): PdfjsItem {
     return this._item;
   }
@@ -101,19 +100,57 @@ export class PdfjsThumbnailComponent implements OnInit, OnDestroy {
   /**
    *
    */
+  private _layout: ThumbnailLayout = ThumbnailLayout.HORIZONTAL;
+  private _quality: RenderQuality = 2;
+  private _fitSize = 100;
+
   @Input()
   public previewEnabled = false;
   @HostBinding('attr.draggable')
   @Input()
   public draggable = false;
   @Input()
-  public layout: ThumbnailLayout = ThumbnailLayout.HORIZONTAL;
-  @Input()
   public removable = false;
   @Input()
-  public fitSize = 100;
+  get layout(): ThumbnailLayout {
+    return this._layout;
+  }
+  set layout(value: ThumbnailLayout) {
+    if (this._layout !== value) {
+      this._layout = value;
+      if (this._item) {
+        this.renderPdfjsItem(this._item);
+      }
+    }
+  }
+
   @Input()
-  public quality: RenderQuality = 2;
+  get fitSize(): number {
+    return this._fitSize;
+  }
+  set fitSize(value: number) {
+    if (this._fitSize !== value) {
+      this._fitSize = value;
+      if (this._item) {
+        this.renderPdfjsItem(this._item);
+      }
+    }
+  }
+
+  @Input()
+  get quality(): RenderQuality {
+    return this._quality;
+  }
+  set quality(value: RenderQuality) {
+    if (this._quality !== value) {
+      this._quality = value;
+      if (this._item) {
+        this.renderPdfjsItem(this._item);
+      }
+    }
+  }
+
+
   @HostBinding('class.not_rendered')
   public notRendered = true;
   @ViewChild('canvas', {static: true})
@@ -159,8 +196,8 @@ export class PdfjsThumbnailComponent implements OnInit, OnDestroy {
         atTop = true;
       }
       // fix the problem with the collapsible scrollbar, the rect don't include scrollbar size
-      const width = this.layout === ThumbnailLayout.VERTICAL ? this.fitSize : r.width;
-      const height = this.layout === ThumbnailLayout.HORIZONTAL ? this.fitSize : r.height;
+      const width = this._layout === ThumbnailLayout.VERTICAL ? this._fitSize : r.width;
+      const height = this._layout === ThumbnailLayout.HORIZONTAL ? this._fitSize : r.height;
       const rect = {
         bottom: r.bottom, height, left: r.left, right: r.right,
         top: r.top, width, x: left, y: top,
@@ -211,9 +248,26 @@ export class PdfjsThumbnailComponent implements OnInit, OnDestroy {
       this.elementRef.nativeElement.classList.remove('active');
       if (next.every((val: boolean) => val)) {
         this.elementRef.nativeElement.classList.add('active');
-        this.elementRef.nativeElement.scrollIntoView();
+        if (this.inViewPort(this.elementRef.nativeElement.parentElement)) { // if pdfjs-thumbnails is intoView the selection impose to scroll to view it
+          if (!!this.elementRef.nativeElement.scrollIntoViewIfNeeded) {
+            this.elementRef.nativeElement.scrollIntoViewIfNeeded();
+          } else if (!this.inViewPort(this.elementRef.nativeElement)) {
+            this.elementRef.nativeElement.scrollIntoView();
+          }
+        }
       }
     });
+  }
+
+  private inViewPort(nativeElement: any): boolean {
+    const rect = nativeElement.getBoundingClientRect();
+    const inViewPort = (
+      rect.top >= 0 &&
+      rect.left >= 0 &&
+      rect.right <= (window.innerWidth || document.documentElement.clientWidth) &&
+      rect.bottom <= (window.innerHeight || document.documentElement.clientHeight)
+    );
+    return inViewPort;
   }
 
   public ngOnDestroy() {
@@ -247,15 +301,16 @@ export class PdfjsThumbnailComponent implements OnInit, OnDestroy {
     this.cancelRenderTask();
     const canvas: HTMLCanvasElement = this.canvasRef.nativeElement;
     if (!!pdfjsItem) {
+      console.log(pdfjsItem.pdfId, pdfjsItem.pageIdx);
       this.notRendered = true;
       // fixed size used for fit
-      const canvasSize = this.fitSize - 10;
+      const canvasSize = this._fitSize - 10;
 
       let promise: PDFPromise<PDFPromise<any>>;
-      if (this.layout === ThumbnailLayout.VERTICAL) {
-        promise = this.pdfjs.renderItemInCanvasWidthFitted(pdfjsItem, this.quality, canvas, canvasSize);
+      if (this._layout === ThumbnailLayout.VERTICAL) {
+        promise = this.pdfjs.renderItemInCanvasWidthFitted(pdfjsItem, this._quality, canvas, canvasSize);
       } else {
-        promise = this.pdfjs.renderItemInCanvasHeightFitted(pdfjsItem, this.quality, canvas, canvasSize);
+        promise = this.pdfjs.renderItemInCanvasHeightFitted(pdfjsItem, this._quality, canvas, canvasSize);
       }
       promise.then((obj: any) => {
         this.notRendered = false;

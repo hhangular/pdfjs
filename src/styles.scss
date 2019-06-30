@@ -1,0 +1,45 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import '~@angular/material/theming';
+@import '~prismjs/themes/prism.css';
+
+body {
+  font-family: Roboto,"Helvetica Neue Light","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+  margin: 0;
+}
+
+.code-container {
+  background: #f5f2f0;
+  padding: 1em;
+  margin: .5em 0;
+  overflow: auto;
+  color: #999;
+  text-shadow: 0 1px #fff;
+  font-family: Consolas,Monaco,'Andale Mono','Ubuntu Mono',monospace;
+  font-size: 1em;
+  text-align: left;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+  hyphens: none;
+}
+
+.code-method, .code-class {
+  color: #dd4a68;
+}
+.code-node-name {
+  color: #905;
+}
+.code-field, .code-type {
+  color: #111;
+}
+.code-comment {
+  color: #666;
+}
+.code-attribute-name, .code-string {
+  color: #690;
+}
+.code-attribute-value, .code-keyword {
+  color: #07a;
+}

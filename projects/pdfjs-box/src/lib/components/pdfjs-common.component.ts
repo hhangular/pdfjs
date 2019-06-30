@@ -1,6 +1,6 @@
 import {Component, ElementRef, HostListener} from '@angular/core';
 import {PdfAPI} from '../classes/pdfapi';
-import {ThumbnailLayout, ThumbnailOver, ThumbnailOverValues} from '../classes/pdfjs-objects';
+import {ThumbnailDragMode, ThumbnailLayout, ThumbnailOver, ThumbnailOverValues} from '../classes/pdfjs-objects';
 import {KeysService} from '../services/keys.service';
 import {Pdfjs} from '../services/pdfjs.service';
 import {ThumbnailDragService} from '../services/thumbnail-drag.service';
@@ -31,6 +31,7 @@ export class PdfjsCommonComponent {
 
   @HostListener('document:keydown', ['$event'])
   public onKeyDown(event: KeyboardEvent) {
+    event.preventDefault();
     switch (event.code) {
       case 'ArrowLeft' :
         event.ctrlKey ? this.keysService.selectFirst() : this.keysService.selectPrevious();
@@ -64,9 +65,9 @@ export class PdfjsCommonComponent {
     // considerate only item drag
     if (this.thumbnailDragService.dataTransferInitiated()) {
       const containerOver: HTMLElement = this.getThumbnailsContainerOver(event.target);
-      const pdfjsThumbnailsComponent: PdfjsThumbnailsComponent = this.thumbnailDragService.getComponentAcceptDrop(containerOver);
+      const thumbnailsComponent: PdfjsThumbnailsComponent = this.thumbnailDragService.getComponentAcceptDrop(containerOver);
       // over a thumbnails container and it accepts drop items
-      if (!!pdfjsThumbnailsComponent) {
+      if (!!thumbnailsComponent) {
         this.onDragOverContainer(event, containerOver);
       } else {
         this.onDragOutContainer(event);
@@ -82,8 +83,8 @@ export class PdfjsCommonComponent {
     if (!this.thumbnailDragService.getTargetPdfId()) {
       this.onDragOverNewContainer(event, containerOver);
     } else {
-      const pdfjsThumbnailsComponent: PdfjsThumbnailsComponent = this.thumbnailDragService.getComponentAcceptDrop(containerOver);
-      if (pdfjsThumbnailsComponent.pdfjsControl !== this.thumbnailDragService.getTargetControl()) {
+      const thumbnailsComponent: PdfjsThumbnailsComponent = this.thumbnailDragService.getComponentAcceptDrop(containerOver);
+      if (thumbnailsComponent.pdfjsControl !== this.thumbnailDragService.getTargetControl()) {
         // change container
         this.thumbnailDragService.restoreSource();
         this.onDragOverNewContainer(event, containerOver);
@@ -132,11 +133,14 @@ export class PdfjsCommonComponent {
 
   public onDragOverNewContainer(event: DragEvent, containerOver: HTMLElement) {
     const thumbnailOver: HTMLElement = this.getThumbnailOver(event.target);
-    const pdfjsThumbnailsComponent: PdfjsThumbnailsComponent = this.thumbnailDragService.getComponentAcceptDrop(containerOver);
-    this.thumbnailDragService.applyItemToTargetPdfControl(pdfjsThumbnailsComponent.pdfjsControl);
+    const thumbnailsComponent: PdfjsThumbnailsComponent = this.thumbnailDragService.getComponentAcceptDrop(containerOver);
+    this.thumbnailDragService.applyItemToTargetPdfControl(thumbnailsComponent.pdfjsControl);
+    if (this.thumbnailDragService.getModeDataTransfer() === ThumbnailDragMode.MOVE) {
+      this.thumbnailDragService.removeItemFromSource();
+    }
     if (thumbnailOver) { // over an other thumbnail
       const idx: number = this.thumbnailDragService.getIndexOfThumbnailInThumbnails(thumbnailOver, containerOver);
-      const newPos: number = idx + this.getPositionFix(event, pdfjsThumbnailsComponent.layout, thumbnailOver);
+      const newPos: number = idx + this.getPositionFix(event, thumbnailsComponent.layout, thumbnailOver);
       this.thumbnailDragService.addItemToTarget(newPos);
     } else {
       this.thumbnailDragService.addItemToTarget();
@@ -184,15 +188,18 @@ export class PdfjsCommonComponent {
   private debugThumbnailOver(thumbnail: HTMLElement, overAt: ThumbnailOver) {
     if (PdfjsCommonComponent.DEBUG_OVER) {
       this.removeDebugBorder(thumbnail.previousElementSibling);
+      // tslint:disable-next-line:no-unused-expression
       thumbnail.previousElementSibling && this.removeDebugBorder(thumbnail.previousElementSibling.previousElementSibling);
       this.removeDebugBorder(thumbnail);
       this.removeDebugBorder(thumbnail.nextElementSibling);
+      // tslint:disable-next-line:no-unused-expression
       thumbnail.nextElementSibling && this.removeDebugBorder(thumbnail.nextElementSibling.nextElementSibling);
       thumbnail.classList.add(`hover-${overAt}`);
     }
   }
 
   private removeDebugBorder(thumbnail: Element) {
+    // tslint:disable-next-line:no-unused-expression
     thumbnail && thumbnail.classList.remove(...Object.values(ThumbnailOverValues).map(value => `hover-${value}`));
   }
 

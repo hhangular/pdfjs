@@ -1,11 +1,102 @@
-<nav mat-tab-nav-bar>
-  <a mat-tab-link
-     *ngFor="let link of navLinks"
-     [routerLink]="link.path"
-     routerLinkActive #rla="routerLinkActive"
-     [active]="rla.isActive">
-    {{link.label}}
-  </a>
-</nav>
-
-<router-outlet></router-outlet>
+<section class="mat-typography">
+  <h2>pdfjs-view</h2>
+  pdfjs-view allow to see a pdf page
+  <h3>Simple view</h3>
+  A simple view must have a defined pdfjsControl or pdfjsGroupControl
+  <br>
+  Control allow to control a pdf load by pdfjsControl or controlled and selected by pdfjsGroupControl<br>
+  <div class="code-container">
+    <span class="code-comment">&lt;!--In template--&gt;</span><br>
+    &lt;<span class="code-node-name">pdfjs-view</span>
+    &nbsp;<span class="code-attribute-name">[control]</span>="<span class="code-attribute-value">pdfjsControl</span>"&gt;
+    &lt;/<span class="code-node-name">pdfjs-view</span>&gt;
+  </div><br>
+  <div class="code-container">
+    <span class="code-comment">// In controller</span><br>
+    <span class="code-field">pdfjsControl</span>:&nbsp;<span class="code-type">PdfjsControl</span>&nbsp;=&nbsp;<span class="code-keyword">new</span>&nbsp;<span class="code-class">PdfjsControl</span>();<br><br>
+    <span class="code-method">ngOnInit</span>():<span class="code-keyword">void</span> &#x7B;<br>
+    &nbsp;&nbsp;&nbsp;<span class="code-keyword">this</span>.<span class="code-field">pdfjsControl</span>.<span class="code-method">load</span>(<span class="code-string">'assets/pdfs/conditions.pdf'</span>);<br>
+    &#x7D;<br>
+  </div>
+  <br>
+  <h2>Attributes</h2>
+  <!-- fit -->
+  <h3>Fit direction</h3>
+  Set fit, allow to define how to page is fitted.<br>
+  Set to ViewFit.VERTICAL and the page will fitted on entire height.<br>
+  Set to ViewFit.HORIZONTAL and the page will fitted on entire width.
+  <br><br>
+  <pdfjs-view style="height: 300px" [control]="conditionCtrl" [fit]="fit"></pdfjs-view>
+  <button mat-button color="primary">fit</button>
+  <mat-radio-group [value]="fit" (change)="fit=$event.value">
+    <mat-radio-button [value]="ViewFit.VERTICAL">ViewFit.VERTICAL</mat-radio-button>&nbsp;&nbsp;&nbsp;
+    <mat-radio-button [value]="ViewFit.HORIZONTAL">ViewFit.HORIZONTAL</mat-radio-button>
+  </mat-radio-group>
+  <br><br>
+  <div class="code-container">
+    &lt;<span class="code-node-name">pdfjs-view</span>&nbsp;<span class="code-attribute-name">[fit]</span>="'<span class="code-attribute-value">{{fit}}</span>'"&gt;&lt;/<span class="code-node-name">pdfjs-view</span>&gt;
+  </div>
+  <hr>
+  <!-- quality -->
+  <h3>Render quality</h3>
+  Set view render quality<br><br>
+  <pdfjs-view style="height: 1000px" [control]="conditionCtrl" [fit]="ViewFit.VERTICAL" [quality]="quality"></pdfjs-view>
+  <button mat-button color="primary">quality</button>
+  <mat-radio-group [value]="quality" (change)="quality=$event.value">
+    <mat-radio-button [value]="1">1</mat-radio-button>&nbsp;&nbsp;&nbsp;
+    <mat-radio-button [value]="2">2</mat-radio-button>&nbsp;&nbsp;&nbsp;
+    <mat-radio-button [value]="3">3</mat-radio-button>&nbsp;&nbsp;&nbsp;
+    <mat-radio-button [value]="4">4</mat-radio-button>&nbsp;&nbsp;&nbsp;
+    <mat-radio-button [value]="5">5</mat-radio-button>
+  </mat-radio-group>
+  <br><br>
+  Render pdf page use a lot of cpu load. For limit the cpu loading, use the adequate quality.<br>
+  <br><br>
+  <div class="code-container">
+    &lt;<span class="code-node-name">pdfjs-view</span>&nbsp;<span class="code-attribute-name">[quality]</span>="'<span class="code-attribute-value">{{quality}}</span>'"&gt;&lt;/<span class="code-node-name">pdfjs-view</span>&gt;
+  </div>
+  <hr>
+  <!-- textLayer -->
+  <h3>Text Layer</h3>
+  Set if text layer is enabled<br><br>
+  <pdfjs-view style="height: 500px" [control]="conditionCtrl" [textLayer]="textLayer"></pdfjs-view>
+  <button mat-button color="primary">textLayer</button>
+  <mat-radio-group [value]="textLayer" (change)="textLayer=$event.value">
+    <mat-radio-button [value]="true">true</mat-radio-button>&nbsp;&nbsp;&nbsp;
+    <mat-radio-button [value]="false">false</mat-radio-button>
+  </mat-radio-group>
+  <br><br>
+  <div class="code-container">
+    &lt;<span class="code-node-name">pdfjs-view</span>&nbsp;<span class="code-attribute-name">[textLayer]</span>="'<span class="code-attribute-value">{{textLayer}}</span>'"&gt;&lt;/<span class="code-node-name">pdfjs-view</span>&gt;
+  </div>
+  <hr>
+  <!-- keysNav -->
+  <h3>Keys Navigation</h3>
+  Set if keys allow to navigate in pdf<br><br>
+  <pdfjs-view style="height: 500px" [control]="conditionCtrl" [keysNav]="keysNav"></pdfjs-view>
+  <button mat-button color="primary">keysNav</button>
+  <mat-radio-group [value]="keysNav" (change)="keysNav=$event.value">
+    <mat-radio-button [value]="true">true</mat-radio-button>&nbsp;&nbsp;&nbsp;
+    <mat-radio-button [value]="false">false</mat-radio-button>
+  </mat-radio-group>
+  <br><br>
+  <div class="code-container">
+    &lt;<span class="code-node-name">pdfjs-view</span>&nbsp;<span class="code-attribute-name">[keysNav]</span>="'<span class="code-attribute-value">{{keysNav}}</span>'"&gt;&lt;/<span class="code-node-name">pdfjs-view</span>&gt;
+  </div>
+  <hr>
+  <br><br>
+  <!-- mousewheelNav -->
+  <h3>MouseWheel Navigation</h3>
+  Set if mouseWheel allow to navigate in pdf<br><br>
+  <pdfjs-view style="height: 500px" [control]="conditionCtrl" [mouseWheelNav]="mouseWheelNav"></pdfjs-view>
+  <button mat-button color="primary">mouseWheelNav</button>
+  <mat-radio-group [value]="mouseWheelNav" (change)="mouseWheelNav=$event.value">
+    <mat-radio-button [value]="true">true</mat-radio-button>&nbsp;&nbsp;&nbsp;
+    <mat-radio-button [value]="false">false</mat-radio-button>
+  </mat-radio-group>
+  <br><br>
+  <div class="code-container">
+    &lt;<span class="code-node-name">pdfjs-view</span>&nbsp;<span class="code-attribute-name">[mouseWheelNav]</span>="'<span class="code-attribute-value">{{mouseWheelNav}}</span>'"&gt;&lt;/<span class="code-node-name">pdfjs-view</span>&gt;
+  </div>
+  <hr>
+</section>

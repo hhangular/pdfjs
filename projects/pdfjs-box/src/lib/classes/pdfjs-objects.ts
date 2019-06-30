@@ -44,6 +44,14 @@ export class PdfjsItem {
   }
 }
 
+export class RenderEvent {
+  public type: 'END' = 'END';
+  public page?: number;
+  public pages?: number;
+  public time?: number;
+}
+
+
 export enum ThumbnailLayout {
   HORIZONTAL = 'horizontal',
   VERTICAL = 'vertical',
@@ -58,12 +66,6 @@ export enum ThumbnailDragMode {
   NONE = 'none',
   MOVE = 'move',
   DUPLICATE = 'duplicate',
-}
-
-export enum Selectors {
-  THUMBNAIL = 'pdfjs-thumbnail',
-  THUMBNAILS = 'pdfjs-thumbnails',
-  VIEW = 'pdfjs-view'
 }
 
 export type ThumbnailOver = ThumbnailOverValues.RIGHT | ThumbnailOverValues.LEFT | ThumbnailOverValues.BOTTOM | ThumbnailOverValues.TOP;
@@ -85,3 +87,20 @@ export class PdfjsConfig {
 }
 
 export type InnerItem = PdfjsItem & DOMRect & { atLeft: boolean, atTop: boolean };
+
+export class PDFPromiseResolved<T> implements PDFPromise<T> {
+  public constructor(private res: T) {
+  }
+
+  public isResolved: () => true;
+
+  public isRejected: () => false;
+
+  public resolve: (value: T) => void;
+
+  public reject: (reason: string) => void;
+
+  public then<U>(onResolve: (promise: T) => U, onReject?: (reason: string) => void): PDFPromiseResolved<U> {
+    return new PDFPromiseResolved(onResolve(this.res));
+  }
+}

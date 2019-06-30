@@ -1,4 +1,6 @@
 import {Component, OnInit} from '@angular/core';
+import {PdfjsControl} from '../../../../../../projects/pdfjs-box/src/lib/classes/pdfjs-control';
+import {RenderQuality, ViewFit} from '../../../../../../projects/pdfjs-box/src/lib/classes/pdfjs-objects';
 
 @Component({
   templateUrl: './pdfjsview.component.html',
@@ -6,17 +8,22 @@ import {Component, OnInit} from '@angular/core';
 })
 export class PdfjsViewComponent implements OnInit {
 
-  navLinks: any = [
-    {path: 'overview', label: 'OVERVIEW'},
-    {path: 'api', label: 'API'},
-    {path: 'examples', label: 'EXAMPLES'}
-  ];
+  conditionCtrl: PdfjsControl = new PdfjsControl();
 
-  constructor() {
-  }
+  fit: ViewFit = ViewFit.VERTICAL;
+
+  ViewFit = ViewFit;
+
+  quality: RenderQuality = 2;
+
+  textLayer = false;
+
+  keysNav = false;
+
+  mouseWheelNav = false;
 
   ngOnInit() {
-
+    this.conditionCtrl.load('../assets/pdfs/conditions.pdf', true);
   }
 
 }

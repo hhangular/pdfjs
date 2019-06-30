@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
 import {PdfjsControl} from '../classes/pdfjs-control';
-import {PdfjsItem, Selectors, ThumbnailDragMode, ThumbnailLayout} from '../classes/pdfjs-objects';
+import {PdfjsItem, ThumbnailDragMode, ThumbnailLayout} from '../classes/pdfjs-objects';
 import {PdfjsThumbnailsComponent} from '../components/pdfjs-thumbnails/pdfjs-thumbnails.component';
-import {PdfjsThumbnailComponent} from '../components/pdfjs-thumbnail/pdfjs-thumbnail.component';
 
 @Injectable({
   providedIn: 'root',
@@ -131,11 +130,11 @@ export class ThumbnailDragService {
   }
 
   public getFirstParentThumbnail(target: HTMLElement): HTMLElement {
-    return this.getFirstParentElementNamed(target, Selectors.THUMBNAIL);
+    return this.getFirstParentElementNamed(target, 'pdfjs-thumbnail');
   }
 
   public getFirstParentThumbnails(target: HTMLElement): HTMLElement {
-    return this.getFirstParentElementNamed(target, Selectors.THUMBNAILS);
+    return this.getFirstParentElementNamed(target, 'pdfjs-thumbnails');
   }
 
   public getFirstParentElementNamed(target: HTMLElement, nodeName: string): HTMLElement {
@@ -175,14 +174,17 @@ export class ThumbnailDragService {
 
   public registerDropThumbnails(thumbnails: PdfjsThumbnailsComponent) {
     if (thumbnails.allowDrop) {
-      ThumbnailDragService.thumbnails.push(thumbnails);
+      const idx = ThumbnailDragService.thumbnails.indexOf(thumbnails);
+      if (idx === -1) {
+        ThumbnailDragService.thumbnails.push(thumbnails);
+      }
     }
   }
 
   public unregisterDropThumbnails(thumbnails: PdfjsThumbnailsComponent) {
     const idx = ThumbnailDragService.thumbnails.indexOf(thumbnails);
     if (idx !== -1) {
-      ThumbnailDragService.thumbnails = ThumbnailDragService.thumbnails.splice(idx, 1);
+      ThumbnailDragService.thumbnails.splice(idx, 1);
     }
   }
 

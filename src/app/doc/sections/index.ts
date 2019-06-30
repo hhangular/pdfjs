@@ -8,9 +8,6 @@ import {PdfjsConfigComponent} from './classes/pdfjsconfig/pdfjsconfig.component'
 import {PdfjsItemComponent} from './classes/pdfjsitem/pdfjsitem.component';
 import {PdfjsThumbnailsComponent} from './components/pdfjsthumbnails/pdfjsthumbnails.component';
 import {PdfjsViewComponent} from './components/pdfjsview/pdfjsview.component';
-import {OverviewPdfjsViewComponent} from './components/pdfjsview/overview/overview-pdfjsview.component';
-import {ApiPdfjsViewComponent} from './components/pdfjsview/api/api-pdfjsview.component';
-import {ExamplesPdfjsViewComponent} from './components/pdfjsview/examples/examples-pdfjsview.component';
 import {PdfjsGroupControlComponent} from './classes/pdfjsgroupcontrol/pdfjsgroupcontrol.component';
 
 export const SECTIONS: any[] = [
@@ -18,9 +15,6 @@ export const SECTIONS: any[] = [
   ConfigComponent,
   PdfjsThumbnailsComponent,
   PdfjsViewComponent,
-  OverviewPdfjsViewComponent,
-  ApiPdfjsViewComponent,
-  ExamplesPdfjsViewComponent,
   PdfjsConfigComponent,
   PdfjsControlComponent,
   PdfjsGroupControlComponent,
@@ -40,7 +34,4 @@ export {PdfjsConfigComponent} from './classes/pdfjsconfig/pdfjsconfig.component'
 export {PdfjsItemComponent} from './classes/pdfjsitem/pdfjsitem.component';
 export {PdfjsThumbnailsComponent} from './components/pdfjsthumbnails/pdfjsthumbnails.component';
 export {PdfjsViewComponent} from './components/pdfjsview/pdfjsview.component';
-export {OverviewPdfjsViewComponent} from './components/pdfjsview/overview/overview-pdfjsview.component';
-export {ApiPdfjsViewComponent} from './components/pdfjsview/api/api-pdfjsview.component';
-export {ExamplesPdfjsViewComponent} from './components/pdfjsview/examples/examples-pdfjsview.component';
 export {PdfjsGroupControlComponent} from './classes/pdfjsgroupcontrol/pdfjsgroupcontrol.component';

@@ -6,9 +6,6 @@ export class KeysService {
 
   private static pdfjsControl: PdfjsControl = null;
 
-  constructor() {
-  }
-
   public setPdfjsControl(pdfjsControl: PdfjsControl) {
     KeysService.pdfjsControl = pdfjsControl;
   }
