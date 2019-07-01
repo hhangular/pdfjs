@@ -136,6 +136,10 @@ export class PdfjsViewComponent implements OnDestroy, AfterViewInit {
     });
   }
 
+  public hasPageSelected(): boolean {
+    return !!this._pdfjsControl ? !isNaN(this._pdfjsControl.getPageIndex()) : false;
+  }
+
   private getViewport(pdfPageProxy: PDFPageProxy, scale, rotate): PDFPageViewport {
     if (pdfPageProxy) {
       const rot = pdfPageProxy.rotate + (rotate || 0);
@@ -184,7 +188,7 @@ export class PdfjsViewComponent implements OnDestroy, AfterViewInit {
    * mousewheel
    */
   @HostListener('mousewheel', ['$event'])
-  private onMouseWheel(event: WheelEvent) {
+  public onMouseWheel(event: WheelEvent) {
     if (!this.mouseWheelNav) {
       return;
     }
@@ -214,7 +218,7 @@ export class PdfjsViewComponent implements OnDestroy, AfterViewInit {
    * set focus
    */
   @HostListener('click', ['$event'])
-  private onFocus(event: MouseEvent) {
+  public onFocus(event: MouseEvent) {
     if (this.keysNav && this._pdfjsControl) {
       event.stopPropagation();
       this.keysService.setPdfjsControl(this._pdfjsControl);
@@ -222,12 +226,8 @@ export class PdfjsViewComponent implements OnDestroy, AfterViewInit {
   }
 
   // @HostListener('window:resize', ['$event'])
-  private onResize(evt) {
+  public onResize(evt) {
     console.log(evt);
-  }
-
-  private hasPageSelected(): boolean {
-    return !!this._pdfjsControl ? !isNaN(this._pdfjsControl.getPageIndex()) : false;
   }
 
   private setPdfjsGroupControl(pdfjsGroupControl: PdfjsGroupControl) {
