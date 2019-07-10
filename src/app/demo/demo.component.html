@@ -63,11 +63,11 @@
         <button mat-icon-button (click)="incQuality(-1)">
           <fa-icon size="lg" [icon]="faMinus"></fa-icon>
         </button>
-        <button mat-icon-button [disabled]="true" matTooltip="Quality">{{quality}}/5</button>
+        <button mat-icon-button [disabled]="true" title="Quality">{{quality}}/5</button>
         <button mat-icon-button (click)="incQuality(1)">
           <fa-icon size="lg" [icon]="faPlus"></fa-icon>
         </button>
-        <mat-checkbox class="example-margin" [(ngModel)]="textEnable">Text</mat-checkbox>
+        <mat-checkbox [(ngModel)]="textEnable" title="Enable/disabled text layer"></mat-checkbox>
         <button mat-icon-button [disabled]="pdfjsGroupControl.disabled" (click)="pdfjsGroupControl.zoom(0.9)">
           <fa-icon [icon]="faSearchMinus" size="lg"></fa-icon>
         </button>
