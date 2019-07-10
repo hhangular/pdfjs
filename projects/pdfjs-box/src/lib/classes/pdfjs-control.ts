@@ -298,7 +298,7 @@ export class PdfjsControl implements PdfjsCommand {
     }
     this.items = [];
     this.itemEvent$.next({item: null, event: 'init'});
-    return PdfjsControl.API.getDocument(source).then((pdfDocumentProxy: PDFDocumentProxy) => {
+    return PdfjsControl.API.getDocument(source).promise.then((pdfDocumentProxy: PDFDocumentProxy) => {
       [].push.apply(this.items, Array.apply(null, {length: pdfDocumentProxy.numPages})
         .map((e: any, i: number) => {
           const item: PdfjsItem = new PdfjsItem(pdfDocumentProxy, this.pdfId, source, i + 1, 0);

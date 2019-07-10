@@ -1,11 +1,11 @@
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {Component, ElementRef, EventEmitter, HostBinding, HostListener, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
-import {PDFPromise, PDFRenderTask} from 'pdfjs-dist';
+import {PDFRenderTask} from 'pdfjs-dist';
 import {BehaviorSubject, combineLatest, of, Subscription} from 'rxjs';
 import {distinctUntilChanged, flatMap, map} from 'rxjs/operators';
 import {PdfjsControl} from '../../classes/pdfjs-control';
 import {PdfjsGroupControl} from '../../classes/pdfjs-group-control';
-import {PdfjsItem, RenderQuality, ThumbnailLayout} from '../../classes/pdfjs-objects';
+import {PdfjsItem, RenderQuality, ThumbnailLayout, ViewFit} from '../../classes/pdfjs-objects';
 import {Pdfjs} from '../../services/pdfjs.service';
 
 @Component({
@@ -101,7 +101,7 @@ export class PdfjsThumbnailComponent implements OnInit, OnDestroy {
    *
    */
   private _layout: ThumbnailLayout = ThumbnailLayout.HORIZONTAL;
-  private _quality: RenderQuality = 2;
+  private _quality: RenderQuality = 1;
   private _fitSize = 100;
 
   @Input()
@@ -301,22 +301,16 @@ export class PdfjsThumbnailComponent implements OnInit, OnDestroy {
     this.cancelRenderTask();
     const canvas: HTMLCanvasElement = this.canvasRef.nativeElement;
     if (!!pdfjsItem) {
-      console.log(pdfjsItem.pdfId, pdfjsItem.pageIdx);
       this.notRendered = true;
       // fixed size used for fit
       const canvasSize = this._fitSize - 10;
-
-      let promise: PDFPromise<PDFPromise<any>>;
-      if (this._layout === ThumbnailLayout.VERTICAL) {
-        promise = this.pdfjs.renderItemInCanvasWidthFitted(pdfjsItem, this._quality, canvas, canvasSize);
-      } else {
-        promise = this.pdfjs.renderItemInCanvasHeightFitted(pdfjsItem, this._quality, canvas, canvasSize);
-      }
-      promise.then((obj: any) => {
-        this.notRendered = false;
-        this.rendered.emit(pdfjsItem);
-        this.pdfRenderTask = obj.pdfRenderTask as PDFRenderTask;
-      });
+      const fit: ViewFit = this._layout === ThumbnailLayout.HORIZONTAL ? ViewFit.VERTICAL : ViewFit.HORIZONTAL;
+      this.pdfjs.getRenderFittedInCanvas(fit).call(this.pdfjs, pdfjsItem, canvas, canvasSize, this._quality)
+        .then((pdfRenderTask: PDFRenderTask) => {
+          this.notRendered = false;
+          this.rendered.emit(pdfjsItem);
+          this.pdfRenderTask = pdfRenderTask;
+        });
     } else {
       this.pdfjs.cleanCanvas(canvas);
     }

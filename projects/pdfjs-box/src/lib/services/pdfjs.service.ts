@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
-import {PDFPageProxy, PDFPageViewport, PDFPromise, PDFRenderTask, TextContent} from 'pdfjs-dist';
+import {PDFPageProxy, PDFPageViewport, PDFPromise, PDFRenderTask} from 'pdfjs-dist';
 import * as api from 'pdfjs-dist/build/pdf';
 import {PdfAPI, RenderingCancelledException} from '../classes/pdfapi';
-import {PdfjsItem, RenderQuality} from '../classes/pdfjs-objects';
+import {PdfjsItem, RenderObjects, RenderQuality, ViewFit} from '../classes/pdfjs-objects';
 
-type Fitter = (canvas: HTMLCanvasElement, size: number, rect: DOMRect, quality: RenderQuality) => number;
+type GetScaleForFit = (size: number, viewport: PDFPageViewport) => number;
 
 @Injectable()
 export class Pdfjs {
@@ -21,65 +21,49 @@ export class Pdfjs {
   /**
    * Render page in canvas
    */
-  public renderItemInCanvasHeightFitted(item: PdfjsItem, quality: RenderQuality, canvas: HTMLCanvasElement, height: number): PDFPromise<any> {
-    return this.renderItemInCanvasFitted(item, quality, canvas, height,
-      (c: HTMLCanvasElement, size: number, rect: DOMRect, q: RenderQuality) => this.horizontalFitter(c, size, rect, q));
+  public renderItemInCanvasVerticalFitted(item: PdfjsItem, canvas: HTMLCanvasElement, height: number, quality: RenderQuality = 1, scale: number = 1): PDFPromise<RenderObjects> {
+    return this.renderItemInCanvasFitted(item, canvas, height, quality, scale, this.getScaleForVerticalFit);
   }
 
   /**
    * Render page in canvas
    */
-  public renderItemInCanvasWidthFitted(item: PdfjsItem, quality: RenderQuality, canvas: HTMLCanvasElement, width: number): PDFPromise<any> {
-    return this.renderItemInCanvasFitted(item, quality, canvas, width,
-      (c: HTMLCanvasElement, size: number, rect: DOMRect, q: RenderQuality) => this.verticalFitter(c, size, rect, q));
+  public renderItemInCanvasHorizontalFitted(item: PdfjsItem, canvas: HTMLCanvasElement, width: number, quality: RenderQuality = 1, scale: number = 1): PDFPromise<RenderObjects> {
+    return this.renderItemInCanvasFitted(item, canvas, width, quality, scale, this.getScaleForHorizontalFit);
+  }
+
+  public getRenderFittedInCanvas(fit: ViewFit): (item: PdfjsItem, canvas: HTMLCanvasElement, size: number, quality?: RenderQuality, scale?: number) => PDFPromise<RenderObjects> {
+    return (fit === ViewFit.VERTICAL) ? this.renderItemInCanvasVerticalFitted : this.renderItemInCanvasHorizontalFitted;
   }
 
   /**
-   * Render text layout in textLayer
+   * Compute scale for vertical fit thumbnail container
    */
-  public renderTextInTextLayer(pdfPageProxy: PDFPageProxy, textLayer: HTMLElement, pdfPageViewport: PDFPageViewport) {
-    return pdfPageProxy.getTextContent().then((textContent: TextContent) => {
-      this.API.renderTextLayer({
-        textContent,
-        container: textLayer,
-        viewport: pdfPageViewport,
-        textDivs: [],
-      });
-    });
+  public getScaleForVerticalFit(height: number, viewport: PDFPageViewport): number {
+    return height / viewport.height;
   }
 
   /**
-   * fitter for vertical thumbnail container
+   * Compute scale for horizontal fit thumbnail container
    */
-  public verticalFitter(canvas: HTMLCanvasElement, width: number, rect: DOMRect, quality: RenderQuality): number {
-    const scale = width / rect.width;
-    const ratio: number = rect.height / rect.width;
-    this.setCanvasSize(canvas, width, width * ratio, quality);
-    return scale;
-  }
-
-  /**
-   * fitter for horizontal thumbnail container
-   */
-  public horizontalFitter(canvas: HTMLCanvasElement, height: number, rect: DOMRect, quality: RenderQuality): number {
-    const scale = height / rect.height;
-    const ratio: number = rect.width / rect.height;
-    this.setCanvasSize(canvas, height * ratio, height, quality);
-    return scale;
+  public getScaleForHorizontalFit(width: number, viewport: PDFPageViewport): number {
+    return width / viewport.width;
   }
 
   /**
    * Define sizes of canvas
    */
-  public setCanvasSize(canvas: HTMLCanvasElement, width: number, height: number, quality: RenderQuality) {
-    canvas.setAttribute('width', `${width * quality}px`);
-    canvas.setAttribute('height', `${height * quality}px`);
-    canvas.style.width = `${width}px`;
-    canvas.style.height = `${height}px`;
+  public setCanvasSizes(canvas: HTMLCanvasElement, viewport: PDFPageViewport, quality: RenderQuality, zoom: number) {
+    canvas.width = viewport.width * quality;
+    canvas.height = viewport.height * quality;
+    canvas.setAttribute('width', `${canvas.width}px`);
+    canvas.setAttribute('height', `${canvas.height}px`);
+    canvas.style.width = `${viewport.width}px`;
+    canvas.style.height = `${viewport.height}px`;
   }
 
   /**
-   * Clean canvas
+   * Clean canvas, return ctx after
    */
   public cleanCanvas(canvas: HTMLCanvasElement): CanvasRenderingContext2D {
     const ctx: CanvasRenderingContext2D = canvas.getContext('2d');
@@ -87,58 +71,54 @@ export class Pdfjs {
     return ctx;
   }
 
+  /**
+   * Destroy canvas, clean and remove
+   */
   public destroyCanvas(canvas: HTMLCanvasElement) {
     this.cleanCanvas(canvas);
     canvas.remove();
   }
 
   /**
-   * Get rectangle for page, consedering rotate
-   */
-  public getRectangle(pdfPAgeProxy: PDFPageProxy, rotate: number): DOMRect {
-    let vHeight = 0;
-    let vWidth = 0;
-    if (pdfPAgeProxy && pdfPAgeProxy.view) {
-      const view: number[] = pdfPAgeProxy.view;
-      const rotation = pdfPAgeProxy.rotate + (rotate || 0);
-      if ((rotation / 90) % 2) {
-        vWidth = (view[3] - view[1]);
-        vHeight = (view[2] - view[0]);
-      } else {
-        vHeight = (view[3] - view[1]);
-        vWidth = (view[2] - view[0]);
-      }
-    }
-    return new DOMRect(0, 0, vWidth, vHeight);
-  }
-
-  /**
    * Render page in canvas
    */
-  private renderItemInCanvasFitted(item: PdfjsItem, quality: RenderQuality,
-                                   canvas: HTMLCanvasElement, size: number, fitter: Fitter): PDFPromise<any> {
-    const ctx: CanvasRenderingContext2D = this.cleanCanvas(canvas);
-    return !!item ? item.getPage().then((pdfPageProxy: PDFPageProxy) => {
-      const r: DOMRect = this.getRectangle(pdfPageProxy, item.rotate);
-      const scale = fitter(canvas, size, r, quality);
-      const pdfPageViewport: PDFPageViewport = pdfPageProxy.getViewport(scale * quality, item.rotate);
-      const pdfRenderTask: PDFRenderTask = pdfPageProxy.render({canvasContext: ctx, viewport: pdfPageViewport});
+  protected renderItemInCanvasFitted(item: PdfjsItem, canvas: HTMLCanvasElement,
+                                     size: number /*height or width*/, quality: RenderQuality, zoom: number,
+                                     getScaleForFit: GetScaleForFit): PDFPromise<RenderObjects> {
+    const canvasContext: CanvasRenderingContext2D = this.cleanCanvas(canvas);
+    return item.getPage().then((pdfPageProxy: PDFPageProxy) => {
+      let viewport: PDFPageViewport = pdfPageProxy.getViewport(1, item.rotate);
+      const scaleForFit = getScaleForFit(size, viewport); // method.call is useless here, cause getScale has no scope
+      viewport = this.factorViewport(viewport, zoom * scaleForFit); // pdfPageProxy.getViewport(zoom * scaleForFit, item.rotate);
+      this.setCanvasSizes(canvas, viewport, quality, zoom);
+      const pdfRenderTask: PDFRenderTask = pdfPageProxy.render({
+        canvasContext,
+        viewport: this.factorViewport(viewport, quality) // pdfPageProxy.getViewport(scaleForFit * quality * zoom, item.rotate)
+      });
       pdfRenderTask.promise.then(() => {
       }, (error: any) => {
         if (error.name !== 'RenderingCancelledException') {
           console.log('render error', error);
         }
       });
-      return {pdfRenderTask, pdfPageProxy, pdfPageViewport, scale};
-    }) : this.getResolvedPromise();
+      return {pdfRenderTask, viewport, pdfPageProxy};
+    });
   }
 
-  private getResolvedPromise(): PDFPromise<any> {
-    const promise: any =  new Promise<any>(() => {});
-    promise.isResolved = () => true;
-    promise.isRejected = () => false;
-    promise.resolve = (value: any) => {};
-    promise.reject = (reason: string) => {};
-    return promise as PDFPromise<any>;
+  private factorViewport(viewPort: PDFPageViewport, factor: number): PDFPageViewport {
+    const src: any = viewPort as any;
+    if (factor === 1) {
+      return viewPort;
+    }
+    return {
+      height: src.height * factor, // 1000.0000000000001
+      offsetX: src.offsetX * factor, // 0
+      offsetY: src.offsetY * factor, // 0
+      rotation: src.rotation, // 0
+      scale: src.scale * factor, // 1.1877612510565732
+      transform: src.transform.map((val: number) => val * factor), // [1.1877612510565732, 0, 0, -1.1877612510565732, 0, 1000.0000000000001],
+      viewBox: src.viewBox,
+      width: src.width * factor // 707.098039856611
+    } as any as PDFPageViewport;
   }
 }

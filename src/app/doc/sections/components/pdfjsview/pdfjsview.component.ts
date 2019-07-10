@@ -16,7 +16,7 @@ export class PdfjsViewComponent implements OnInit {
 
   quality: RenderQuality = 2;
 
-  textLayer = false;
+  textLayer = true;
 
   keysNav = false;
 

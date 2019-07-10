@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {PdfjsControl} from '../../../projects/pdfjs-box/src/lib/classes/pdfjs-control';
-import {ThumbnailDragMode, ThumbnailLayout, ViewFit} from '../../../projects/pdfjs-box/src/lib/classes/pdfjs-objects';
+import {RenderQuality, ThumbnailDragMode, ThumbnailLayout, ViewFit} from '../../../projects/pdfjs-box/src/lib/classes/pdfjs-objects';
 import {PdfjsGroupControl} from '../../../projects/pdfjs-box/src/lib/classes/pdfjs-group-control';
 import {
   faArrowLeft,
@@ -12,6 +12,8 @@ import {
   faUndo
 } from '@fortawesome/free-solid-svg-icons';
 import {faCopy, faFile} from '@fortawesome/free-regular-svg-icons';
+import {faPlus} from '@fortawesome/free-solid-svg-icons/faPlus';
+import {faMinus} from '@fortawesome/free-solid-svg-icons/faMinus';
 
 @Component({
   selector: 'app-demo',
@@ -31,6 +33,10 @@ export class DemoComponent implements OnInit {
   faSyncAlt = faSyncAlt;
   faEdit = faEdit;
   faFilePdf = faFilePdf;
+  faPlus = faPlus;
+  faMinus = faMinus;
+  quality: RenderQuality = 2;
+  textEnable = false;
   pdfs: any[] = [
     {fn: 'condition.pdf', url: 'assets/pdfs/conditions.pdf'},
     {fn: 'guide.pdf', url: 'assets/pdfs/guide.pdf'},
@@ -55,5 +61,9 @@ export class DemoComponent implements OnInit {
 
   showPdf($event: any) {
     this.pdfjsControl.load($event.url, true);
+  }
+
+  incQuality(by: number) {
+    this.quality = (((this.quality - 1) + by) % 5) + 1 as RenderQuality;
   }
 }

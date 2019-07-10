@@ -1,4 +1,4 @@
-import {PDFDocumentProxy, PDFPageProxy, PDFPromise} from 'pdfjs-dist';
+import {PDFDocumentProxy, PDFPageProxy, PDFPageViewport, PDFPromise, PDFRenderTask} from 'pdfjs-dist';
 import {BehaviorSubject} from 'rxjs';
 import {PDFDataRangeTransport} from './pdfapi';
 
@@ -7,6 +7,12 @@ export class PdfjsItemEvent {
   public event: 'init' | 'add' | 'remove' | 'move' | 'endInit';
   public from?: number;
   public to?: number;
+}
+
+export class RenderObjects {
+  pdfRenderTask: PDFRenderTask;
+  viewport: PDFPageViewport;
+  pdfPageProxy: PDFPageProxy;
 }
 
 export class PdfjsItem {
@@ -50,7 +56,6 @@ export class RenderEvent {
   public pages?: number;
   public time?: number;
 }
-
 
 export enum ThumbnailLayout {
   HORIZONTAL = 'horizontal',

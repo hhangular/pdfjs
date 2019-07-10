@@ -1,4 +1,4 @@
-import {PDFDocumentProxy, PDFPromise, TextContent} from 'pdfjs-dist';
+import {PDFDocumentProxy, PDFLoadingTask, PDFPageProxy, PDFProgressData, PDFPromise, TextContent} from 'pdfjs-dist';
 export declare class PdfAPI {
   public apiCompatibilityParams: any;
   public build: string;
@@ -33,7 +33,11 @@ export declare class PdfAPI {
   public createValidAbsoluteUrl(url: string, baseUrl: string): string;
 
   public getDocument(src: string | PDFDataRangeTransport | Uint8Array |
-    { data: Uint8Array } | { range: PDFDataRangeTransport } | { url: string }): PDFPromise<PDFDocumentProxy>;
+    { data: Uint8Array } | { range: PDFDataRangeTransport } | { url: string },
+                     pdfDataRangeTransport?: any,
+                     passwordCallback?: (fn: (password: string) => void, reason: string) => string,
+                     progressCallback?: (progressData: PDFProgressData) => void
+  ): PDFLoadingTask<PDFDocumentProxy>;
 
   public getFilenameFromUrl(url): string;
 
@@ -45,8 +49,8 @@ export declare class PdfAPI {
 
 }
 
-export interface TextLayerRenderTask extends PDFPromise<TextContent> {
-
+export interface TextLayerRenderTask extends PDFLoadingTask<TextContent> {
+  cancel();
 }
 
 export declare class RenderParameters {

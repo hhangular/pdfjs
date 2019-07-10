@@ -40,7 +40,7 @@
   <!-- quality -->
   <h3>Render quality</h3>
   Set view render quality<br><br>
-  <pdfjs-view style="height: 1000px" [control]="conditionCtrl" [fit]="ViewFit.VERTICAL" [quality]="quality"></pdfjs-view>
+  <pdfjs-view style="height: 800px" [control]="conditionCtrl" [fit]="ViewFit.VERTICAL" [quality]="quality"></pdfjs-view>
   <button mat-button color="primary">quality</button>
   <mat-radio-group [value]="quality" (change)="quality=$event.value">
     <mat-radio-button [value]="1">1</mat-radio-button>&nbsp;&nbsp;&nbsp;
@@ -59,7 +59,7 @@
   <!-- textLayer -->
   <h3>Text Layer</h3>
   Set if text layer is enabled<br><br>
-  <pdfjs-view style="height: 500px" [control]="conditionCtrl" [textLayer]="textLayer"></pdfjs-view>
+  <pdfjs-view style="height: 842px" [control]="conditionCtrl" [textLayer]="textLayer" [quality]="2"></pdfjs-view>
   <button mat-button color="primary">textLayer</button>
   <mat-radio-group [value]="textLayer" (change)="textLayer=$event.value">
     <mat-radio-button [value]="true">true</mat-radio-button>&nbsp;&nbsp;&nbsp;
