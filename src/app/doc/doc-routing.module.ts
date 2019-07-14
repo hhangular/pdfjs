@@ -20,7 +20,7 @@ const docRoutes: Routes = [
       {path: 'pdfjscommand', component: PdfjsCommandComponent},
       {path: 'pdfjscontrol', component: PdfjsControlComponent},
       {path: 'pdfjsgroupcontrol', component: PdfjsGroupControlComponent},
-      {path: 'pdfjspage', component: PdfPageComponent},
+      {path: 'pdfpage', component: PdfPageComponent},
 
       {path: 'thumbnaildragmode', component: ThumbnailDragModeComponent},
       {path: 'thumbnaillayout', component: ThumbnailLayoutComponent},
