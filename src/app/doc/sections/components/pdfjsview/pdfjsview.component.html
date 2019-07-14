@@ -5,13 +5,13 @@
   A simple view must have a defined pdfjsControl or pdfjsGroupControl
   <br>
   Control allow to control a pdf load by pdfjsControl or controlled and selected by pdfjsGroupControl<br>
-  <div class="code-container">
+  <div class="code-container mat-elevation-z8">
     <span class="code-comment">&lt;!--In template--&gt;</span><br>
     &lt;<span class="code-node-name">pdfjs-view</span>
     &nbsp;<span class="code-attribute-name">[control]</span>="<span class="code-attribute-value">pdfjsControl</span>"&gt;
     &lt;/<span class="code-node-name">pdfjs-view</span>&gt;
   </div><br>
-  <div class="code-container">
+  <div class="code-container mat-elevation-z8">
     <span class="code-comment">// In controller</span><br>
     <span class="code-field">pdfjsControl</span>:&nbsp;<span class="code-type">PdfjsControl</span>&nbsp;=&nbsp;<span class="code-keyword">new</span>&nbsp;<span class="code-class">PdfjsControl</span>();<br><br>
     <span class="code-method">ngOnInit</span>():<span class="code-keyword">void</span> &#x7B;<br>
@@ -34,8 +34,17 @@
     <mat-radio-button [value]="ViewFit.HORIZONTAL">ViewFit.HORIZONTAL</mat-radio-button>
   </mat-radio-group>
   <br><br>
-  <div class="code-container">
+  <div class="code-container mat-elevation-z8">
     &lt;<span class="code-node-name">pdfjs-view</span>&nbsp;<span class="code-attribute-name">[fit]</span>="'<span class="code-attribute-value">{{fit}}</span>'"&gt;&lt;/<span class="code-node-name">pdfjs-view</span>&gt;
+  </div>
+  Or
+  <div class="code-container mat-elevation-z8">
+    <span class="code-comment">// In controller</span><br>
+    <span class="code-field">ViewFit</span>&nbsp;=&nbsp;<span class="code-field">ViewFit</span>;
+  </div>
+  <div class="code-container mat-elevation-z8">
+    <span class="code-comment">&lt;!--In template--&gt;</span><br>
+    &lt;<span class="code-node-name">pdfjs-view</span>&nbsp;<span class="code-attribute-name">[fit]</span>="<span class="code-attribute-value">ViewFit.{{fit | uppercase}}</span>'"&gt;&lt;/<span class="code-node-name">pdfjs-view</span>&gt;
   </div>
   <br><br>
   <hr>
@@ -54,8 +63,8 @@
   <br><br>
   Render pdf page use a lot of cpu load. For limit the cpu loading, use the adequate quality.<br>
   <br><br>
-  <div class="code-container">
-    &lt;<span class="code-node-name">pdfjs-view</span>&nbsp;<span class="code-attribute-name">[quality]</span>="'<span class="code-attribute-value">{{quality}}</span>'"&gt;&lt;/<span class="code-node-name">pdfjs-view</span>&gt;
+  <div class="code-container mat-elevation-z8">
+    &lt;<span class="code-node-name">pdfjs-view</span>&nbsp;<span class="code-attribute-name">[quality]</span>="<span class="code-attribute-value">{{quality}}</span>"&gt;&lt;/<span class="code-node-name">pdfjs-view</span>&gt;
   </div>
   <br><br>
   <hr>
@@ -69,8 +78,8 @@
     <mat-radio-button [value]="false">false</mat-radio-button>
   </mat-radio-group>
   <br><br>
-  <div class="code-container">
-    &lt;<span class="code-node-name">pdfjs-view</span>&nbsp;<span class="code-attribute-name">[textLayer]</span>="'<span class="code-attribute-value">{{textLayer}}</span>'"&gt;&lt;/<span class="code-node-name">pdfjs-view</span>&gt;
+  <div class="code-container mat-elevation-z8">
+    &lt;<span class="code-node-name">pdfjs-view</span>&nbsp;<span class="code-attribute-name">[textLayer]</span>="<span class="code-attribute-value">{{textLayer}}</span>"&gt;&lt;/<span class="code-node-name">pdfjs-view</span>&gt;
   </div>
   <br><br>
   <hr>
@@ -84,7 +93,7 @@
     <mat-radio-button [value]="false">false</mat-radio-button>
   </mat-radio-group>
   <br><br>
-  <div class="code-container">
+  <div class="code-container mat-elevation-z8">
     &lt;<span class="code-node-name">pdfjs-view</span>&nbsp;<span class="code-attribute-name">[keysNav]</span>="<span class="code-attribute-value">{{keysNav}}</span>"&gt;&lt;/<span class="code-node-name">pdfjs-view</span>&gt;
   </div>
   <br><br>
@@ -99,8 +108,8 @@
     <mat-radio-button [value]="false">false</mat-radio-button>
   </mat-radio-group>
   <br><br>
-  <div class="code-container">
-    &lt;<span class="code-node-name">pdfjs-view</span>&nbsp;<span class="code-attribute-name">[mouseWheelNav]</span>="'<span class="code-attribute-value">{{mouseWheelNav}}</span>'"&gt;&lt;/<span class="code-node-name">pdfjs-view</span>&gt;
+  <div class="code-container mat-elevation-z8">
+    &lt;<span class="code-node-name">pdfjs-view</span>&nbsp;<span class="code-attribute-name">[mouseWheelNav]</span>="<span class="code-attribute-value">{{mouseWheelNav}}</span>"&gt;&lt;/<span class="code-node-name">pdfjs-view</span>&gt;
   </div>
   <hr>
 </section>
