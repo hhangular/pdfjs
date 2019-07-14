@@ -4,7 +4,8 @@
 
 export {PdfjsBoxModule} from './lib/pdfjs-box.module';
 export {PdfjsCommonComponent} from './lib/components/pdfjs-common.component';
-export {PdfjsConfig, PdfjsItem, PdfSource, ThumbnailDragMode, ThumbnailLayout, ViewFit} from './lib/classes/pdfjs-objects';
+export {PdfjsConfig, PdfSource, ThumbnailDragMode, ThumbnailLayout, ViewFit} from './lib/classes/pdfjs-objects';
+export {PdfjsItem, PdfPage} from './lib/classes/pdfjs-item';
 export {PdfjsControl} from './lib/classes/pdfjs-control';
 export {PdfjsGroupControl} from './lib/classes/pdfjs-group-control';
 export {PdfjsCommand} from './lib/classes/pdfjs-command';
