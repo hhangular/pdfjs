@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, HostListener, Input, Output} from '@angular/core';
-import {PdfjsItem} from '../../../classes/pdfjs-objects';
+import {PdfjsItem} from '../../../classes/pdfjs-item';
 
 /** @ignore */
 @Component({

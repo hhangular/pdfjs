@@ -18,8 +18,8 @@ import {Subject} from 'rxjs';
 import {filter} from 'rxjs/operators';
 import {PdfjsControl} from '../../classes/pdfjs-control';
 import {PdfjsGroupControl} from '../../classes/pdfjs-group-control';
+import {PdfjsItem} from '../../classes/pdfjs-item';
 import {
-  PdfjsItem,
   PdfjsItemEvent, RenderEvent,
   RenderQuality,
   ThumbnailDragMode,
@@ -37,8 +37,9 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy {
 
   private _quality: RenderQuality = 1;
   private _fitSize = 100;
-  public _previewDelay = 100;
+  private _previewDelay = 100;
   private _dragMode = ThumbnailDragMode.DUPLICATE;
+  private _borderWidth = 5;
   private _allowRemove = false;
   public _allowDrop = false;
   private _pdfjsControl: PdfjsControl;
@@ -182,7 +183,7 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * size to fit. Depends of direction layout
+   * size to fitSelected. Depends of direction layout
    */
   @Input()
   set fitSize(size: number) {
@@ -212,6 +213,19 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy {
   }
   get dragMode(): ThumbnailDragMode.NONE | ThumbnailDragMode.MOVE | ThumbnailDragMode.DUPLICATE {
     return this._dragMode;
+  }
+
+  @Input()
+  get borderWidth(): number {
+    return this._borderWidth;
+  }
+  set borderWidth(value: number) {
+    if (this._borderWidth !== value) {
+      this._borderWidth = value;
+      this.thumbnailComponentRefs.forEach((componentRef: ComponentRef<PdfjsThumbnailComponent>) => {
+        componentRef.instance.borderWidth = value;
+      });
+    }
   }
 
   /**
@@ -312,7 +326,7 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy {
   private selection(item: PdfjsItem) {
     this.pdfjsControl.selectItemIndex(this.pdfjsControl.indexOfItem(item));
     if (this.pdfjsGroupControl) {
-      this.pdfjsGroupControl.select(this.pdfjsControl);
+      this.pdfjsGroupControl.selectControl(this.pdfjsControl);
     }
   }
 
@@ -326,10 +340,10 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy {
         const ms = time - s * 1000;
         this.render.emit({
           type: 'END',
-          pages: this._pdfjsControl.getItemsLength(),
+          pages: this._pdfjsControl.getPageNumber(),
           time,
         });
-        console.log(`Render ${this._pdfjsControl.getItemsLength()} pages in ${s}s ${ms}ms`);
+        console.log(`Render ${this._pdfjsControl.getPageNumber()} pages in ${s}s ${ms}ms`);
       }
     }
 

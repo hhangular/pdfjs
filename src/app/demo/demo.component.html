@@ -25,14 +25,14 @@
     </div>
     <div fxFlex>
       <div class="button-row" style="text-align: center">
-        <button mat-icon-button [disabled]="!pdfjsGroupControl.hasPrevious()"
+        <button mat-icon-button [disabled]="!pdfjsGroupControl.previousIsSelectable()"
                 (click)="pdfjsGroupControl.selectPrevious()">
           <fa-icon size="lg" [icon]="faArrowLeft"></fa-icon>
         </button>
         <button mat-icon-button [disabled]="true">
-          {{pdfjsGroupControl.getPageIndex()}}/{{pdfjsGroupControl.getNumberOfPages()}}
+          {{pdfjsGroupControl.getSelectedPageIndex()}}/{{pdfjsGroupControl.getPageNumber()}}
         </button>
-        <button mat-icon-button [disabled]="!pdfjsGroupControl.hasNext()"
+        <button mat-icon-button [disabled]="!pdfjsGroupControl.nextIsSelectable()"
                 (click)="pdfjsGroupControl.selectNext()">
           <fa-icon size="lg" [icon]="faArrowRight"></fa-icon>
         </button>
@@ -68,13 +68,13 @@
           <fa-icon size="lg" [icon]="faPlus"></fa-icon>
         </button>
         <mat-checkbox [(ngModel)]="textEnable" title="Enable/disabled text layer"></mat-checkbox>
-        <button mat-icon-button [disabled]="pdfjsGroupControl.disabled" (click)="pdfjsGroupControl.zoom(0.9)">
+        <button mat-icon-button [disabled]="pdfjsGroupControl.disabled" (click)="pdfjsGroupControl.zoomSelected(0.9)">
           <fa-icon [icon]="faSearchMinus" size="lg"></fa-icon>
         </button>
-        <button mat-icon-button [disabled]="pdfjsGroupControl.disabled" (click)="pdfjsGroupControl.fit()">
+        <button mat-icon-button [disabled]="pdfjsGroupControl.disabled" (click)="pdfjsGroupControl.fitSelected()">
           <fa-icon [icon]="faExpandArrowsAlt" size="lg"></fa-icon>
         </button>
-        <button mat-icon-button [disabled]="pdfjsGroupControl.disabled" (click)="pdfjsGroupControl.zoom(1.1)">
+        <button mat-icon-button [disabled]="pdfjsGroupControl.disabled" (click)="pdfjsGroupControl.zoomSelected(1.1)">
           <fa-icon [icon]="faSearchPlus" size="lg"></fa-icon>
         </button>
         <button mat-icon-button [disabled]="pdfjsGroupControl.disabled" (click)="pdfjsGroupControl.reload()">

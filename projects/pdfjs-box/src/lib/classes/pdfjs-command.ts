@@ -1,67 +1,84 @@
+import {PDFPromise} from 'pdfjs-dist';
+
 export interface PdfjsCommand {
 
   /**
-   * GEt number of pages
+   * Get number of pages
    */
-  getNumberOfPages(): number;
+  getPageNumber(): number;
 
   /**
    * Select first page
    */
-  selectFirst();
+  selectFirst(): number;
 
   /**
    * Select last page
    */
-  selectLast();
+  selectLast(): number;
 
   /**
    * Has pdf next page
    */
-  hasNext(): boolean;
+  nextIsSelectable(): boolean;
 
   /**
    * Has pdf previous page
    */
-  hasPrevious(): boolean;
+  previousIsSelectable(): boolean;
+
+  /**
+   * Select the item number index
+   */
+  selectItemIndex(index: number): number;
 
   /**
    * Select next page
    */
-  selectNext();
+  selectNext(): number;
 
   /**
    * Select previous page
    */
-  selectPrevious();
+  selectPrevious(): number;
+
+  /**
+   * unset selection
+   */
+  unselect(): number;
 
   /**
    * Rotate all pages
    */
-  rotate(angle: number);
+  rotate(angle: number): void;
 
   /**
    * Rotate selected page
    */
-  rotateSelected(angle: number);
+  rotateSelected(angle: number): void;
 
   /**
    * Zoom selected page
    */
-  zoom(zoom: number);
+  zoomSelected(zoom: number): void;
 
   /**
    * Fit selected page
    */
-  fit();
+  fitSelected(): void;
 
   /**
    * Reload pdf
    */
-  reload();
+  reload(): PDFPromise<number>;
 
   /**
    * Page index based 1
    */
-  getPageIndex(): number;
+  getSelectedPageIndex(): number;
+
+  /**
+   * Page index based 0
+   */
+  getSelectedItemIndex(): number;
 }

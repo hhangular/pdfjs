@@ -1,57 +1,71 @@
 import {BehaviorSubject} from 'rxjs';
 import {PdfjsCommand} from './pdfjs-command';
 import {PdfjsControl} from './pdfjs-control';
+import {PDFPromiseResolved} from './pdfjs-objects';
+import {PDFPromise} from 'pdfjs-dist';
 
 export class PdfjsGroupControl implements PdfjsCommand {
 
   public get disabled(): boolean {
-    return !this.selectedPdfjsControl || isNaN(this.getPageIndex());
+    return !this.selectedPdfjsControl || isNaN(this.getSelectedPageIndex());
   }
 
   public selectedPdfjsControl$: BehaviorSubject<PdfjsControl> = new BehaviorSubject(null);
   private selectedPdfjsControl: PdfjsControl = null;
 
-  public select(pdfjsControl: PdfjsControl) {
+  public selectControl(pdfjsControl: PdfjsControl) {
     this.selectedPdfjsControl = pdfjsControl;
     this.selectedPdfjsControl$.next(pdfjsControl);
   }
+  public unselectControl() {
+    this.selectedPdfjsControl = null;
+    this.selectedPdfjsControl$.next(null);
+  }
 
-  public isSelected(pdfjsControl: PdfjsControl): boolean {
+  public isControlSelected(pdfjsControl: PdfjsControl): boolean {
     return this.selectedPdfjsControl === pdfjsControl;
   }
 
-  public fit() {
+  public fitSelected() {
     if (!!this.selectedPdfjsControl) {
-      this.selectedPdfjsControl.fit();
+      this.selectedPdfjsControl.fitSelected();
     }
   }
 
-  public getNumberOfPages(): number {
+  public getPageNumber(): number {
     if (!!this.selectedPdfjsControl) {
-      return this.selectedPdfjsControl.getNumberOfPages();
+      return this.selectedPdfjsControl.getPageNumber();
     }
     return 0;
   }
 
-  public getPageIndex(): number {
+  public getSelectedPageIndex(): number {
     if (!!this.selectedPdfjsControl) {
-      return this.selectedPdfjsControl.getPageIndex();
+      return this.selectedPdfjsControl.getSelectedPageIndex();
     }
     return NaN;
   }
 
-  public hasNext(): boolean {
-    return !!this.selectedPdfjsControl && this.selectedPdfjsControl.hasNext();
-  }
-
-  public hasPrevious(): boolean {
-    return !!this.selectedPdfjsControl && this.selectedPdfjsControl.hasPrevious();
-  }
-
-  public reload() {
+  public getSelectedItemIndex(): number {
     if (!!this.selectedPdfjsControl) {
-      this.selectedPdfjsControl.reload();
+      return this.selectedPdfjsControl.getSelectedItemIndex();
     }
+    return NaN;
+  }
+
+  public nextIsSelectable(): boolean {
+    return !!this.selectedPdfjsControl && this.selectedPdfjsControl.nextIsSelectable();
+  }
+
+  public previousIsSelectable(): boolean {
+    return !!this.selectedPdfjsControl && this.selectedPdfjsControl.previousIsSelectable();
+  }
+
+  public reload(): PDFPromise<number> {
+    if (!!this.selectedPdfjsControl) {
+      return this.selectedPdfjsControl.reload();
+    }
+    return new PDFPromiseResolved(0);
   }
 
   public rotate(angle: number) {
@@ -66,33 +80,50 @@ export class PdfjsGroupControl implements PdfjsCommand {
     }
   }
 
-  public selectFirst() {
+  public selectItemIndex(index: number): number {
     if (!!this.selectedPdfjsControl) {
-      this.selectedPdfjsControl.selectFirst();
+      return this.selectedPdfjsControl.selectItemIndex(index);
     }
+    return NaN;
   }
 
-  public selectLast() {
+  public selectFirst(): number {
     if (!!this.selectedPdfjsControl) {
-      this.selectedPdfjsControl.selectLast();
+      return this.selectedPdfjsControl.selectFirst();
     }
+    return NaN;
   }
 
-  public selectNext() {
+  public selectLast(): number {
     if (!!this.selectedPdfjsControl) {
-      this.selectedPdfjsControl.selectNext();
+      return this.selectedPdfjsControl.selectLast();
     }
+    return NaN;
   }
 
-  public selectPrevious() {
+  public selectNext(): number {
     if (!!this.selectedPdfjsControl) {
-      this.selectedPdfjsControl.selectPrevious();
+      return this.selectedPdfjsControl.selectNext();
     }
+    return NaN;
   }
 
-  public zoom(zoom: number) {
+  public selectPrevious(): number {
     if (!!this.selectedPdfjsControl) {
-      this.selectedPdfjsControl.zoom(zoom);
+      return this.selectedPdfjsControl.selectPrevious();
+    }
+    return NaN;
+  }
+
+  public unselect(): number {
+    if (!!this.selectedPdfjsControl) {
+      return this.selectedPdfjsControl.unselect();
+    }
+    return NaN;
+  }
+  public zoomSelected(zoom: number) {
+    if (!!this.selectedPdfjsControl) {
+      this.selectedPdfjsControl.zoomSelected(zoom);
     }
   }
 }

@@ -18,7 +18,7 @@ export class PdfjsViewComponent implements OnInit {
 
   textLayer = true;
 
-  keysNav = false;
+  keysNav = true;
 
   mouseWheelNav = false;
 

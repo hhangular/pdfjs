@@ -31,6 +31,7 @@ export class PdfjsThumbnailsComponent implements OnInit {
   previewDelay = 300;
   previewHeight = 300;
   layout = ThumbnailLayout.HORIZONTAL;
+  borderWidth = 5;
 
   renderEndEvent: RenderEvent;
 

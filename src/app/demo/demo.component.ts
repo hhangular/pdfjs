@@ -56,7 +56,7 @@ export class DemoComponent implements OnInit {
 
   ngOnInit(): void {
     this.pdfjsControl.load('assets/pdfs/guide.pdf', true);
-    this.pdfjsGroupControl.select(this.pdfjsControl);
+    this.pdfjsGroupControl.selectControl(this.pdfjsControl);
   }
 
   showPdf($event: any) {
@@ -64,6 +64,6 @@ export class DemoComponent implements OnInit {
   }
 
   incQuality(by: number) {
-    this.quality = (((this.quality - 1) + by) % 5) + 1 as RenderQuality;
+    this.quality = (((this.quality + 4) + by) % 5) + 1 as RenderQuality;
   }
 }

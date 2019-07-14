@@ -4,10 +4,11 @@ import {BehaviorSubject, combineLatest, Subscription} from 'rxjs';
 import {distinctUntilChanged, filter, flatMap, tap} from 'rxjs/operators';
 import {PdfjsControl} from '../../classes/pdfjs-control';
 import {PdfjsGroupControl} from '../../classes/pdfjs-group-control';
-import {PdfjsItem, RenderQuality, ViewFit} from '../../classes/pdfjs-objects';
+import {RenderQuality, ViewFit} from '../../classes/pdfjs-objects';
 import {KeysService} from '../../services/keys.service';
 import {Pdfjs} from '../../services/pdfjs.service';
 import {DOCUMENT} from '@angular/common';
+import {PdfjsItem} from '../../classes/pdfjs-item';
 
 @Component({
   selector: 'pdfjs-view',
@@ -139,7 +140,7 @@ export class PdfjsViewComponent implements OnDestroy, AfterViewInit {
   }
 
   public hasPageSelected(): boolean {
-    return !!this._pdfjsControl ? !isNaN(this._pdfjsControl.getPageIndex()) : false;
+    return !!this._pdfjsControl ? !isNaN(this._pdfjsControl.getSelectedPageIndex()) : false;
   }
 
   /**
@@ -150,7 +151,7 @@ export class PdfjsViewComponent implements OnDestroy, AfterViewInit {
   }
 
   /**
-   * Compute size function of fit
+   * Compute size function of fitSelected
    */
   private computeSize() {
     const view: HTMLElement = this.elementRef.nativeElement;

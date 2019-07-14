@@ -2,7 +2,8 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 import {Component, ElementRef, HostBinding, Input, OnInit} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
 import {debounceTime} from 'rxjs/operators';
-import {InnerItem, PdfjsItem, ThumbnailLayout} from '../../../classes/pdfjs-objects';
+import {InnerItem, ThumbnailLayout} from '../../../classes/pdfjs-objects';
+import {PdfjsItem} from '../../../classes/pdfjs-item';
 
 @Component({
   selector: 'pdfjs-preview',

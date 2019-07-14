@@ -5,7 +5,8 @@ import {BehaviorSubject, combineLatest, of, Subscription} from 'rxjs';
 import {distinctUntilChanged, flatMap, map} from 'rxjs/operators';
 import {PdfjsControl} from '../../classes/pdfjs-control';
 import {PdfjsGroupControl} from '../../classes/pdfjs-group-control';
-import {PdfjsItem, RenderQuality, ThumbnailLayout, ViewFit} from '../../classes/pdfjs-objects';
+import {RenderQuality, ThumbnailLayout, ViewFit} from '../../classes/pdfjs-objects';
+import {PdfjsItem} from '../../classes/pdfjs-item';
 import {Pdfjs} from '../../services/pdfjs.service';
 
 @Component({
@@ -101,6 +102,7 @@ export class PdfjsThumbnailComponent implements OnInit, OnDestroy {
    *
    */
   private _layout: ThumbnailLayout = ThumbnailLayout.HORIZONTAL;
+  private _borderWidth = 5;
   private _quality: RenderQuality = 1;
   private _fitSize = 100;
 
@@ -111,6 +113,21 @@ export class PdfjsThumbnailComponent implements OnInit, OnDestroy {
   public draggable = false;
   @Input()
   public removable = false;
+  @Input()
+  get borderWidth(): number {
+    return this._borderWidth;
+  }
+  set borderWidth(value: number) {
+    if (this._borderWidth !== value) {
+      this._borderWidth = value;
+      const canvas: HTMLCanvasElement = this.canvasRef.nativeElement;
+      canvas.style.padding = `${value}px`;
+      if (this._item) {
+        this.renderPdfjsItem(this._item);
+      }
+    }
+  }
+
   @Input()
   get layout(): ThumbnailLayout {
     return this._layout;
@@ -302,8 +319,8 @@ export class PdfjsThumbnailComponent implements OnInit, OnDestroy {
     const canvas: HTMLCanvasElement = this.canvasRef.nativeElement;
     if (!!pdfjsItem) {
       this.notRendered = true;
-      // fixed size used for fit
-      const canvasSize = this._fitSize - 10;
+      // fixed size used for fitSelected
+      const canvasSize = this._fitSize - this._borderWidth * 2;
       const fit: ViewFit = this._layout === ThumbnailLayout.HORIZONTAL ? ViewFit.VERTICAL : ViewFit.HORIZONTAL;
       this.pdfjs.getRenderFittedInCanvas(fit).call(this.pdfjs, pdfjsItem, canvas, canvasSize, this._quality)
         .then((pdfRenderTask: PDFRenderTask) => {

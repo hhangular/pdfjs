@@ -4,7 +4,8 @@ import {BehaviorSubject, Subscription} from 'rxjs';
 import {filter} from 'rxjs/operators';
 import {PdfAPI} from './pdfapi';
 import {PdfjsCommand} from './pdfjs-command';
-import {PdfjsItem, PdfjsItemEvent, PDFPromiseResolved, PdfSource} from './pdfjs-objects';
+import {PdfjsItemEvent, PDFPromiseResolved, PdfSource} from './pdfjs-objects';
+import {PdfjsItem, PdfPage} from './pdfjs-item';
 import {Crypto} from './pdfjs-crypto';
 
 export class PdfjsControl implements PdfjsCommand {
@@ -80,19 +81,17 @@ export class PdfjsControl implements PdfjsCommand {
     });
   }
 
-  public getItems() {
-    return this.items;
+  public getPdfPages(): PdfPage[] {
+    return this.items.map(val => {
+      return {document: val.document, pdfId: val.pdfId, pageIdx: val.pageIdx, rotate: val.rotate};
+    });
   }
 
-  public getItemByIndex(idx: number) {
+  public getItemByIndex(idx: number): PdfjsItem {
     return this.items[idx];
   }
 
-  public getItemsLength(): number {
-    return this.items.length;
-  }
-
-  public getNumberOfPages(): number {
+  public getPageNumber(): number {
     return this.items.length;
   }
 
@@ -106,21 +105,15 @@ export class PdfjsControl implements PdfjsCommand {
     return !!item ? this.indexOfItemByIds(item.pdfId, item.pageIdx) : -1;
   }
 
-  public indexOfItemByIds(pdfId: string, pageIdx: number): number {
-    return this.items.findIndex((it: PdfjsItem) => {
-      return it.pdfId === pdfId && it.pageIdx === pageIdx;
-    });
-  }
-
-  public addItem(item: PdfjsItem, idx?: number) {
+  public addItem(item: PdfjsItem, idx?: number): void {
     this.addItemEvent.next({item, event: 'add', to: idx});
   }
 
-  public removeItem(item: PdfjsItem) {
+  public removeItem(item: PdfjsItem): void {
     this.removeItemEvent.next({item, event: 'remove'});
   }
 
-  public load(source: PdfSource, autoSelect = false) {
+  public load(source: PdfSource, autoSelect = false): PDFPromise<number> {
     this.pdfId = this.getPdfId(source);
     this.source = source;
     this.autoSelect = autoSelect;
@@ -132,17 +125,18 @@ export class PdfjsControl implements PdfjsCommand {
     });
   }
 
-  public unload() {
+  public unload(): void {
     this.source = null;
     this.itemIndex = NaN;
     this.items = [];
   }
 
-  public unselect() {
-    this.selectItemIndex(NaN);
+  public unselect(): number {
+    return this.selectItemIndex(NaN);
   }
 
-  public selectItemIndex(index: number) {
+  public selectItemIndex(index: number): number {
+    const prev: number = this.itemIndex;
     if (isNaN(index)) {
       this.selectedItem$.next(null);
       this.selectedIndex$.next(NaN);
@@ -158,90 +152,100 @@ export class PdfjsControl implements PdfjsCommand {
         this.rotate$.next(angle);
       });
     }
+    return prev;
   }
 
-  public selectFirst() {
+  public selectFirst(): number {
     if (this.isValidList()) {
-      this.selectItemIndex(0);
+      return this.selectItemIndex(0);
     }
+    return NaN;
   }
 
-  public selectLast() {
+  public selectLast(): number {
     if (this.isValidList()) {
-      this.selectItemIndex(this.items.length - 1);
+      return this.selectItemIndex(this.items.length - 1);
     }
+    return NaN;
   }
 
-  public hasNext() {
+  public nextIsSelectable(): boolean {
     return this.isValidList() && this.isValidIndex() && this.itemIndex + 1 < this.items.length;
   }
 
-  public hasPrevious() {
+  public previousIsSelectable(): boolean {
     return this.isValidList() && this.isValidIndex() && this.itemIndex > 0;
   }
 
-  public selectNext() {
-    if (this.hasNext()) {
-      this.selectItemIndex(this.itemIndex + 1);
+  public selectNext(): number {
+    if (this.nextIsSelectable()) {
+      return this.selectItemIndex(this.itemIndex + 1);
     }
+    return NaN;
   }
 
-  public selectPrevious() {
-    if (this.hasPrevious()) {
-      this.selectItemIndex(isNaN(this.itemIndex) ? NaN : this.itemIndex - 1);
+  public selectPrevious(): number {
+    if (this.previousIsSelectable()) {
+      return this.selectItemIndex(isNaN(this.itemIndex) ? NaN : this.itemIndex - 1);
     }
+    return NaN;
   }
 
-  public rotate(angle: number) {
+  public rotate(angle: number): void {
     this.items.forEach((item: PdfjsItem) => {
       item.rotate += angle;
     });
   }
 
-  public rotateSelected(angle: number) {
+  public rotateSelected(angle: number): void {
     if (!!this.items.length) {
       this.items[this.itemIndex].rotate += angle;
     }
   }
 
-  public zoom(zoom: number) {
+  public zoomSelected(zoom: number): number {
     const scale = this.scale$.getValue() * zoom;
     this.scale$.next(scale);
+    return scale;
   }
 
-  public fit() {
+  public fitSelected(): void {
     this.scale$.next(1);
   }
 
   public reload(): PDFPromise<number> {
+    const idx = this.selectItemIndex(NaN);
     if (!!this.pdfId) {
-      const idx = this.itemIndex;
-      this.selectItemIndex(NaN);
       return this.load(this.source).then((num: number) => {
         this.selectItemIndex(idx);
         return num;
       });
-    } else {
-      return new PDFPromiseResolved<number>(0);
     }
-  }
-
-  public isSelected(item: PdfjsItem): boolean {
-    return item && !isNaN(this.itemIndex) && this.items[this.itemIndex] && item.pdfId === this.items[this.itemIndex].pdfId && item.pageIdx === this.items[this.itemIndex].pageIdx;
+    return new PDFPromiseResolved<number>(0);
   }
 
   /**
    * index based 0
    */
-  public getItemIndex() {
+  public getSelectedItemIndex(): number {
     return this.itemIndex;
   }
 
   /**
    * index based 1
    */
-  public getPageIndex() {
+  public getSelectedPageIndex(): number {
     return isNaN(this.itemIndex) ? this.itemIndex : this.itemIndex + 1;
+  }
+
+  private indexOfItemByIds(pdfId: string, pageIdx: number): number {
+    return this.items.findIndex((it: PdfjsItem) => {
+      return it.pdfId === pdfId && it.pageIdx === pageIdx;
+    });
+  }
+
+  private isSelected(item: PdfjsItem): boolean {
+    return item && !isNaN(this.itemIndex) && this.items[this.itemIndex] && item.pdfId === this.items[this.itemIndex].pdfId && item.pageIdx === this.items[this.itemIndex].pageIdx;
   }
 
   private fixAfterAddItem() {
@@ -260,13 +264,13 @@ export class PdfjsControl implements PdfjsCommand {
     }
   }
 
-  private getPdfId(source: any): string {
+  private getPdfId(source: PdfSource): string {
     if (typeof source === 'string') {
       return Crypto.md5(source as string);
-    } else if (!!source.id) {
-      return source.id;
-    } else if (!!source.url) {
-      return Crypto.md5(source.url);
+    } else if (!!(source as any).id) {
+      return (source as any).id;
+    } else if (!!(source as any).url) {
+      return Crypto.md5((source as any).url);
     } else {
       return Crypto.uuid();
     }

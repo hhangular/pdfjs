@@ -3,9 +3,9 @@ import {RouterModule, Routes} from '@angular/router';
 import {DocComponent} from './doc.component';
 import {
   PdfjsConfigComponent, ConfigComponent, PdfjsThumbnailsComponent, InstallComponent,
-  PdfjsControlComponent, PdfjsItemComponent,
+  PdfjsControlComponent,
   ThumbnailDragModeComponent, ThumbnailLayoutComponent, ViewFitComponent,
-  PdfjsViewComponent, PdfjsGroupControlComponent
+  PdfjsViewComponent, PdfjsGroupControlComponent, PdfjsCommandComponent, PdfPageComponent
 } from './sections';
 
 const docRoutes: Routes = [
@@ -17,9 +17,10 @@ const docRoutes: Routes = [
       {path: 'pdfjsview', component: PdfjsViewComponent},
       {path: 'pdfjsthumbnails', component: PdfjsThumbnailsComponent},
       {path: 'pdfjsconfig', component: PdfjsConfigComponent},
+      {path: 'pdfjscommand', component: PdfjsCommandComponent},
       {path: 'pdfjscontrol', component: PdfjsControlComponent},
       {path: 'pdfjsgroupcontrol', component: PdfjsGroupControlComponent},
-      {path: 'pdfjsitem', component: PdfjsItemComponent},
+      {path: 'pdfjspage', component: PdfPageComponent},
 
       {path: 'thumbnaildragmode', component: ThumbnailDragModeComponent},
       {path: 'thumbnaillayout', component: ThumbnailLayoutComponent},

@@ -1,1 +1,329 @@
-<ngx-md [path]="'assets/markdowns/classes/pdfjscontrol.md'"></ngx-md>
+<section class="mat-typography">
+  <h2>pdfjsControl</h2>
+  pdfjsControl allow to control the pdf loaded.<br>
+  It's the minimal class to manipulate a pdf.<br>
+  PdfjsControl implements pdfjsCommand.<br>
+  For methods inherited see PdfjsCommand documentation.
+  <ul>
+    <li>Create an instance of pdfjsControl</li>
+    <li>Load a pdf</li>
+    <li>Manipulate it</li>
+  </ul>
+  <br>
+  <h3>Example</h3>
+  <div class="code-container mat-elevation-z8">
+    <span class="code-comment">// In controller</span><br>
+    <span class="code-field">pdfjsControl</span>:&nbsp;<span class="code-class">PdfjsControl</span>&nbsp;=&nbsp;<span
+    class="code-keyword">new</span>&nbsp;<span class="code-class">PdfjsControl</span>();<br><br>
+    <span class="code-method">ngOnInit</span>():<span class="code-keyword">void</span> &#x7B;<br>
+    &nbsp;&nbsp;&nbsp;<span class="code-keyword">this</span>.<span class="code-field">pdfjsControl</span>.<span
+    class="code-method">load</span>(<span class="code-string">'assets/pdfs/conditions.pdf'</span>);<br>
+    &#x7D;<br>
+  </div>
+  <br>
+  <h2>Pdf methods</h2><!-- load -->
+  <table class="mat-table mat-elevation-z8">
+    <thead>
+    <tr class="mat-header-row">
+      <th colspan="3" class="mat-header-cell">
+            <span style="font-size: 1.2em">
+              <span class="code-field">pdfjsControl</span>.<span class="code-method">load</span>(source:
+              <span class="code-class">PdfSource</span>, autoSelect:
+              <span class="code-keyword">boolean</span> =
+              <span class="code-value">false</span>):
+              <span class="code-class">PDFPromise</span>&lt;<span class="code-keyword">number</span>&gt;
+            </span>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td colspan="3" class="mat-cell">Define source as current pdf managed by pdfjsControl</td>
+    </tr>
+    </tbody>
+    <thead>
+    <tr class="mat-header-row">
+      <th class="mat-header-cell">Argument</th>
+      <th class="mat-header-cell">Default value</th>
+      <th class="mat-header-cell">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td class="mat-cell">source: PdfSource</td>
+      <td class="mat-cell"></td>
+      <td class="mat-cell">The pdf</td>
+    </tr>
+    <tr class="mat-row">
+      <td class="mat-cell">autoSelect: boolean</td>
+      <td class="mat-cell">false</td>
+      <td class="mat-cell">Should the first page be selected</td>
+    </tr>
+    </tbody>
+    <thead>
+    <tr class="mat-header-row">
+      <th class="mat-header-cell" colspan="3">Return</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td class="mat-cell">PDFPromise&lt;number&gt;</td>
+      <td class="mat-cell" colspan="2">Promise of number of pages loaded</td>
+    </tr>
+    </tbody>
+  </table>
+  <br><br><!-- unload -->
+  <table class="mat-table mat-elevation-z8">
+    <thead>
+    <tr class="mat-header-row">
+      <th colspan="3" class="mat-header-cell">
+        <span style="font-size: 1.2em">
+          <span class="code-field">pdfjsControl</span>.<span class="code-method">unload</span>():
+          <span class="code-keyword">void</span>
+        </span>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td colspan="3" class="mat-cell">Unload the pdf loaded</td>
+    </tr>
+    </tbody>
+  </table>
+  <br>
+  <hr>
+  <h2>Item methods</h2><!-- addItem -->
+  <table class="mat-table mat-elevation-z8">
+    <thead>
+    <tr class="mat-header-row">
+      <th colspan="3" class="mat-header-cell">
+            <span style="font-size: 1.2em">
+              <span class="code-field">pdfjsControl</span>.<span class="code-method">addItem</span>(item:
+              <span class="code-class">PdfjsItem</span>, idx?:
+              <span class="code-keyword">number</span>):
+              <span class="code-keyword">void</span>
+            </span>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td colspan="3" class="mat-cell">Add PdfjsItem to index</td>
+    </tr>
+    </tbody>
+    <thead>
+    <tr class="mat-header-row">
+      <th class="mat-header-cell">Argument</th>
+      <th class="mat-header-cell">Default value</th>
+      <th class="mat-header-cell">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td class="mat-cell">item: PdfjsItem</td>
+      <td class="mat-cell"></td>
+      <td class="mat-cell">The item to add</td>
+    </tr>
+    <tr class="mat-row">
+      <td class="mat-cell">idx: number</td>
+      <td class="mat-cell"></td>
+      <td class="mat-cell">The index where the item should be insert, if undefined, insert at the end</td>
+    </tr>
+    </tbody>
+  </table>
+  <br><br><!-- removeItem -->
+  <table class="mat-table mat-elevation-z8">
+    <thead>
+    <tr class="mat-header-row">
+      <th colspan="3" class="mat-header-cell">
+            <span style="font-size: 1.2em">
+              <span class="code-field">pdfjsControl</span>.<span class="code-method">removeItem</span>(item:
+              <span class="code-class">PdfjsItem</span>):
+              <span class="code-keyword">void</span>
+            </span>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td colspan="3" class="mat-cell">Remove PdfjsItem in items array</td>
+    </tr>
+    </tbody>
+    <thead>
+    <tr class="mat-header-row">
+      <th class="mat-header-cell">Argument</th>
+      <th class="mat-header-cell">Default value</th>
+      <th class="mat-header-cell">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td class="mat-cell">item: PdfjsItem</td>
+      <td class="mat-cell"></td>
+      <td class="mat-cell">The item to remove</td>
+    </tr>
+    </tbody>
+  </table>
+  <br><br><!-- getPdfPages -->
+  <table class="mat-table mat-elevation-z8">
+    <thead>
+    <tr class="mat-header-row">
+      <th colspan="3" class="mat-header-cell">
+        <span style="font-size: 1.2em">
+          <span class="code-field">pdfjsControl</span>.<span class="code-method">getPdfPages</span>():
+          <span class="code-keyword">PdfPage</span>[]
+        </span>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td colspan="3" class="mat-cell">Get all page from Pdf loaded in pdfjsControl</td>
+    </tr>
+    </tbody>
+    <thead>
+    <tr class="mat-header-row">
+      <th class="mat-header-cell" colspan="3">Return</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td class="mat-cell">PdfPage[]</td>
+      <td class="mat-cell" colspan="2">An array of PdfPage</td>
+    </tr>
+    </tbody>
+  </table>
+  <br><br><!-- getItemByIndex -->
+  <table class="mat-table mat-elevation-z8">
+    <thead>
+    <tr class="mat-header-row">
+      <th colspan="3" class="mat-header-cell">
+            <span style="font-size: 1.2em">
+              <span class="code-field">pdfjsControl</span>.<span class="code-method">getItemByIndex</span>(idx:
+              <span class="code-keyword">number</span>):
+              <span class="code-class">PdfjsItem</span>
+            </span>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td colspan="3" class="mat-cell">Get a pdfjsItem by its index</td>
+    </tr>
+    </tbody>
+    <thead>
+    <tr class="mat-header-row">
+      <th class="mat-header-cell">Argument</th>
+      <th class="mat-header-cell">Default value</th>
+      <th class="mat-header-cell">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td class="mat-cell">idx: number</td>
+      <td class="mat-cell"></td>
+      <td class="mat-cell">The index</td>
+    </tr>
+    </tbody>
+    <thead>
+    <tr class="mat-header-row">
+      <th class="mat-header-cell" colspan="3">Return</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td class="mat-cell">PdfjsItem</td>
+      <td class="mat-cell" colspan="2">A PdfjsItem</td>
+    </tr>
+    </tbody>
+  </table>
+  <br><br><!-- containsItem -->
+  <table class="mat-table mat-elevation-z8">
+    <thead>
+    <tr class="mat-header-row">
+      <th colspan="3" class="mat-header-cell">
+            <span style="font-size: 1.2em">
+              <span class="code-field">pdfjsControl</span>.<span class="code-method">containsItem</span>(item:
+              <span class="code-class">PdfjsItem</span>):
+              <span class="code-keyword">boolean</span>
+            </span>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td colspan="3" class="mat-cell">Is the items array contained the item</td>
+    </tr>
+    </tbody>
+    <thead>
+    <tr class="mat-header-row">
+      <th class="mat-header-cell">Argument</th>
+      <th class="mat-header-cell">Default value</th>
+      <th class="mat-header-cell">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td class="mat-cell">item: PdfjsItem</td>
+      <td class="mat-cell"></td>
+      <td class="mat-cell">The item research</td>
+    </tr>
+    </tbody>
+    <thead>
+    <tr class="mat-header-row">
+      <th class="mat-header-cell" colspan="3">Return</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td class="mat-cell">boolean</td>
+      <td class="mat-cell" colspan="2">true if the items array contains it, else false.</td>
+    </tr>
+    </tbody>
+  </table>
+  <br><br><!-- indexOfItem -->
+  <table class="mat-table mat-elevation-z8">
+    <thead>
+    <tr class="mat-header-row">
+      <th colspan="3" class="mat-header-cell">
+            <span style="font-size: 1.2em">
+              <span class="code-field">pdfjsControl</span>.<span class="code-method">indexOfItem</span>(item:
+              <span class="code-class">PdfjsItem</span>):
+              <span class="code-keyword">number</span>
+            </span>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td colspan="3" class="mat-cell">Get the index item, the 0 based position in array.</td>
+    </tr>
+    </tbody>
+    <thead>
+    <tr class="mat-header-row">
+      <th class="mat-header-cell">Argument</th>
+      <th class="mat-header-cell">Default value</th>
+      <th class="mat-header-cell">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td class="mat-cell">item: PdfjsItem</td>
+      <td class="mat-cell"></td>
+      <td class="mat-cell">The item research</td>
+    </tr>
+    </tbody>
+    <thead>
+    <tr class="mat-header-row">
+      <th class="mat-header-cell" colspan="3">Return</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td class="mat-cell">number</td>
+      <td class="mat-cell" colspan="2">The index of pdfjsITem.</td>
+    </tr>
+    </tbody>
+  </table>
+  <br><br>
+</section>

@@ -1,0 +1,492 @@
+<section class="mat-typography">
+  <h2>pdfjsCommand</h2>
+  pdfjsCommand is interface implemented by pdfjsControl and PdfJsGroupControl<br>
+  It is allow to control the pdf loaded.<br>
+  Use this interface from pdfjsControl or pdfjsGroupCOntrol for manipulate pdf.<br>
+  You can do menu with buttons for call methods.
+  <br>
+  <br>
+  <h2>Pdf methods</h2><!-- getPageNumber -->
+  <table class="mat-table mat-elevation-z8">
+    <thead>
+    <tr class="mat-header-row">
+      <th colspan="3" class="mat-header-cell">
+            <span style="font-size: 1.2em">
+              <span class="code-keyword">this</span>.<span class="code-method">getPageNumber</span>():
+              <span class="code-keyword">number</span>
+            </span>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td colspan="3" class="mat-cell">Return number of pages in pdf</td>
+    </tr>
+    </tbody>
+    <thead>
+    <tr class="mat-header-row">
+      <th class="mat-header-cell" colspan="3">Return</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td class="mat-cell">number</td>
+      <td class="mat-cell" colspan="2">The number of page</td>
+    </tr>
+    </tbody>
+  </table>
+  <br><br><!-- rotate -->
+  <table class="mat-table mat-elevation-z8">
+    <thead>
+    <tr class="mat-header-row">
+      <th colspan="3" class="mat-header-cell">
+            <span style="font-size: 1.2em">
+              <span class="code-keyword">this</span>.<span class="code-method">rotate</span>(angle:
+              <span class="code-keyword">number</span>):
+              <span class="code-keyword">void</span>
+            </span>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td colspan="3" class="mat-cell">Rotate all pages managed by implementation</td>
+    </tr>
+    </tbody>
+    <thead>
+    <tr class="mat-header-row">
+      <th class="mat-header-cell">Argument</th>
+      <th class="mat-header-cell">Default value</th>
+      <th class="mat-header-cell">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td class="mat-cell">angle: number</td>
+      <td class="mat-cell"></td>
+      <td class="mat-cell">The angle in degree to rotate</td>
+    </tr>
+    </tbody>
+  </table>
+  <br><br><!-- reload -->
+  <table class="mat-table mat-elevation-z8">
+    <thead>
+    <tr class="mat-header-row">
+      <th colspan="3" class="mat-header-cell">
+        <span style="font-size: 1.2em">
+          <span class="code-keyword">this</span>.<span class="code-method">reload</span>():
+          <span class="code-class">PDFPromise</span>&lt;<span class="code-keyword">number</span>&gt;
+        </span>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td colspan="3" class="mat-cell">Reload the pdf managed by the implementation</td>
+    </tr>
+    </tbody>
+    <thead>
+    <tr class="mat-header-row">
+      <th class="mat-header-cell" colspan="3">Return</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td class="mat-cell">PDFPromise&lt;number&gt;</td>
+      <td class="mat-cell" colspan="2">Promise of number of pages loaded</td>
+    </tr>
+    </tbody>
+  </table>
+  <br><hr>
+  <h2>Select methods</h2><!-- previousIsSelectable -->
+  <table class="mat-table mat-elevation-z8">
+    <thead>
+    <tr class="mat-header-row">
+      <th colspan="3" class="mat-header-cell">
+            <span style="font-size: 1.2em">
+              <span class="code-keyword">this</span>.<span class="code-method">previousIsSelectable</span>():
+              <span class="code-keyword">boolean</span>
+            </span>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td colspan="3" class="mat-cell">Return if there is a previous item of current selected</td>
+    </tr>
+    </tbody>
+    <thead>
+    <tr class="mat-header-row">
+      <th class="mat-header-cell" colspan="3">Return</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td class="mat-cell">boolean</td>
+      <td class="mat-cell" colspan="2">Exist an item before the current selected</td>
+    </tr>
+    </tbody>
+  </table>
+  <br><br><!-- nextIsSelectable -->
+  <table class="mat-table mat-elevation-z8">
+    <thead>
+    <tr class="mat-header-row">
+      <th colspan="3" class="mat-header-cell">
+            <span style="font-size: 1.2em">
+              <span class="code-keyword">this</span>.<span class="code-method">nextIsSelectable</span>():
+              <span class="code-keyword">boolean</span>
+            </span>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td colspan="3" class="mat-cell">Return if there is a next item of current selected</td>
+    </tr>
+    </tbody>
+    <thead>
+    <tr class="mat-header-row">
+      <th class="mat-header-cell" colspan="3">Return</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td class="mat-cell">boolean</td>
+      <td class="mat-cell" colspan="2">Exist an item after the current selected</td>
+    </tr>
+    </tbody>
+  </table>
+  <br><br><!-- selectFirst -->
+  <table class="mat-table mat-elevation-z8">
+    <thead>
+    <tr class="mat-header-row">
+      <th colspan="3" class="mat-header-cell">
+            <span style="font-size: 1.2em">
+              <span class="code-keyword">this</span>.<span class="code-method">selectFirst</span>():
+              <span class="code-keyword">number</span>
+            </span>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td colspan="3" class="mat-cell">Select the first item.</td>
+    </tr>
+    </tbody>
+    <thead>
+    <tr class="mat-header-row">
+      <th class="mat-header-cell" colspan="3">Return</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td class="mat-cell">number</td>
+      <td class="mat-cell" colspan="2">The previous item number selected or NaN</td>
+    </tr>
+    </tbody>
+  </table>
+  <br><br><!-- selectPrevious -->
+  <table class="mat-table mat-elevation-z8">
+    <thead>
+    <tr class="mat-header-row">
+      <th colspan="3" class="mat-header-cell">
+            <span style="font-size: 1.2em">
+              <span class="code-keyword">this</span>.<span class="code-method">selectPrevious</span>():
+              <span class="code-keyword">number</span>
+            </span>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td colspan="3" class="mat-cell">Select the previous item.</td>
+    </tr>
+    </tbody>
+    <thead>
+    <tr class="mat-header-row">
+      <th class="mat-header-cell" colspan="3">Return</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td class="mat-cell">number</td>
+      <td class="mat-cell" colspan="2">The previous item number selected or NaN</td>
+    </tr>
+    </tbody>
+  </table>
+  <br><br><!-- selectNext -->
+  <table class="mat-table mat-elevation-z8">
+    <thead>
+    <tr class="mat-header-row">
+      <th colspan="3" class="mat-header-cell">
+            <span style="font-size: 1.2em">
+              <span class="code-keyword">this</span>.<span class="code-method">selectNext</span>():
+              <span class="code-keyword">number</span>
+            </span>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td colspan="3" class="mat-cell">Select the next item.</td>
+    </tr>
+    </tbody>
+    <thead>
+    <tr class="mat-header-row">
+      <th class="mat-header-cell" colspan="3">Return</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td class="mat-cell">number</td>
+      <td class="mat-cell" colspan="2">The previous item number selected or NaN</td>
+    </tr>
+    </tbody>
+  </table>
+  <br><br><!-- selectLast -->
+  <table class="mat-table mat-elevation-z8">
+    <thead>
+    <tr class="mat-header-row">
+      <th colspan="3" class="mat-header-cell">
+            <span style="font-size: 1.2em">
+              <span class="code-keyword">this</span>.<span class="code-method">selectLast</span>():
+              <span class="code-keyword">number</span>
+            </span>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td colspan="3" class="mat-cell">Select the last item.</td>
+    </tr>
+    </tbody>
+    <thead>
+    <tr class="mat-header-row">
+      <th class="mat-header-cell" colspan="3">Return</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td class="mat-cell">number</td>
+      <td class="mat-cell" colspan="2">The previous item number selected or NaN</td>
+    </tr>
+    </tbody>
+  </table>
+  <br><br><!-- selectItemIndex -->
+  <table class="mat-table mat-elevation-z8">
+    <thead>
+    <tr class="mat-header-row">
+      <th colspan="3" class="mat-header-cell">
+            <span style="font-size: 1.2em">
+              <span class="code-keyword">this</span>.<span class="code-method">selectItemIndex</span>(index:
+              <span class="code-keyword">number</span>):
+              <span class="code-keyword">number</span>
+            </span>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td colspan="3" class="mat-cell">Select the item index</td>
+    </tr>
+    </tbody>
+    <thead>
+    <tr class="mat-header-row">
+      <th class="mat-header-cell">Argument</th>
+      <th class="mat-header-cell">Default value</th>
+      <th class="mat-header-cell">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td class="mat-cell">index: number</td>
+      <td class="mat-cell"></td>
+      <td class="mat-cell">The index 0 based</td>
+    </tr>
+    </tbody>
+    <thead>
+    <tr class="mat-header-row">
+      <th class="mat-header-cell" colspan="3">Return</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td class="mat-cell">number</td>
+      <td class="mat-cell" colspan="2">The previous item number selected or NaN</td>
+    </tr>
+    </tbody>
+  </table>
+  <br><br><!-- unselect -->
+  <table class="mat-table mat-elevation-z8">
+    <thead>
+    <tr class="mat-header-row">
+      <th colspan="3" class="mat-header-cell">
+            <span style="font-size: 1.2em">
+              <span class="code-keyword">this</span>.<span class="code-method">unselect</span>():
+              <span class="code-keyword">number</span>
+            </span>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td colspan="3" class="mat-cell">Unset the selection.</td>
+    </tr>
+    </tbody>
+    <thead>
+    <tr class="mat-header-row">
+      <th class="mat-header-cell" colspan="3">Return</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td class="mat-cell">number</td>
+      <td class="mat-cell" colspan="2">The previous item number selected or NaN</td>
+    </tr>
+    </tbody>
+  </table>
+  <br><hr>
+  <h2>Selected methods</h2><!-- rotateSelected -->
+  <table class="mat-table mat-elevation-z8">
+    <thead>
+    <tr class="mat-header-row">
+      <th colspan="3" class="mat-header-cell">
+            <span style="font-size: 1.2em">
+              <span class="code-keyword">this</span>.<span class="code-method">rotateSelected</span>(angle:
+              <span class="code-keyword">number</span>):
+              <span class="code-keyword">void</span>
+            </span>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td colspan="3" class="mat-cell">Rotate the selected page in pdf managed by implementation</td>
+    </tr>
+    </tbody>
+    <thead>
+    <tr class="mat-header-row">
+      <th class="mat-header-cell">Argument</th>
+      <th class="mat-header-cell">Default value</th>
+      <th class="mat-header-cell">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td class="mat-cell">angle: number</td>
+      <td class="mat-cell"></td>
+      <td class="mat-cell">The angle in degree to rotate</td>
+    </tr>
+    </tbody>
+  </table>
+  <br><br><!-- zoomSelected -->
+  <table class="mat-table mat-elevation-z8">
+    <thead>
+    <tr class="mat-header-row">
+      <th colspan="3" class="mat-header-cell">
+            <span style="font-size: 1.2em">
+              <span class="code-keyword">this</span>.<span class="code-method">zoomSelected</span>(zoom:
+              <span class="code-keyword">number</span>):
+              <span class="code-keyword">void</span>
+            </span>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td colspan="3" class="mat-cell">Zoom the selected page in pdf managed by implementation</td>
+    </tr>
+    </tbody>
+    <thead>
+    <tr class="mat-header-row">
+      <th class="mat-header-cell">Argument</th>
+      <th class="mat-header-cell">Default value</th>
+      <th class="mat-header-cell">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td class="mat-cell">zoom: number</td>
+      <td class="mat-cell"></td>
+      <td class="mat-cell">The zoom coefficient. 1 equals do nothing</td>
+    </tr>
+    </tbody>
+  </table>
+  <br><br><!-- fitSelected -->
+  <table class="mat-table mat-elevation-z8">
+    <thead>
+    <tr class="mat-header-row">
+      <th colspan="3" class="mat-header-cell">
+            <span style="font-size: 1.2em">
+              <span class="code-keyword">this</span>.<span class="code-method">fitSelected</span>():
+              <span class="code-keyword">void</span>
+            </span>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td colspan="3" class="mat-cell">Fit the pdf in pdfjsView component, depends of fit attribute.</td>
+    </tr>
+    </tbody>
+  </table>
+  <br><br><!-- getSelectedPageIndex -->
+  <table class="mat-table mat-elevation-z8">
+    <thead>
+    <tr class="mat-header-row">
+      <th colspan="3" class="mat-header-cell">
+            <span style="font-size: 1.2em">
+              <span class="code-keyword">this</span>.<span class="code-method">getSelectedPageIndex</span>():
+              <span class="code-keyword">number</span>
+            </span>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td colspan="3" class="mat-cell">Return the selected page number in implementation, page number is 1 based.</td>
+    </tr>
+    </tbody>
+    <thead>
+    <tr class="mat-header-row">
+      <th class="mat-header-cell" colspan="3">Return</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td class="mat-cell">number</td>
+      <td class="mat-cell" colspan="2">The number of page</td>
+    </tr>
+    </tbody>
+  </table>
+  <br><br><!-- getSelectedItemIndex -->
+  <table class="mat-table mat-elevation-z8">
+    <thead>
+    <tr class="mat-header-row">
+      <th colspan="3" class="mat-header-cell">
+            <span style="font-size: 1.2em">
+              <span class="code-keyword">this</span>.<span class="code-method">getSelectedItemIndex</span>():
+              <span class="code-keyword">number</span>
+            </span>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td colspan="3" class="mat-cell">Return the selected item number in implementation, item number is 0 based.</td>
+    </tr>
+    </tbody>
+    <thead>
+    <tr class="mat-header-row">
+      <th class="mat-header-cell" colspan="3">Return</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="mat-row">
+      <td class="mat-cell">number</td>
+      <td class="mat-cell" colspan="2">The number of page</td>
+    </tr>
+    </tbody>
+  </table>
+  <br><br>
+</section>

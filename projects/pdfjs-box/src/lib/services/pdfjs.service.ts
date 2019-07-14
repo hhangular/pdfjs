@@ -2,7 +2,8 @@ import {Injectable} from '@angular/core';
 import {PDFPageProxy, PDFPageViewport, PDFPromise, PDFRenderTask} from 'pdfjs-dist';
 import * as api from 'pdfjs-dist/build/pdf';
 import {PdfAPI, RenderingCancelledException} from '../classes/pdfapi';
-import {PdfjsItem, RenderObjects, RenderQuality, ViewFit} from '../classes/pdfjs-objects';
+import {RenderObjects, RenderQuality, ViewFit} from '../classes/pdfjs-objects';
+import {PdfjsItem} from '../classes/pdfjs-item';
 
 type GetScaleForFit = (size: number, viewport: PDFPageViewport) => number;
 
@@ -37,14 +38,14 @@ export class Pdfjs {
   }
 
   /**
-   * Compute scale for vertical fit thumbnail container
+   * Compute scale for vertical fitSelected thumbnail container
    */
   public getScaleForVerticalFit(height: number, viewport: PDFPageViewport): number {
     return height / viewport.height;
   }
 
   /**
-   * Compute scale for horizontal fit thumbnail container
+   * Compute scale for horizontal fitSelected thumbnail container
    */
   public getScaleForHorizontalFit(width: number, viewport: PDFPageViewport): number {
     return width / viewport.width;
@@ -89,11 +90,11 @@ export class Pdfjs {
     return item.getPage().then((pdfPageProxy: PDFPageProxy) => {
       let viewport: PDFPageViewport = pdfPageProxy.getViewport(1, item.rotate);
       const scaleForFit = getScaleForFit(size, viewport); // method.call is useless here, cause getScale has no scope
-      viewport = this.factorViewport(viewport, zoom * scaleForFit); // pdfPageProxy.getViewport(zoom * scaleForFit, item.rotate);
+      viewport = this.factorViewport(viewport, zoom * scaleForFit); // pdfPageProxy.getViewport(zoomSelected * scaleForFit, item.rotate);
       this.setCanvasSizes(canvas, viewport, quality, zoom);
       const pdfRenderTask: PDFRenderTask = pdfPageProxy.render({
         canvasContext,
-        viewport: this.factorViewport(viewport, quality) // pdfPageProxy.getViewport(scaleForFit * quality * zoom, item.rotate)
+        viewport: this.factorViewport(viewport, quality) // pdfPageProxy.getViewport(scaleForFit * quality * zoomSelected, item.rotate)
       });
       pdfRenderTask.promise.then(() => {
       }, (error: any) => {
