@@ -4,9 +4,9 @@
   "author": "Achache francois",
   "license": "MIT",
   "peerDependencies": {
-    "@angular/common": "^8.0.0",
-    "@angular/core": "^8.0.0",
+    "@angular/common": "^8.0.3",
+    "@angular/core": "^8.0.3",
     "@types/pdfjs-dist": "^2.0.0",
-    "pdfjs-dist": "2.0.943"
+    "pdfjs-dist": "2.1.266"
   }
 }
