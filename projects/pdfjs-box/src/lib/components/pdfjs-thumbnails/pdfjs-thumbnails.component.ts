@@ -287,6 +287,7 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy {
         this.removeThumbnailComponentToDom(itemEvent.item, itemEvent.from);
       }
     });
+    this.computeSizes();
   }
 
   ngOnDestroy() {

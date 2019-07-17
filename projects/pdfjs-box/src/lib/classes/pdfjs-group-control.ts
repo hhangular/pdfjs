@@ -26,12 +26,6 @@ export class PdfjsGroupControl implements PdfjsCommand {
     return this.selectedPdfjsControl === pdfjsControl;
   }
 
-  public fitSelected() {
-    if (!!this.selectedPdfjsControl) {
-      this.selectedPdfjsControl.fitSelected();
-    }
-  }
-
   public getPageNumber(): number {
     if (!!this.selectedPdfjsControl) {
       return this.selectedPdfjsControl.getPageNumber();
@@ -120,10 +114,5 @@ export class PdfjsGroupControl implements PdfjsCommand {
       return this.selectedPdfjsControl.unselect();
     }
     return NaN;
-  }
-  public zoomSelected(zoom: number) {
-    if (!!this.selectedPdfjsControl) {
-      this.selectedPdfjsControl.zoomSelected(zoom);
-    }
   }
 }

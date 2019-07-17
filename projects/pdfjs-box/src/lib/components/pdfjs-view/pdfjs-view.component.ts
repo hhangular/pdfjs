@@ -27,14 +27,14 @@ export class PdfjsViewComponent implements OnDestroy, AfterViewInit {
   private pdfRenderTask: PDFRenderTask;
   private size = 100;
   private subscription: Subscription;
-  private _pdfjsControl: PdfjsControl;
-  private observer: BehaviorSubject<[PdfjsItem, number, number]> = new BehaviorSubject<[PdfjsItem, number, number]>([null, 0, 0]);
-  private canvasWidth;
-  private canvasHeight;
-  private width;
-  private height;
+  private observer: BehaviorSubject<[PdfjsItem, number]> = new BehaviorSubject<[PdfjsItem, number]>([null, 0]);
+  private canvasWidth: number;
+  private canvasHeight: number;
+  private width: number;
+  private height: number;
   private item: PdfjsItem = null;
-  private scale = 1;
+  private _pdfjsControl: PdfjsControl;
+  private _scale = 1;
   private _textLayer = false;
   private _quality: RenderQuality = 2;
   private _fit: ViewFit = ViewFit.VERTICAL;
@@ -78,6 +78,20 @@ export class PdfjsViewComponent implements OnDestroy, AfterViewInit {
   }
   get fit(): ViewFit {
     return this._fit;
+  }
+
+  /**
+   * Fit direction
+   */
+  @Input()
+  set scale(scale: number) {
+    if (this._scale !== scale) {
+      this._scale = scale;
+      this.updateRenderForCurrentItem();
+    }
+  }
+  get scale(): number {
+    return this._scale;
   }
 
   /**
@@ -127,15 +141,15 @@ export class PdfjsViewComponent implements OnDestroy, AfterViewInit {
 
   public ngAfterViewInit(): void {
     this.observer.pipe(
-      distinctUntilChanged((x: [PdfjsItem, number, number], y: [PdfjsItem, number, number]) => {
+      distinctUntilChanged((x: [PdfjsItem, number], y: [PdfjsItem, number]) => {
         return !(this.oneNull(x, y)
           || this.oneNull(x[0], y[0])
           || x[0].pdfId !== y[0].pdfId
           || x[0].pageIdx !== y[0].pageIdx
-          || x[1] !== y[1] || x[2] !== y[2]);
+          || x[1] !== y[1]);
       }),
-    ).subscribe((data: [PdfjsItem, number, number]) => {
-      this.updateRender(data[0], data[1]);
+    ).subscribe((data: [PdfjsItem, number]) => {
+      this.updateRender(data[0]);
     });
   }
 
@@ -234,27 +248,26 @@ export class PdfjsViewComponent implements OnDestroy, AfterViewInit {
         return !!pdfjsControl;
       }),
       flatMap((pdfjsControl: PdfjsControl) => {
-        return combineLatest([pdfjsControl.selectedItem$, pdfjsControl.scale$, pdfjsControl.rotate$]);
+        return combineLatest([pdfjsControl.selectedItem$, pdfjsControl.rotation$]);
       }),
-    ).subscribe((data: [PdfjsItem, number, number]) => {
+    ).subscribe((data: [PdfjsItem, number]) => {
       this.observer.next(data);
     });
   }
 
   private setPdfjsControl(pdfjsControl: PdfjsControl) {
     this._pdfjsControl = pdfjsControl;
-    combineLatest([pdfjsControl.selectedItem$, pdfjsControl.scale$, pdfjsControl.rotate$]).pipe(
-      filter((data: [PdfjsItem, number, number]) => {
+    combineLatest([pdfjsControl.selectedItem$, pdfjsControl.rotation$]).pipe(
+      filter((data: [PdfjsItem, number]) => {
         return !!data[0];
       }),
-    ).subscribe((data: [PdfjsItem, number, number]) => {
+    ).subscribe((data: [PdfjsItem, number]) => {
       this.observer.next(data);
     });
   }
 
-  private updateRender(item: PdfjsItem, scale: number) {
+  private updateRender(item: PdfjsItem) {
     this.item = item;
-    this.scale = scale;
     this.updateRenderForCurrentItem();
   }
   private updateRenderForCurrentItem() {

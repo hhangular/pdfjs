@@ -58,16 +58,6 @@ export interface PdfjsCommand {
   rotateSelected(angle: number): void;
 
   /**
-   * Zoom selected page
-   */
-  zoomSelected(zoom: number): void;
-
-  /**
-   * Fit selected page
-   */
-  fitSelected(): void;
-
-  /**
    * Reload pdf
    */
   reload(): PDFPromise<number>;

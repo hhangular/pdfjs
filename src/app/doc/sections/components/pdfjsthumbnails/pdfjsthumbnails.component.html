@@ -60,6 +60,7 @@
     &lt;<span class="code-node-name">pdfjs-thumbnails</span>&nbsp;<span class="code-attribute-name">[quality]</span>="<span class="code-attribute-value">{{quality}}</span>"&gt;&lt;/<span class="code-node-name">pdfjs-thumbnails</span>&gt;
   </div>
   Values accepted are "1" to "5". "1" is the less quality. It's enough most of time.<br>
+  The library pdfjs use cache. So change quality after pdf loaded is not significant.<br>
   Default value is 1.
   <br><br>
   <hr>
@@ -68,7 +69,7 @@
   Allow to user to remove a thumbnail by use red times.<br><br>
   <pdfjs-thumbnails [pdfjsControl]="conditionCtrl2"
                     [allowRemove]="allowRemove"></pdfjs-thumbnails><br>
-  <button mat-button color="primary">allowRemove</button>
+  <button mat-button color="primary" (click)="conditionCtrl2.reload()">allowRemove</button>
   <mat-radio-group [value]="allowRemove" (change)="allowRemove=$event.value">
     <mat-radio-button [value]="false">false</mat-radio-button>&nbsp;&nbsp;&nbsp;
     <mat-radio-button [value]="true">true</mat-radio-button>&nbsp;&nbsp;&nbsp;

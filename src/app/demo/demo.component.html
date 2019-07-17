@@ -68,13 +68,13 @@
           <fa-icon size="lg" [icon]="faPlus"></fa-icon>
         </button>
         <mat-checkbox [(ngModel)]="textEnable" title="Enable/disabled text layer"></mat-checkbox>
-        <button mat-icon-button [disabled]="pdfjsGroupControl.disabled" (click)="pdfjsGroupControl.zoomSelected(0.9)">
+        <button mat-icon-button [disabled]="pdfjsGroupControl.disabled" (click)="scale = scale * 0.9">
           <fa-icon [icon]="faSearchMinus" size="lg"></fa-icon>
         </button>
-        <button mat-icon-button [disabled]="pdfjsGroupControl.disabled" (click)="pdfjsGroupControl.fitSelected()">
+        <button mat-icon-button [disabled]="pdfjsGroupControl.disabled" (click)="scale = 1">
           <fa-icon [icon]="faExpandArrowsAlt" size="lg"></fa-icon>
         </button>
-        <button mat-icon-button [disabled]="pdfjsGroupControl.disabled" (click)="pdfjsGroupControl.zoomSelected(1.1)">
+        <button mat-icon-button [disabled]="pdfjsGroupControl.disabled" (click)="scale = scale * 1.1">
           <fa-icon [icon]="faSearchPlus" size="lg"></fa-icon>
         </button>
         <button mat-icon-button [disabled]="pdfjsGroupControl.disabled" (click)="pdfjsGroupControl.reload()">
@@ -94,6 +94,7 @@
                   [textLayer]="textEnable"
                   [fit]="ViewFit.VERTICAL"
                   [quality]="quality"
+                  [scale]="scale"
                   [class.edit-mode]="editMode">
       </pdfjs-view>
     </div>

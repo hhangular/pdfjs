@@ -15,13 +15,12 @@ export class PdfjsControl implements PdfjsCommand {
   public itemEvent$: BehaviorSubject<PdfjsItemEvent> = new BehaviorSubject(null);
   public selectedItem$: BehaviorSubject<PdfjsItem> = new BehaviorSubject<PdfjsItem>(null);
   public selectedIndex$: BehaviorSubject<number> = new BehaviorSubject<number>(NaN);
-  public scale$: BehaviorSubject<number> = new BehaviorSubject<number>(1);
-  public rotate$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+  public rotation$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   private source: PdfSource;
   private items: PdfjsItem[] = [];
   private autoSelect = false;
   private itemIndex = NaN; // item selected index
-  private rotateSubscription: Subscription;
+  private rotationSubscription: Subscription;
   private addItemEvent: BehaviorSubject<PdfjsItemEvent> = new BehaviorSubject<PdfjsItemEvent>(null);
   private removeItemEvent: BehaviorSubject<PdfjsItemEvent> = new BehaviorSubject<PdfjsItemEvent>(null);
 
@@ -83,7 +82,7 @@ export class PdfjsControl implements PdfjsCommand {
 
   public getPdfPages(): PdfPage[] {
     return this.items.map(val => {
-      return {document: val.document, pdfId: val.pdfId, pageIdx: val.pageIdx, rotate: val.rotate};
+      return {document: val.document, pdfId: val.pdfId, pageIdx: val.pageIdx, rotation: val.rotation};
     });
   }
 
@@ -148,8 +147,8 @@ export class PdfjsControl implements PdfjsCommand {
       this.selectedItem$.next(item);
       this.selectedIndex$.next(index);
       this.unsubscribeRotateSubject();
-      this.rotateSubscription = item.rotate$.subscribe((angle: number) => {
-        this.rotate$.next(angle);
+      this.rotationSubscription = item.rotation$.subscribe((angle: number) => {
+        this.rotation$.next(angle);
       });
     }
     return prev;
@@ -193,24 +192,14 @@ export class PdfjsControl implements PdfjsCommand {
 
   public rotate(angle: number): void {
     this.items.forEach((item: PdfjsItem) => {
-      item.rotate += angle;
+      item.rotation += angle;
     });
   }
 
   public rotateSelected(angle: number): void {
     if (!!this.items.length) {
-      this.items[this.itemIndex].rotate += angle;
+      this.items[this.itemIndex].rotation += angle;
     }
-  }
-
-  public zoomSelected(zoom: number): number {
-    const scale = this.scale$.getValue() * zoom;
-    this.scale$.next(scale);
-    return scale;
-  }
-
-  public fitSelected(): void {
-    this.scale$.next(1);
   }
 
   public reload(): PDFPromise<number> {
@@ -285,9 +274,9 @@ export class PdfjsControl implements PdfjsCommand {
   }
 
   private unsubscribeRotateSubject() {
-    if (this.rotateSubscription) {
-      this.rotateSubscription.unsubscribe();
-      this.rotateSubscription = null;
+    if (this.rotationSubscription) {
+      this.rotationSubscription.unsubscribe();
+      this.rotationSubscription = null;
     }
   }
 

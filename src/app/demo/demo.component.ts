@@ -51,6 +51,8 @@ export class DemoComponent implements OnInit {
   ThumbnailLayout = ThumbnailLayout;
   ViewFit = ViewFit;
 
+  scale = 1;
+
   constructor() {
   }
 

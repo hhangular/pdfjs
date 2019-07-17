@@ -22,20 +22,29 @@
   <hr>
   <h2>Attributes</h2>
   <!-- fitSelected -->
-  <h3>Fit direction</h3>
-  Set fit, allow to define how to page is fitted.<br>
+  <h3>Fit direction and scale</h3>
+  Fit value, allow to define how to page is fitted when scale = 1.<br>
   Set to ViewFit.VERTICAL and the page will fitted on entire height.<br>
-  Set to ViewFit.HORIZONTAL and the page will fitted on entire width.
+  Set to ViewFit.HORIZONTAL and the page will fitted on entire width.<br>
+  Change scale value for define zoom in page. '1' value define no zoom and fit the page like fit value defined.<br>
+  Default fit value is ViewFit.VERTICAL. <br>
+  Default scale value is 1.
+
   <br><br>
-  <pdfjs-view style="height: 300px" [control]="conditionCtrl" [fit]="fit"></pdfjs-view>
+  <pdfjs-view style="height: 300px" [control]="conditionCtrl" [fit]="fit" [scale]="scale"></pdfjs-view>
   <button mat-button color="primary">fit</button>
   <mat-radio-group [value]="fit" (change)="fit=$event.value">
     <mat-radio-button [value]="ViewFit.VERTICAL">ViewFit.VERTICAL</mat-radio-button>&nbsp;&nbsp;&nbsp;
     <mat-radio-button [value]="ViewFit.HORIZONTAL">ViewFit.HORIZONTAL</mat-radio-button>
   </mat-radio-group>
+  <button mat-button color="primary">scale</button>
+  <mat-slider min="0.1" max="3" step="0.1" [(ngModel)]="scale"></mat-slider> {{scale}} times<br>
   <br><br>
   <div class="code-container mat-elevation-z8">
-    &lt;<span class="code-node-name">pdfjs-view</span>&nbsp;<span class="code-attribute-name">[fit]</span>="'<span class="code-attribute-value">{{fit}}</span>'"&gt;&lt;/<span class="code-node-name">pdfjs-view</span>&gt;
+    &lt;<span class="code-node-name">pdfjs-view</span>&nbsp;
+    <span class="code-attribute-name">[fit]</span>="'<span class="code-attribute-value">{{fit}}</span>'"
+    <span class="code-attribute-name">[scale]</span>="<span class="code-attribute-value">{{scale}}</span>"&gt;
+    &lt;/<span class="code-node-name">pdfjs-view</span>&gt;
   </div>
   Or
   <div class="code-container mat-elevation-z8">
@@ -44,7 +53,10 @@
   </div>
   <div class="code-container mat-elevation-z8">
     <span class="code-comment">&lt;!--In template--&gt;</span><br>
-    &lt;<span class="code-node-name">pdfjs-view</span>&nbsp;<span class="code-attribute-name">[fit]</span>="<span class="code-attribute-value">ViewFit.{{fit | uppercase}}</span>'"&gt;&lt;/<span class="code-node-name">pdfjs-view</span>&gt;
+    &lt;<span class="code-node-name">pdfjs-view</span>&nbsp;
+    <span class="code-attribute-name">[fit]</span>="<span class="code-attribute-value">ViewFit.{{fit | uppercase}}</span>"
+    <span class="code-attribute-name">[scale]</span>="<span class="code-attribute-value">{{scale}}</span>"&gt;
+    &lt;/<span class="code-node-name">pdfjs-view</span>&gt;
   </div>
   <br><br>
   <hr>

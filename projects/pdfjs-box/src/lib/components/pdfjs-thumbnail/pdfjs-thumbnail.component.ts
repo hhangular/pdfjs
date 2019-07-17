@@ -247,7 +247,7 @@ export class PdfjsThumbnailComponent implements OnInit, OnDestroy {
   public ngOnInit() {
     this.item$.pipe(
       flatMap((item: PdfjsItem) => {
-        return combineLatest([this.item$, item ? item.rotate$ : of(0)]);
+        return combineLatest([this.item$, item ? item.rotation$ : of(0)]);
       }),
       map((next: [PdfjsItem, number]) => {
         return {item: next[0], rotation: next[1]};

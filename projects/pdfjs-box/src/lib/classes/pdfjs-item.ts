@@ -4,25 +4,25 @@ import {PdfSource} from './pdfjs-objects';
 
 export class PdfjsItem {
 
-  set rotate(rotate: number) {
-    this._rotate = (rotate % 360);
-    this.rotate$.next(this._rotate);
+  set rotation(rotate: number) {
+    this._rotation = (rotate % 360);
+    this.rotation$.next(this._rotation);
   }
 
-  get rotate(): number {
-    return this._rotate;
+  get rotation(): number {
+    return this._rotation;
   }
-  public rotate$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
-  private _rotate: number;
+  public rotation$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+  private _rotation: number;
 
   constructor(
     private documentProxy: PDFDocumentProxy,
     public pdfId: string,
     public document: PdfSource,
     public pageIdx: number,
-    rotate: number = 0,
+    rotation: number = 0,
   ) {
-    this._rotate = rotate;
+    this._rotation = rotation;
   }
 
   public getPage(): PDFPromise<PDFPageProxy> {
@@ -30,7 +30,7 @@ export class PdfjsItem {
   }
 
   public clone() {
-    return new PdfjsItem(this.documentProxy, this.pdfId, this.document, this.pageIdx, this._rotate);
+    return new PdfjsItem(this.documentProxy, this.pdfId, this.document, this.pageIdx, this._rotation);
   }
   public equals(other: PdfjsItem) {
     return this.pdfId === other.pdfId && this.pageIdx === other.pageIdx;
@@ -42,6 +42,6 @@ export class PdfPage {
     public pdfId: string,
     public document: PdfSource,
     public pageIdx: number,
-    public rotate: number = 0
+    public rotation: number = 0
   ) {}
 }

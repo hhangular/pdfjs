@@ -22,6 +22,8 @@ export class PdfjsViewComponent implements OnInit {
 
   mouseWheelNav = false;
 
+  scale = 1;
+
   ngOnInit() {
     this.conditionCtrl.load('../assets/pdfs/conditions.pdf', true);
   }

@@ -88,13 +88,14 @@ export class Pdfjs {
                                      getScaleForFit: GetScaleForFit): PDFPromise<RenderObjects> {
     const canvasContext: CanvasRenderingContext2D = this.cleanCanvas(canvas);
     return item.getPage().then((pdfPageProxy: PDFPageProxy) => {
-      let viewport: PDFPageViewport = pdfPageProxy.getViewport(1, item.rotate);
+      // @ts-ignore
+      let viewport: PDFPageViewport = pdfPageProxy.getViewport({scale: 1, rotation: item.rotation, dontFlip: false});
       const scaleForFit = getScaleForFit(size, viewport); // method.call is useless here, cause getScale has no scope
-      viewport = this.factorViewport(viewport, zoom * scaleForFit); // pdfPageProxy.getViewport(zoomSelected * scaleForFit, item.rotate);
+      viewport = this.factorViewport(viewport, zoom * scaleForFit); // pdfPageProxy.getViewport(zoomSelected * scaleForFit, item.rotation);
       this.setCanvasSizes(canvas, viewport, quality, zoom);
       const pdfRenderTask: PDFRenderTask = pdfPageProxy.render({
         canvasContext,
-        viewport: this.factorViewport(viewport, quality) // pdfPageProxy.getViewport(scaleForFit * quality * zoomSelected, item.rotate)
+        viewport: this.factorViewport(viewport, quality) // pdfPageProxy.getViewport(scaleForFit * quality * zoomSelected, item.rotation)
       });
       pdfRenderTask.promise.then(() => {
       }, (error: any) => {
