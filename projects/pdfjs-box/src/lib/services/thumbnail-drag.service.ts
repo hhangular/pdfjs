@@ -16,9 +16,6 @@ export class ThumbnailDragService {
   private static targetPdfjsControl: PdfjsControl = null;
   private static targetItem: PdfjsItem = null;
 
-  constructor() {
-  }
-
   public initDataTransfer(item: PdfjsItem, pdfjsControl: PdfjsControl, idx: number, mode: ThumbnailDragMode) {
     ThumbnailDragService.mode = mode;
     ThumbnailDragService.sourceItem = item;
@@ -138,7 +135,7 @@ export class ThumbnailDragService {
     return this.getFirstParentElementNamed(target, 'pdfjs-thumbnails');
   }
 
-  public getFirstParentElementNamed(target: HTMLElement, nodeName: string): HTMLElement {
+  private getFirstParentElementNamed(target: HTMLElement, nodeName: string): HTMLElement {
     if (!target) {
       return null;
     }
@@ -155,7 +152,7 @@ export class ThumbnailDragService {
     });
   }
 
-  public isBeforeThumbnailOver(layout: ThumbnailLayout, thumbnailOver: HTMLElement, event: DragEvent) {
+  private isBeforeThumbnailOver(layout: ThumbnailLayout, thumbnailOver: HTMLElement, event: DragEvent) {
     if (layout === ThumbnailLayout.HORIZONTAL) {
       const median: number = this.getHMedian(thumbnailOver.getClientRects()[0]);
       return event.clientX < median;
@@ -165,11 +162,11 @@ export class ThumbnailDragService {
     }
   }
 
-  public getHMedian(clientRect: ClientRect) {
+  private getHMedian(clientRect: ClientRect) {
     return ((clientRect.right - clientRect.left) / 2) + clientRect.left;
   }
 
-  public getVMedian(clientRect: ClientRect) {
+  private getVMedian(clientRect: ClientRect) {
     return ((clientRect.bottom - clientRect.top) / 2) + clientRect.top;
   }
 
