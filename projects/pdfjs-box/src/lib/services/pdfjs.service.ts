@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {PDFPageProxy, PDFPageViewport, PDFPromise, PDFRenderTask} from 'pdfjs-dist';
 import * as api from 'pdfjs-dist/build/pdf';
-import {PdfAPI, RenderingCancelledException} from '../classes/pdfapi';
+import {PdfAPI, RenderingCancelledException, RenderParameters, TextLayerRenderTask} from '../classes/pdfapi';
 import {RenderObjects, RenderQuality, ViewFit} from '../classes/pdfjs-objects';
 import {PdfjsItem} from '../classes/pdfjs-item';
 
@@ -123,4 +123,9 @@ export class Pdfjs {
       width: src.width * factor // 707.098039856611
     } as any as PDFPageViewport;
   }
+
+  public renderTextLayer(renderParameters: RenderParameters): TextLayerRenderTask {
+    return this.getApi().renderTextLayer(renderParameters);
+  }
+
 }
