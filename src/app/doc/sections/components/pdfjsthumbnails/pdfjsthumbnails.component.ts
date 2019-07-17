@@ -28,8 +28,9 @@ export class PdfjsThumbnailsComponent implements OnInit {
   allowDrop = true;
   dragMode = ThumbnailDragMode.DUPLICATE;
   fitSize = 100;
-  previewDelay = 300;
+  previewDelay = 100;
   previewHeight = 300;
+  previewQuality: RenderQuality = 2;
   layout = ThumbnailLayout.HORIZONTAL;
   borderWidth = 5;
 

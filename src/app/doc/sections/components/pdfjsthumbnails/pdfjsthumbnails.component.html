@@ -183,19 +183,28 @@
   <hr>
   <!-- Preview -->
   <h3>Preview thumbnail</h3>
-  On over thumbnail a preview (biggest) appear. This feature is controlled by <b>previewDelay</b> and <b>previewHeight</b>
-  <pdfjs-thumbnails [pdfjsControl]="conditionCtrl5"
+  On over thumbnail a preview (biggest) appear. This feature is controlled by <b>previewDelay</b>&nbsp;<b>previewHeight</b> and <b>previewQuality</b>.<br>
+  <pdfjs-thumbnails [pdfjsControl]="conditionCtrl5" [previewQuality]="previewQuality"
                     [previewDelay]="previewDelay" [previewHeight]="previewHeight"></pdfjs-thumbnails><br>
   <button mat-button color="primary">previewDelay</button><mat-slider min="0" max="2000" step="100" [(ngModel)]="previewDelay"></mat-slider> {{previewDelay}} ms<br>
   <button mat-button color="primary">previewHeight</button><mat-slider min="100" max="1000" step="100" [(ngModel)]="previewHeight"></mat-slider> {{previewHeight}} px<br>
+  <button mat-button color="primary">previewQuality</button>
+  <mat-radio-group [(ngModel)]="previewQuality">
+    <mat-radio-button [value]="1">1</mat-radio-button>&nbsp;&nbsp;&nbsp;
+    <mat-radio-button [value]="2">2</mat-radio-button>&nbsp;&nbsp;&nbsp;
+    <mat-radio-button [value]="3">3</mat-radio-button>&nbsp;&nbsp;&nbsp;
+    <mat-radio-button [value]="4">4</mat-radio-button>&nbsp;&nbsp;&nbsp;
+    <mat-radio-button [value]="5">5</mat-radio-button>
+  </mat-radio-group>
   <br>
   <div class="code-container mat-elevation-z8">
     &lt;<span class="code-node-name">pdfjs-thumbnails</span>
     &nbsp;<span class="code-attribute-name">[previewDelay]</span>="<span class="code-attribute-value">{{previewDelay}}</span>"
+    &nbsp;<span class="code-attribute-name">[previewQuality]</span>="<span class="code-attribute-value">{{previewQuality}}</span>"
     &nbsp;<span class="code-attribute-name">[previewHeight]</span>="<span class="code-attribute-value">{{previewHeight}}</span>"&gt;
     &lt;/<span class="code-node-name">pdfjs-thumbnails</span>&gt;
-  </div>
-  Default value is 100 for previewDelay and 300 for previewHeight.<br><br>
+  </div><br>
+  Default values are 100 for previewDelay, 300 for previewHeight and 2 for previewQuality.<br><br>
   <hr>
   <h2>Events</h2>
   <h3>render</h3>
