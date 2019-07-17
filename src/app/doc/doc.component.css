@@ -4,3 +4,11 @@
 mat-drawer-container {
   height: calc(100vh - 64px - 64px);
 }
+@media (max-width: 599px) {
+  :host {
+    height: calc(100vh - 56px);
+  }
+  mat-drawer-container {
+    height: calc(100vh - 56px - 56px);
+  }
+}

@@ -12,3 +12,14 @@
 .flex-spacer {
   flex-grow: 1;
 }
+@media (max-width: 599px) {
+  .main {
+    display: none;
+  }
+  .github {
+    display: none;
+  }
+  .travis {
+    display: none;
+  }
+}

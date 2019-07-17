@@ -10,3 +10,19 @@ pdfjs-view.edit-mode {
 .thumbnails-vertical.edit-mode {
   height: calc(100vh - 64px - 100px - 100px);
 }
+
+@media (max-width: 599px) {
+  pdfjs-view {
+    height: calc(100vh - 56px - 6px - 100px - 40px);
+  }
+  pdfjs-view.edit-mode {
+    height: calc(100vh - 56px - 6px  - 100px - 100px - 40px);
+  }
+  .thumbnails-vertical {
+    height: calc(100vh - 56px - 100px);
+  }
+  .thumbnails-vertical.edit-mode {
+    height: calc(100vh - 56px - 100px - 100px);
+  }
+}
+

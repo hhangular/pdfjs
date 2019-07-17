@@ -5,3 +5,8 @@
 .flex-spacer {
   flex-grow: 1;
 }
+@media (max-width: 599px) {
+  :host {
+    height: calc(100vh - 56px - 56px);
+  }
+}

@@ -6,10 +6,10 @@ import {HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {GithubService} from './github.service';
 import {HomepageComponent} from './main/homepage.component';
 import {NavBarComponent} from './navbar/navbar.component';
 import {SharedModule} from './shared/shared.module';
+import {CoreModule} from './core/core.module';
 
 @NgModule({
   declarations: [
@@ -21,11 +21,11 @@ import {SharedModule} from './shared/shared.module';
     BrowserModule,
     CommonModule,
     SharedModule,
+    CoreModule,
     HttpClientModule,
     BrowserAnimationsModule,
     AppRoutingModule,
   ],
-  providers: [GithubService],
   bootstrap: [AppComponent],
   entryComponents: [],
 })

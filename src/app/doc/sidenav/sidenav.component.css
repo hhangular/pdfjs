@@ -13,3 +13,8 @@ a:active, a.active {
   text-decoration: none;
   color: dodgerblue;
 }
+@media (max-width: 599px) {
+  :host {
+    height: calc(100vh - 56px - 56px);
+  }
+}

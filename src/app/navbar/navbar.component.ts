@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {GithubService} from '../github.service';
+import {GithubService} from '../core/github.service';
 import {faGithub} from '@fortawesome/free-brands-svg-icons';
 
 @Component({
@@ -17,7 +17,7 @@ export class NavBarComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.githubService.getPackageJson().subscribe((json: any) => {
+    this.githubService.packageJson$.subscribe(json => {
       this.version = json.version;
       this.url = json.repository.url;
     });

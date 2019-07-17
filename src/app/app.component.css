@@ -11,3 +11,8 @@
   left: 0;
   right: 0;
 }
+@media (max-width: 599px) {
+  :host {
+    top: 56px;
+  }
+}
