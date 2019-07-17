@@ -135,6 +135,12 @@ export class PdfjsThumbnailsComponent implements OnInit, OnDestroy {
   previewHeight = 300;
 
   /**
+   * quality of preview
+   */
+  @Input()
+  previewQuality: RenderQuality = 2;
+
+  /**
    * The quality of pdf render
    */
   @Input()
