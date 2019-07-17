@@ -1,8 +1,6 @@
-import {Component, ElementRef, HostListener} from '@angular/core';
-import {PdfAPI} from '../classes/pdfapi';
+import {Component, HostListener} from '@angular/core';
 import {ThumbnailDragMode, ThumbnailLayout, ThumbnailOver, ThumbnailOverValues} from '../classes/pdfjs-objects';
 import {KeysService} from '../services/keys.service';
-import {Pdfjs} from '../services/pdfjs.service';
 import {ThumbnailDragService} from '../services/thumbnail-drag.service';
 import {PdfjsThumbnailsComponent} from './pdfjs-thumbnails/pdfjs-thumbnails.component';
 
@@ -13,19 +11,13 @@ import {PdfjsThumbnailsComponent} from './pdfjs-thumbnails/pdfjs-thumbnails.comp
 export class PdfjsCommonComponent {
   private static DEBUG_OVER = false;
 
-  public API: PdfAPI;
-
   constructor(
-    private pdfjs: Pdfjs,
-    private elementRef: ElementRef,
     private thumbnailDragService: ThumbnailDragService,
     private keysService: KeysService,
-  ) {
-    this.API = pdfjs.getApi();
-  }
+  ) {}
 
-  @HostListener('document:click', ['$event'])
-  public onClickInDocument(event: MouseEvent) {
+  @HostListener('document:click', [])
+  public onClickInDocument() {
     this.keysService.clearPdfjsControl();
   }
 
@@ -76,9 +68,17 @@ export class PdfjsCommonComponent {
   }
 
   /**
+   * Drop thumbnail in any element
+   */
+  @HostListener('document:drop', ['$event'])
+  public onDropInDocument(event: DragEvent) {
+    this.thumbnailDragService.stopMoving();
+  }
+
+  /**
    * Drag item in container
    */
-  public onDragOverContainer(event: DragEvent, containerOver: HTMLElement) {
+  private onDragOverContainer(event: DragEvent, containerOver: HTMLElement) {
     // item is anywhere yet
     if (!this.thumbnailDragService.getTargetPdfId()) {
       this.onDragOverNewContainer(event, containerOver);
@@ -98,7 +98,7 @@ export class PdfjsCommonComponent {
   /**
    * Drag out Container
    */
-  public onDragOutContainer(event: DragEvent) {
+  private onDragOutContainer(event: DragEvent) {
     if (this.thumbnailDragService.getTargetPdfId()) {
       this.thumbnailDragService.restoreSource();
     } else {
@@ -110,7 +110,7 @@ export class PdfjsCommonComponent {
   /**
    * Drag in the same container
    */
-  public onDragOverSameContainer(event: DragEvent, containerOver: HTMLElement) {
+  private onDragOverSameContainer(event: DragEvent, containerOver: HTMLElement) {
     const thumbnailOver: HTMLElement = this.getThumbnailOver(event.target);
     const containerComponent: PdfjsThumbnailsComponent = this.thumbnailDragService.getComponentAcceptDrop(containerOver);
     if (thumbnailOver) { // over an other thumbnail
@@ -131,7 +131,7 @@ export class PdfjsCommonComponent {
     }
   }
 
-  public onDragOverNewContainer(event: DragEvent, containerOver: HTMLElement) {
+  private onDragOverNewContainer(event: DragEvent, containerOver: HTMLElement) {
     const thumbnailOver: HTMLElement = this.getThumbnailOver(event.target);
     const thumbnailsComponent: PdfjsThumbnailsComponent = this.thumbnailDragService.getComponentAcceptDrop(containerOver);
     this.thumbnailDragService.applyItemToTargetPdfControl(thumbnailsComponent.pdfjsControl);
@@ -150,7 +150,7 @@ export class PdfjsCommonComponent {
   /**
    * Compute if the thumbnail have to insert
    */
-  public getPositionFix($event: MouseEvent, layout: ThumbnailLayout, thumbnail: HTMLElement) {
+  private getPositionFix($event: MouseEvent, layout: ThumbnailLayout, thumbnail: HTMLElement) {
     let position = 0;
     let overAt: ThumbnailOver;
     const rectList: DOMRectList = thumbnail.getClientRects() as DOMRectList;
@@ -172,14 +172,6 @@ export class PdfjsCommonComponent {
     }
     this.debugThumbnailOver(thumbnail, overAt);
     return position;
-  }
-
-  /**
-   * Drop thumbnail in any element
-   */
-  @HostListener('document:drop', ['$event'])
-  public onDropInDocument(event: DragEvent) {
-    this.thumbnailDragService.stopMoving();
   }
 
   /**
