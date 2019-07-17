@@ -292,7 +292,7 @@ export class PdfjsViewComponent implements OnDestroy, AfterViewInit {
         if (this.textLayer) {
           const container = this.document.createDocumentFragment();
           obj.pdfPageProxy.getTextContent().then((textContent: TextContent) => {
-            const textLayerRenderTask = this.pdfjs.getApi().renderTextLayer({
+            const textLayerRenderTask = this.pdfjs.renderTextLayer({
               textContent,
               container,
               viewport: obj.viewport
