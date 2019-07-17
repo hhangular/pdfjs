@@ -1,8 +1,25 @@
 {
-  "name": "pdfjs-box",
-  "version": "2.0.0",
+  "name": "@hhangular/pdfjs-box",
+  "version": "2.0.4",
   "author": "Achache francois",
   "license": "MIT",
+  "description": "pdfjs for angular 8x by hhfrancois",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hhangular/pdfjs.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "angular",
+    "typescript",
+    "component",
+    "angular 8",
+    "mozilla",
+    "pdfjs",
+    "pdf"
+  ],
   "peerDependencies": {
     "@angular/common": "^8.0.3",
     "@angular/core": "^8.0.3",
