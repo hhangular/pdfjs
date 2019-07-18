@@ -14,29 +14,17 @@ script:
   - ng build pdfjs-box --prod
 deploy:
   - provider: script
-    script: echo "cd dist/pdfjs-box"
+    script: cd dist/pdfjs-box; npm version patch -m "[ci skip]"
     skip_cleanup: true
     on:
       branch: master
   - provider: script
-    script:
-      - echo "cd dist/pdfjs-box"
-      - cd dist/pdfjs-box
-      - echo "npm version patch..."
-      - npm version patch -m "[ci skip]"
-      - echo "cd ../.."
-      - cd ../..
-      - echo "git push..."
-      - git push https://$GITHUB_TOKEN:x-oauth-basic@github.com/$TRAVIS_REPO_SLUG.git master
+    script: git push https://$GITHUB_TOKEN:x-oauth-basic@github.com/$TRAVIS_REPO_SLUG.git master
     skip_cleanup: true
     on:
       branch: master
   - provider: script
-    script:
-      - echo "create npmrc with token..."
-      - echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
-      - echo "publish..."
-      - npm publish dist/pdfjs-box
+    script: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc; npm publish dist/pdfjs-box
     skip_cleanup: true
     on:
       branch: master
