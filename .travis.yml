@@ -8,7 +8,6 @@ before_script:
   - npm install
 script:
   - echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
-  - git checkout master
   - ng build pdfjs-box --prod
   - ng build --prod --base-href .
   - cp dist/pdfjs/index.html dist/pdfjs/404.html
