@@ -1,9 +1,10 @@
 #!bin/bash
 
 echo Build all lib in projects directory
-for dir in projects/*
+for dir in projects/*/
 do
-  echo ${dir}
+  dir="${dir%/}"
+  dir="${dir##*/}"
   ng build ${dir} --prod
 done
 
