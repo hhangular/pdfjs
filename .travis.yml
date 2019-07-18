@@ -11,7 +11,7 @@ before_script:
   - npm install
 script:
   - echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
-  - git checkout $TRAVIS_BRANCH
+  - git checkout master
   - ng build pdfjs-box --prod
   - ng build --prod --base-href .
   - cp dist/pdfjs/index.html dist/pdfjs/404.html
@@ -35,7 +35,7 @@ deploy:
         - config
         - website
   - provider: script
-    script: git checkout master; git merge $TRAVIS_BRANCH; git push https://$GITHUB_TOKEN:x-oauth-basic@github.com/$TRAVIS_REPO_SLUG.git master;
+    script: git push https://$GITHUB_TOKEN:x-oauth-basic@github.com/$TRAVIS_REPO_SLUG.git master; git branch -d $TRAVIS_BRANCH;
     on:
       branch:
         - pdfjs
