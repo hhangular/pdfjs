@@ -14,6 +14,11 @@ script:
   - ng build pdfjs-box --prod
 deploy:
   - provider: script
+    script: echo "cd dist/pdfjs-box"
+    skip_cleanup: true
+    on:
+      branch: master
+  - provider: script
     script:
       - echo "cd dist/pdfjs-box"
       - cd dist/pdfjs-box
