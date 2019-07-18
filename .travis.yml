@@ -9,12 +9,10 @@ branches:
     - master
 before_script:
   - npm install
-script:
   - git checkout $TRAVIS_BRANCH
-  - ng build pdfjs-box --prod
-  - ng build --prod --base-href .
-  - cp dist/pdfjs/index.html dist/pdfjs/404.html
   - echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
+script:
+  - bash scripts/build-all.sh
 deploy:
   - provider: script
     script: bash scripts/deploy-on-npm.sh pdfjs-box

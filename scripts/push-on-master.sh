@@ -20,3 +20,6 @@ git merge $TRAVIS_BRANCH
 
 echo Push on master
 git push https://$GITHUB_TOKEN:x-oauth-basic@github.com/$TRAVIS_REPO_SLUG.git master
+
+echo remove branch $TRAVIS_BRANCH
+git push https://$GITHUB_TOKEN:x-oauth-basic@github.com/$TRAVIS_REPO_SLUG.git origin --delete $TRAVIS_BRANCH
