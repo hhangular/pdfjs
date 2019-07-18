@@ -16,27 +16,6 @@ script:
   - ng build --prod --base-href .
   - cp dist/pdfjs/index.html dist/pdfjs/404.html
 deploy:
-  - provider: script
-    script: cd projects/pdfjs-box; npm version patch; cd ../../dist/pdfjs-box; npm version patch; cd ../..; git commit -m "[ci skip]" projects/pdfjs-box/package.json
-    skip_cleanup: true
-    on:
-      branch: pdfjs
-  - provider: script
-    script: git commit -m "[ci skip]" package-lock.json; npm version patch -m "[ci skip]"
-    skip_cleanup: true
-    on:
-      branch:
-        - pdfjs
-        - config
-        - website
-  - provider: script
-    script: git push https://$GITHUB_TOKEN:x-oauth-basic@github.com/$TRAVIS_REPO_SLUG.git $TRAVIS_BRANCH
-    skip_cleanup: true
-    on:
-      branch:
-        - pdfjs
-        - config
-        - website
   - provider: releases
     user: "$GITHUB_USER"
     api_key: "$GITHUB_TOKEN"
@@ -62,3 +41,23 @@ deploy:
     skip_cleanup: true
     on:
       branch: pdfjs
+  - provider: script
+    script: cd projects/pdfjs-box; npm version patch; cd ../../dist/pdfjs-box; npm version patch; cd ../..; git commit -m "[ci skip]" projects/pdfjs-box/package.json
+    skip_cleanup: true
+    on:
+      branch: pdfjs
+  - provider: script
+    script: git commit -m "[ci skip]" package-lock.json; npm version patch -m "[ci skip]"
+    skip_cleanup: true
+    on:
+      branch:
+        - pdfjs
+        - config
+        - website
+  - provider: script
+    script: git checkout master; git merge $TRAVIS_BRANCH; git branch -d $TRAVIS_BRANCH; git push https://$GITHUB_TOKEN:x-oauth-basic@github.com/$TRAVIS_REPO_SLUG.git master;
+    on:
+      branch:
+        - pdfjs
+        - config
+        - website
