@@ -30,7 +30,7 @@ deploy:
         - config
         - website
   - provider: script
-    script: git push https://$GITHUB_TOKEN:x-oauth-basic@github.com/$TRAVIS_REPO_SLUG.git master
+    script: git push https://$GITHUB_TOKEN:x-oauth-basic@github.com/$TRAVIS_REPO_SLUG.git $TRAVIS_BRANCH
     skip_cleanup: true
     on:
       branch:
