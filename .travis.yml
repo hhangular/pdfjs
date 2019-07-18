@@ -35,7 +35,7 @@ deploy:
         - config
         - website
   - provider: script
-    script: git push -u https://$GITHUB_TOKEN:x-oauth-basic@github.com/$TRAVIS_REPO_SLUG.git master $TRAVIS_BRANCH;
+    script: git push https://$GITHUB_TOKEN:x-oauth-basic@github.com/$TRAVIS_REPO_SLUG.git $TRAVIS_BRANCH;
     on:
       branch:
         - pdfjs
