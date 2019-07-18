@@ -12,11 +12,35 @@ before_script:
 script:
   - git checkout master
   - ng build pdfjs-box --prod
+  - ng build --prod --base-href .
+  - cp dist/pdfjs/index.html dist/pdfjs/404.html
 deploy:
   - provider: script
     script:
+      - git commit -m "[ci skip]" package-lock.json
+      - npm version patch -m "[ci skip]"
       - cd dist/pdfjs-box; npm version patch -m "[ci skip]"; cd ../..
       - git push https://$GITHUB_TOKEN:x-oauth-basic@github.com/$TRAVIS_REPO_SLUG.git master
+    skip_cleanup: true
+    on:
+      branch: master
+  - provider: releases
+    user: "$GITHUB_USER"
+    api_key: "$GITHUB_TOKEN"
+    file_glob: true
+    file: dist/*
+    skip_cleanup: true
+    on:
+      branch: master
+  - provider: pages
+    skip-cleanup: true
+    github-token: "$GITHUB_TOKEN"
+    local-dir: "dist/pdfjs"
+    on:
+      branch: master
+  - provider: npm
+    email: "$NPM_MAIL"
+    api_key: "$NPM_TOKEN"
     skip_cleanup: true
     on:
       branch: master
