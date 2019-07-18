@@ -2,6 +2,10 @@
 echo Push in current branch $TRAVIS_BRANCH
 git push https://$GITHUB_TOKEN:x-oauth-basic@github.com/$TRAVIS_REPO_SLUG.git $TRAVIS_BRANCH
 
+echo Control remote
+git config --get remote.origin.fetch
+git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+
 echo get infos from remote
 git remote update
 git fetch
