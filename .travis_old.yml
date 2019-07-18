@@ -18,6 +18,11 @@ deploy:
   - provider: script
     script:
       - git commit -m "[ci skip]" package-lock.json; npm version patch -m "[ci skip]"
+    skip_cleanup: true
+    on:
+      branch: master
+  - provider: script
+    script:
       - git push https://$GITHUB_TOKEN:x-oauth-basic@github.com/$TRAVIS_REPO_SLUG.git master
     skip_cleanup: true
     on:
