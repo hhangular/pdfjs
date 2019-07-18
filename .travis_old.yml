@@ -17,9 +17,7 @@ script:
 deploy:
   - provider: script
     script:
-      - git commit -m "[ci skip]" package-lock.json
-      - npm version patch -m "[ci skip]"
-      - cd dist/pdfjs-box; npm version patch -m "[ci skip]"; cd ../..
+      - git commit -m "[ci skip]" package-lock.json; npm version patch -m "[ci skip]"
       - git push https://$GITHUB_TOKEN:x-oauth-basic@github.com/$TRAVIS_REPO_SLUG.git master
     skip_cleanup: true
     on:
@@ -41,13 +39,6 @@ deploy:
   - provider: npm
     email: "$NPM_MAIL"
     api_key: "$NPM_TOKEN"
-    skip_cleanup: true
-    on:
-      branch: master
-  - provider: script
-    script:
-      - echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
-      - npm publish dist/pdfjs-box
     skip_cleanup: true
     on:
       branch: master
