@@ -17,7 +17,7 @@ script:
   - cp dist/pdfjs/index.html dist/pdfjs/404.html
 deploy:
   - provider: script
-    script: cd projects/pdfjs-box; npm version patch -m "[ci skip]"; cd ../../dist/pdfjs-box; npm version patch -m "[ci skip]"
+    script: cd projects/pdfjs-box; npm version patch; cd ../../dist/pdfjs-box; npm version patch; cd ../..; git commit -m "[ci skip]" projects/pdfjs-box/package.json
     skip_cleanup: true
     on:
       branch: pdfjs
