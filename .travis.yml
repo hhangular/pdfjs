@@ -25,19 +25,17 @@ deploy:
     skip_cleanup: true
     on:
       branch:
-        only:
-          - pdfjs
-          - config
-          - website
+        - pdfjs
+        - config
+        - website
   - provider: script
     script: git push https://$GITHUB_TOKEN:x-oauth-basic@github.com/$TRAVIS_REPO_SLUG.git master
     skip_cleanup: true
     on:
       branch:
-        only:
-          - pdfjs
-          - config
-          - website
+        - pdfjs
+        - config
+        - website
   - provider: releases
     user: "$GITHUB_USER"
     api_key: "$GITHUB_TOKEN"
@@ -46,20 +44,18 @@ deploy:
     skip_cleanup: true
     on:
       branch:
-        only:
-          - pdfjs
-          - config
-          - website
+        - pdfjs
+        - config
+        - website
   - provider: pages
     skip-cleanup: true
     github-token: "$GITHUB_TOKEN"
     local-dir: "dist/pdfjs"
     on:
       branch:
-        only:
-          - pdfjs
-          - config
-          - website
+        - pdfjs
+        - config
+        - website
   - provider: script
     script: npm publish dist/pdfjs-box
     skip_cleanup: true
