@@ -10,7 +10,7 @@ branches:
 before_script:
   - npm install
 script:
-  - git checkout master
+  - git checkout $TRAVIS_BRANCH
   - ng build pdfjs-box --prod
   - ng build --prod --base-href .
   - cp dist/pdfjs/index.html dist/pdfjs/404.html
@@ -35,7 +35,7 @@ deploy:
         - config
         - website
   - provider: script
-    script: git push https://$GITHUB_TOKEN:x-oauth-basic@github.com/$TRAVIS_REPO_SLUG.git master; git branch -d $TRAVIS_BRANCH;
+    script: git branch -u origin/master; git push https://$GITHUB_TOKEN:x-oauth-basic@github.com/$TRAVIS_REPO_SLUG.git $TRAVIS_BRANCH; git branch -d $TRAVIS_BRANCH;
     on:
       branch:
         - pdfjs
