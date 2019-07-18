@@ -17,12 +17,7 @@ script:
   - echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
 deploy:
   - provider: script
-    script: npm publish dist/pdfjs-box
-    skip_cleanup: true
-    on:
-      branch: pdfjs
-  - provider: script
-    script: cd projects/pdfjs-box; npm version patch; cd ../..; git commit -m "[ci skip]" projects/pdfjs-box/package.json
+    script: bash scripts/deploy-on-npm.sh pdfjs-box
     skip_cleanup: true
     on:
       branch: pdfjs
@@ -35,7 +30,7 @@ deploy:
         - config
         - website
   - provider: script
-    script: git push https://$GITHUB_TOKEN:x-oauth-basic@github.com/$TRAVIS_REPO_SLUG.git $TRAVIS_BRANCH; git checkout master; git merge master; git push https://$GITHUB_TOKEN:x-oauth-basic@github.com/$TRAVIS_REPO_SLUG.git master;
+    script: bash scripts/push-on-master.sh
     on:
       branch:
         - pdfjs
