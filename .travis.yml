@@ -19,25 +19,25 @@ deploy:
     script: cd projects/pdfjs-box; npm version patch -m "[ci skip]"; cd ../../dist/pdfjs-box; npm version patch -m "[ci skip]"
     skip_cleanup: true
     on:
-      branch: /^pdfjs-.*$/
+      branch: pdfjs
   - provider: script
     script: git commit -m "[ci skip]" package-lock.json; npm version patch -m "[ci skip]"
     skip_cleanup: true
     on:
       branch:
         only:
-          - /^pdfjs-.*$/
-          - /^config-.*$/
-          - /^website-.*$/
+          - pdfjs
+          - config
+          - website
   - provider: script
     script: git push https://$GITHUB_TOKEN:x-oauth-basic@github.com/$TRAVIS_REPO_SLUG.git master
     skip_cleanup: true
     on:
       branch:
         only:
-          - /^pdfjs-.*$/
-          - /^config-.*$/
-          - /^website-.*$/
+          - pdfjs
+          - config
+          - website
   - provider: releases
     user: "$GITHUB_USER"
     api_key: "$GITHUB_TOKEN"
@@ -47,9 +47,9 @@ deploy:
     on:
       branch:
         only:
-          - /^pdfjs-.*$/
-          - /^config-.*$/
-          - /^website-.*$/
+          - pdfjs
+          - config
+          - website
   - provider: pages
     skip-cleanup: true
     github-token: "$GITHUB_TOKEN"
@@ -57,11 +57,11 @@ deploy:
     on:
       branch:
         only:
-          - /^pdfjs-.*$/
-          - /^config-.*$/
-          - /^website-.*$/
+          - pdfjs
+          - config
+          - website
   - provider: script
     script: npm publish dist/pdfjs-box
     skip_cleanup: true
     on:
-      branch: /^pdfjs-.*$/
+      branch: pdfjs
