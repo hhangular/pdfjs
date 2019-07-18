@@ -4,27 +4,62 @@ node_js:
 cache:
   directories:
     - "node_modules"
-branches:
-  only:
-  - master
 before_script:
   - npm install
 script:
+  - echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
   - git checkout master
   - ng build pdfjs-box --prod
+  - ng build --prod --base-href .
+  - cp dist/pdfjs/index.html dist/pdfjs/404.html
 deploy:
   - provider: script
-    script: cd dist/pdfjs-box; npm version patch -m "[ci skip]"
+    script: cd projects/pdfjs-box; npm version patch -m "[ci skip]"; cd ../../dist/pdfjs-box; npm version patch -m "[ci skip]"
     skip_cleanup: true
     on:
-      branch: master
+      branch: /^pdfjs.*$/
+  - provider: script
+    script: git commit -m "[ci skip]" package-lock.json; npm version patch -m "[ci skip]"
+    skip_cleanup: true
+    on:
+      branch:
+        only:
+          - /^pdfjs.*$/
+          - /^config.*$/
+          - /^website.*$/
   - provider: script
     script: git push https://$GITHUB_TOKEN:x-oauth-basic@github.com/$TRAVIS_REPO_SLUG.git master
     skip_cleanup: true
     on:
-      branch: master
-  - provider: script
-    script: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc; npm publish dist/pdfjs-box
+      branch:
+        only:
+          - /^pdfjs.*$/
+          - /^config.*$/
+          - /^website.*$/
+  - provider: releases
+    user: "$GITHUB_USER"
+    api_key: "$GITHUB_TOKEN"
+    file_glob: true
+    file: dist/*
     skip_cleanup: true
     on:
-      branch: master
+      branch:
+        only:
+          - /^pdfjs.*$/
+          - /^config.*$/
+          - /^website.*$/
+  - provider: pages
+    skip-cleanup: true
+    github-token: "$GITHUB_TOKEN"
+    local-dir: "dist/pdfjs"
+    on:
+      branch:
+        only:
+          - /^pdfjs.*$/
+          - /^config.*$/
+          - /^website.*$/
+  - provider: script
+    script: npm publish dist/pdfjs-box
+    skip_cleanup: true
+    on:
+      branch: /^pdfjs.*$/
